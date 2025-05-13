@@ -9,39 +9,44 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var goals: [Goal] = []
-    @State private var showingAddGoal = false
-
-    // Assume Goal, GoalDetailView, AddGoalView exist and Goal conforms to Identifiable, Codable
+    @State private var showingAddGoal = false // For AddGoalView sheet
 
     var body: some View {
         NavigationView {
             VStack { // Main content VStack
+
                 // Conditionally display empty state or list
                 if goals.isEmpty {
+                    // --- Your Empty State View ---
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(Color(.systemGray6))
-                        .frame(width: 200, height: 50)
-                        .overlay(
-                            Text("Empty")
-                                .foregroundColor(.gray)
-                                .font(.title2)
-                        )
-                        .padding() // Existing padding
-                        .padding(.top, 20) // <<-- Pushes the "Empty" view down
+                       .fill(Color(.systemGray6))
+                       .frame(width: 250, height: 55)
+                       .overlay(
+                           Text("Empty")
+                               .foregroundColor(.gray)
+                               .font(.title2)
+                       )
+                       .padding()
+                       .padding(.top, 55)
                     Spacer()
+                    // --- End Empty State ---
                 } else {
                     List {
                         ForEach(goals) { goal in
-                            NavigationLink(destination: GoalDetailView(goal: goal)) {
+                            NavigationLink(destination: GoalDetailView(
+                                goal: goal,
+                                onUpdate: updateGoal, // Pass update function
+                                onDelete: deleteGoal  // Pass delete function (using ID)
+                            )) {
+                                // --- Goal Row HStack ---
                                 HStack(alignment: .center) {
                                     Image(systemName: goal.isCompleted ? "checkmark.circle.fill" : "circle")
                                         .font(.title2)
                                         .foregroundColor(goal.isCompleted ? .green : .gray)
                                         .onTapGesture {
-                                            if let index = goals.firstIndex(where: { $0.id == goal.id }) {
-                                                goals[index].isCompleted.toggle()
-                                                saveGoals()
-                                            }
+                                            var updatedGoal = goal
+                                            updatedGoal.isCompleted.toggle()
+                                            updateGoal(updatedGoal) // Allow toggling from list view too
                                         }
                                         .frame(width: 48)
 
@@ -57,59 +62,84 @@ struct ContentView: View {
                                     Spacer()
                                 }
                                 .padding(.vertical, 15)
+                                // --- End Goal Row HStack ---
                             }
                         }
-                        .onDelete(perform: deleteGoal)
+                        .onDelete(perform: deleteGoalAtIndexSet) // Swipe-to-delete
                     }
                     .listStyle(.plain)
-                    .padding(.top, 60) // <<-- Pushes the List view down
+                    .padding(.top, 20) // Add padding above list
                 }
 
-                // Spacer to push button towards bottom if needed, especially when list is empty
-                // If the list exists, Spacer might not be necessary depending on List behavior
-                 if !goals.isEmpty {
-                     Spacer() // Add Spacer only when the list is populated if needed
-                 }
+                // Spacer to push button towards bottom
+                //
+                if !goals.isEmpty {
+                    Spacer()
+                }
 
-
-                // Plus Button
-                Button {
+                // --- Plus Button ---
+                Button { // Action for Plus Button
                     showingAddGoal = true
                 } label: {
+                    // --- Label Code START ---
                     Image(systemName: "plus")
                         .font(.system(size: 32))
                         .foregroundColor(.white)
                         .padding()
                         .background(Color.blue)
                         .clipShape(Circle())
-                        .shadow(radius: 3)
+                        .shadow(radius: 3) // Optional shadow
+                    // --- Label Code END ---
                 }
-                .padding(.bottom) // Padding for the button from the bottom edge
+                .padding(.bottom) // Padding for the button
 
-            } // End of VStack
-            .navigationTitle("My Goals") // Sets semantic title
+            } // End of main VStack
+            .navigationTitle("My Goals") // Keep for accessibility & standard behavior fallback
             .navigationBarTitleDisplayMode(.inline) // Use inline mode
-            .toolbar { // Customize the visual title
+
+            // --- Toolbar START ---
+            .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("My Goals")
-                        .font(.system(size: 45)) // Your chosen font size
-                        .padding(.top, 50) // <<-- Pushes title text down within the bar
+                        .font(.system(size: 43)) // Example: Custom size
+                        .padding(.top, 44)       // Example: Add padding if needed
                 }
             }
+            // --- Toolbar END ---
+
+            // --- Sheet START ---
             .sheet(isPresented: $showingAddGoal) {
-                // Pass necessary bindings and the save action
+                 // Make sure AddGoalView initializer matches this call
+                 // AddGoalView takes these bindings/closures
                 AddGoalView(goals: $goals, showingAddGoal: $showingAddGoal) {
-                    saveGoals()
-                }
+                     // This closure is the 'onSave' action for AddGoalView
+                     saveGoals()
+                 }
             }
+            // --- Sheet END ---
+
             .onAppear(perform: loadGoals) // Load goals when the view appears
         } // End of NavigationView
-         // Optional: If needed for iPad layout consistency
+         // Optional: For iPad layout consistency
         // .navigationViewStyle(.stack)
-    } // End of body
+    } // End body
 
-    // --- Functions (deleteGoal, saveGoals, loadGoals) ---
-    func deleteGoal(at offsets: IndexSet) {
+
+    // --- Use of Functions ---
+
+    func updateGoal(_ updatedGoal: Goal) {
+        if let index = goals.firstIndex(where: { $0.id == updatedGoal.id }) {
+            goals[index] = updatedGoal
+            saveGoals()
+        }
+    }
+
+    func deleteGoal(id: UUID) {
+        goals.removeAll { $0.id == id }
+        saveGoals()
+    }
+
+    func deleteGoalAtIndexSet(at offsets: IndexSet) {
         goals.remove(atOffsets: offsets)
         saveGoals()
     }
@@ -118,34 +148,32 @@ struct ContentView: View {
     func saveGoals() {
         if let encoded = try? JSONEncoder().encode(goals) {
             UserDefaults.standard.set(encoded, forKey: "savedGoals")
+            print("Goals saved successfully.")
+        } else {
+            print("Error: Failed to encode goals for saving.")
         }
     }
 
     func loadGoals() {
-        if let savedGoals = UserDefaults.standard.data(forKey: "savedGoals") {
-            if let decodedGoals = try? JSONDecoder().decode([Goal].self, from: savedGoals) {
+        if let savedGoalsData = UserDefaults.standard.data(forKey: "savedGoals") {
+            if let decodedGoals = try? JSONDecoder().decode([Goal].self, from: savedGoalsData) {
                 goals = decodedGoals
+                print("Goals loaded successfully: \(goals.count) goals.")
                 return
+            } else {
+                print("Error: Failed to decode saved goals.")
             }
+        } else {
+             print("No saved goals found in UserDefaults.")
         }
-        goals = []
     }
+    // --- End the Created Functions ---
+
 }
 
-// ----- Preview -----
-// Make sure you have your actual Goal struct defined elsewhere
-// and GoalDetailView/AddGoalView defined
+// --- Preview ---
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        // You might need to provide dummy data or views here if needed for preview
         ContentView()
     }
 }
-
-// ----- Dummy Supporting Structures (Remove if you have real ones) -----
-// Ensure these are removed if you have them defined elsewhere to avoid ambiguity
-/*
-struct Goal: Identifiable, Codable { ... }
-struct GoalDetailView: View { ... }
-struct AddGoalView: View { ... }
-*/
