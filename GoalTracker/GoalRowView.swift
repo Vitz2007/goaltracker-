@@ -4,16 +4,12 @@
 //
 //  Created by AJ on 2025/05/08.
 //
-
 import SwiftUI
 
 struct GoalRowView: View {
-    // Use @ObservedObject or @State if the goal itself or its properties
-    // were directly manipulated here and need to trigger updates *from* here.
-    // However, your current setup uses a closure (`onToggleCompletion`)
-    // which is a good pattern.
-    let goal: Goal
-    var onToggleCompletion: () -> Void // Closure to call when the checkmark is tapped
+    @Binding var goal: Goal // Use @Binding if we modify goal directly (ie: toggle completion)
+                           // OR pass a simple Goal and a closure for actions
+    var onToggleCompletion: () -> Void
 
     var body: some View {
         HStack(alignment: .center) {
@@ -21,21 +17,24 @@ struct GoalRowView: View {
                 .font(.title2)
                 .foregroundColor(goal.isCompleted ? .green : .gray)
                 .onTapGesture {
-                    onToggleCompletion() // Call the closure
+                    onToggleCompletion()
                 }
-                .frame(width: 48) // Maintain consistent tap area/spacing
+                .frame(width: 48) // Keep touch target reasonable/simple
 
             VStack(alignment: .leading) {
                 Text(goal.title)
                     .font(.headline)
+                    .strikethrough(goal.isCompleted, color: .primary)
+                    .opacity(goal.isCompleted ? 0.6 : 1.0) // OPTIONAL: FADE// add strikethrough
+                // Assuming Goal struct has an optional dueDate = LEAVE
                 if let dueDate = goal.dueDate {
                     Text("Due: \(dueDate, style: .date)")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }
             }
-            Spacer() // Pushes content to the left
+            Spacer()
         }
-        .padding(.vertical, 8) // Adjusted padding slightly, was 15, can be whatever you like
+        .padding(.vertical, 8) // Adjust padding if need be, original was 15
     }
 }

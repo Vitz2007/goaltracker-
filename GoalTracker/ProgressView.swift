@@ -4,7 +4,6 @@
 //
 //  Created by AJ on 2025/04/26.
 //
-
 import SwiftUI
 
 struct ProgressView: View {

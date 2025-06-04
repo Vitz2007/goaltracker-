@@ -7,63 +7,56 @@
 
 // In GoalProgressView.swift
 import SwiftUI
-import Charts // Don't forget this import!
+// Import Charts // No longer directly needed here DonutChartView handles it
 
 struct GoalProgressView: View {
     let goal: Goal
     @Environment(\.dismiss) var dismiss
 
+    // Helper to format the last check-in date nicely - remains here as it's specific to this view's needs
+    private var lastCheckInDisplayString: String {
+        // Sort checkIns by date to find the most recent one
+        if let lastCheckInRecord = goal.checkIns.max(by: { $0.date < $1.date }) {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .short
+            return formatter.string(from: lastCheckInRecord.date)
+        }
+        return "Never"
+    }
+
     var body: some View {
-        NavigationView { // For title and dismiss button
-            VStack(spacing: 20) {
-                Text(goal.title)
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .padding(.top)
-                    .multilineTextAlignment(.center)
-
-                Chart {
-                    // Sector for completed portion
-                    SectorMark(
-                        angle: .value("Completed", goal.completionPercentage * 360), // Angle based on percentage
-                        innerRadius: .ratio(0.618), // Makes it a donut
-                        angularInset: 1.5 // Small gap between sectors
-                    )
-                    .foregroundStyle(Color.orange.gradient) // Color for completed part
-                    .cornerRadius(5)
-
-                    // Sector for remaining portion
-                    SectorMark(
-                        angle: .value("Remaining", (1.0 - goal.completionPercentage) * 360),
-                        innerRadius: .ratio(0.618),
-                        angularInset: 1.5
-                    )
-                    .foregroundStyle(Color.gray.opacity(0.3).gradient) // Color for remaining
-                    .cornerRadius(5)
-                }
-                .chartLegend(.hidden) // Hide legend if it's self-explanatory
-                .frame(width: 200, height: 200)
-                .overlay {
-                    Text("\(Int(goal.completionPercentage * 100))%")
-                        .font(.title)
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) { // Overall VStack
+                    Text(goal.title) // << The title ==
+                        .font(.title2) // Current font for the title
                         .fontWeight(.semibold)
-                }
-                .padding()
+                        .padding(.top)
+                        .multilineTextAlignment(.center)
 
-                if let startDate = goal.startDate {
-                    Text("Started: \(startDate, style: .date)")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                if let dueDate = goal.dueDate {
-                    Text("Deadline: \(dueDate, style: .date)")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
+                    DonutChartView( // << The donut chart ==
+                        completionPercentage: goal.completionPercentage,
+                        primaryColor: .orange,
+                        secondaryColor: Color.gray.opacity(0.3)
+                    )
+                    .padding(.top, 35)
 
-                Spacer()
+                    GoalDateInfoView(startDate: goal.startDate, dueDate: goal.dueDate)
+
+                    Divider()
+                        .padding(.vertical, 10)
+
+                    ActivityLogView(
+                        checkIns: goal.checkIns,
+                        lastCheckInDisplayString: lastCheckInDisplayString
+                    )
+
+                    Spacer() // Pushes content upwards
+                }
+                .padding(.bottom)
             }
-            .navigationTitle("Goal Progress")
+            .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -76,15 +69,25 @@ struct GoalProgressView: View {
     }
 }
 
-// Preview for GoalProgressView
+// In GoalProgressView.swift
+
 struct GoalProgressView_Previews: PreviewProvider {
     static var previews: some View {
+        let sampleCheckInRecords: [CheckInRecord] = [ // << Use CheckInRecord
+            CheckInRecord(date: Calendar.current.date(byAdding: .day, value: -5, to: Date())!, note: "Preview Note 1"),
+            CheckInRecord(date: Calendar.current.date(byAdding: .hour, value: -8, to: Date())!, note: "Another Preview Note"),
+            CheckInRecord(date: Date(), note: nil)
+        ]
         GoalProgressView(
-            goal: Goal(title: "Demo Goal with Progress",
-                       startDate: Date(),
-                       dueDate: Calendar.current.date(byAdding: .month, value: 1, to: Date()),
-                       isCompleted: false,
-                       completionPercentage: 0.65) // 65% complete for preview
+            goal: Goal(
+                title: "My Active Goal with Progress",
+                startDate: Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date()),
+                dueDate: Calendar.current.date(byAdding: .month, value: 1, to: Date()),
+                isCompleted: false,
+                completionPercentage: 0.65,
+                checkIns: sampleCheckInRecords, // << Pass [CheckInRecord]
+                targetCheckIns: 30
+            )
         )
     }
 }

@@ -4,7 +4,6 @@
 //
 //  Created by AJ on 2025/04/07.
 //
-
 import SwiftUI
 
 struct ContentView: View {
@@ -13,120 +12,71 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            VStack { // Main content VStack
-
+            VStack { // Main content of VStack
                 // Conditionally display empty state or list
                 if goals.isEmpty {
-                    // --- Your Empty State View ---
-                    RoundedRectangle(cornerRadius: 10)
-                       .fill(Color(.systemGray6))
-                       .frame(width: 250, height: 55)
-                       .overlay(
-                           Text("Empty")
-                               .foregroundColor(.gray)
-                               .font(.title2)
-                       )
-                       .padding()
-                       .padding(.top, 55)
-                    Spacer()
-                    // --- End Empty State ---
+                    EmptyStateView()
+                        .frame(maxHeight: .infinity) // Allows EmptyStateView's Spacers to function
                 } else {
                     List {
-                        ForEach(goals) { goal in
+                        ForEach($goals) { $goal in // Use $goals to pass bindings to GoalRowView if needed
                             NavigationLink(destination: GoalDetailView(
-                                goal: goal,
-                                onUpdate: updateGoal, // Pass update function
-                                onDelete: deleteGoal  // Pass delete function (using ID)
+                                goal: goal, // Pass the non-binding goal below
+                                onUpdate: updateGoal,
+                                onDelete: deleteGoal
                             )) {
-                                // --- Goal Row HStack ---
-                                HStack(alignment: .center) {
-                                    Image(systemName: goal.isCompleted ? "checkmark.circle.fill" : "circle")
-                                        .font(.title2)
-                                        .foregroundColor(goal.isCompleted ? .green : .gray)
-                                        .onTapGesture {
-                                            var updatedGoal = goal
-                                            updatedGoal.isCompleted.toggle()
-                                            updateGoal(updatedGoal) // Allow toggling from list view too
-                                        }
-                                        .frame(width: 48)
-
-                                    VStack(alignment: .leading) {
-                                        Text(goal.title)
-                                            .font(.headline)
-                                        if let dueDate = goal.dueDate {
-                                            Text("Due: \(dueDate, style: .date)")
-                                                .font(.subheadline)
-                                                .foregroundColor(.gray)
-                                        }
-                                    }
-                                    Spacer()
+                                GoalRowView(goal: $goal) { // Pass binding for direct modification
+                                    // This functions as  onToggleCompletion action
+                                    goal.isCompleted.toggle()
+                                    updateGoal(goal) // Persist the change
                                 }
-                                .padding(.vertical, 15)
-                                // --- End Goal Row HStack ---
                             }
                         }
                         .onDelete(perform: deleteGoalAtIndexSet) // Swipe-to-delete
                     }
                     .listStyle(.plain)
-                    .padding(.top, 20) // Add padding above list
+                    .padding(.top, 35) // padding added because squashed
                 }
 
-                // Spacer to push button towards bottom
-                //
+                // Spacer to push button towards bottom, only if list is not empty
+                // If list is empty, EmptyStateView handles its own spacing.
                 if !goals.isEmpty {
                     Spacer()
                 }
 
-                // --- Plus Button ---
-                Button { // Action for Plus Button
+                // Plus Button, always visible or conditionally? Keep in mind...
+                // For now, keeping it as it was, consider placement if goals are empty.
+                AddGoalButtonView {
+                    // Adding Haptic Feedback to '+' here
+                    let generator = UIImpactFeedbackGenerator(style: .medium)
+                    generator.prepare()
+                    generator.impactOccurred()
+                    // End Haptic Feedback Code
                     showingAddGoal = true
-                } label: {
-                    // --- Label Code START ---
-                    Image(systemName: "plus")
-                        .font(.system(size: 32))
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.blue)
-                        .clipShape(Circle())
-                        .shadow(radius: 3) // Optional shadow
-                    // --- Label Code END ---
                 }
-                .padding(.bottom) // Padding for the button
+                // For plus button at the very bottom,
 
             } // End of main VStack
-            .navigationTitle("My Goals") // Keep for accessibility & standard behavior fallback
-            .navigationBarTitleDisplayMode(.inline) // Use inline mode
-
-            // --- Toolbar START ---
-            .toolbar {
+            .navigationTitle("My Goals")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { // Custom Toolbar
                 ToolbarItem(placement: .principal) {
                     Text("My Goals")
-                        .font(.system(size: 43)) // Example: Custom size
-                        .padding(.top, 44)       // Example: Add padding if needed
+                        .font(.system(size: 41)) // Adjusted size for typical toolbar
+                        .padding(.top, 35)       // Adjusted padding
                 }
             }
-            // --- Toolbar END ---
-
-            // --- Sheet START ---
             .sheet(isPresented: $showingAddGoal) {
-                 // Make sure AddGoalView initializer matches this call
-                 // AddGoalView takes these bindings/closures
                 AddGoalView(goals: $goals, showingAddGoal: $showingAddGoal) {
-                     // This closure is the 'onSave' action for AddGoalView
-                     saveGoals()
-                 }
+                    saveGoals()
+                }
             }
-            // --- Sheet END ---
+            .onAppear(perform: loadGoals)
+        }
+        // .navigationViewStyle(.stack) // Consider for iPad if needed
+    }
 
-            .onAppear(perform: loadGoals) // Load goals when the view appears
-        } // End of NavigationView
-         // Optional: For iPad layout consistency
-        // .navigationViewStyle(.stack)
-    } // End body
-
-
-    // --- Use of Functions ---
-
+    // --- Functions ---
     func updateGoal(_ updatedGoal: Goal) {
         if let index = goals.firstIndex(where: { $0.id == updatedGoal.id }) {
             goals[index] = updatedGoal
@@ -144,7 +94,6 @@ struct ContentView: View {
         saveGoals()
     }
 
-    // MARK: - Data Persistence (UserDefaults)
     func saveGoals() {
         if let encoded = try? JSONEncoder().encode(goals) {
             UserDefaults.standard.set(encoded, forKey: "savedGoals")
@@ -164,14 +113,11 @@ struct ContentView: View {
                 print("Error: Failed to decode saved goals.")
             }
         } else {
-             print("No saved goals found in UserDefaults.")
+            print("No saved goals found in UserDefaults.")
         }
     }
-    // --- End the Created Functions ---
-
 }
 
-// --- Preview ---
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()

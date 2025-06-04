@@ -29,22 +29,9 @@
 		1806855A2DA3BE1E006153C9 /* GoalTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GoalTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		188209F72DD1DB6200757516 /* Exceptions for "GoalTracker" folder in "GoalTracker" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Untitled.swift,
-			);
-			target = 180685422DA3BE19006153C9 /* GoalTracker */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		180685452DA3BE19006153C9 /* GoalTracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				188209F72DD1DB6200757516 /* Exceptions for "GoalTracker" folder in "GoalTracker" target */,
-			);
 			path = GoalTracker;
 			sourceTree = "<group>";
 		};

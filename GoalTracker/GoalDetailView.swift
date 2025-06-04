@@ -4,132 +4,134 @@
 //
 //  Created by AJ on 2025/04/17.
 //
-
 import SwiftUI
 
 struct GoalDetailView: View {
-    @State private var showingProgressSheet = false // enable show
-    progress sheet
-    // State for the goal data itself & Callbacks
-    @State var goal: Goal
+    @State var goal: Goal // The goal being viewed and possibly modified
     var onUpdate: (Goal) -> Void
     var onDelete: (UUID) -> Void
-    @State private var editButtonTapped = false
-    @State private var progressButtonTapped = false
-    @State private var finishButtonScale: CGFloat = 1.0
-    @State private var deleteButtonOffset: CGFloat = 0
-    @State private var deleteButtonTapped = false // Keep for delete animation logic
 
-    // Define background color (Ex: Light Stone Gray)
-    let bottomBarBackgroundColor = Color.gray.opacity(0.1) // Or Color(white: 0.95), or a custom color
+    // Animation states
+    @State private var editButtonAnimationTrigger = false
+    @State private var progressButtonAnimationTrigger = false
+    @State private var finishButtonScale: CGFloat = 1.0
+    @State private var deleteButtonAnimationTrigger = false
+    @State private var showingProgressSheet = false
+    @State private var showingEditSheet = false
+    
+    // Add new STATE Variable for check-in note sheet
+    @State private var showingAddCheckInNoteSheet = false
+
+    let bottomBarBackgroundColor = Color.gray.opacity(0.1)
 
     var body: some View {
-        VStack {
+        VStack (spacing: 20) {
             Text(goal.title)
                 .font(.largeTitle)
-                .padding()
+                .strikethrough(goal.isCompleted, color: .primary) // UI Change for completed state
+                .opacity(goal.isCompleted ? 0.6 : 1.0)          // UI change for completed state
+                .padding(.horizontal)
+                .padding(.top)
 
-            Spacer() // Pushes the HStack to the bottom
+            CheckInButtonView(title: goal.title) {
+                            if !goal.isCompleted {
+                                // Show the note sheet instead of creating CheckInRecord automatically
+                                self.showingAddCheckInNoteSheet = true
+                            }
+                        }
+                        .disabled(goal.isCompleted)
 
-            // HStack containing the buttons
-            HStack {
-                Button {
-                    print("Edit tapped for \(goal.title)")
-                    editButtonTapped.toggle()
-                    // Add actual edit action
-                } label: {
-                    Image(systemName: "pencil.line")
-                        .font(.system(size: 30))
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.blue.opacity(0.7))
-                        .cornerRadius(8)
-                        .symbolEffect(.bounce, value: editButtonTapped)
-                }
+            Spacer()
 
-                Spacer()
+            ActionBottomBarView(
+                goal: $goal,
+                onUpdate: onUpdate, // For general goal updates (ie: check-ins)
+                onDelete: onDelete,
+                editButtonTapped: $editButtonAnimationTrigger,
+                progressButtonTapped: $progressButtonAnimationTrigger,
+                showingProgressSheet: $showingProgressSheet,
+                finishButtonScale: $finishButtonScale,
+                deleteButtonTapped: $deleteButtonAnimationTrigger,
+                onEditButtonTap: {
+                    // Only allow edit if goal is not completed (optional rule)
+                    if !goal.isCompleted {
+                        self.showingEditSheet = true
+                    }
+                },
+                onFinishButtonTap: {
+                    if !goal.isCompleted { // Only complete if not already completed
+                        print("Completing goal: \(goal.title)")
+                        // Modify the @State variable directly
+                        // so SwiftUI understands to re-render dependent views.
+                        self.goal.isCompleted = true
+                        self.goal.completionPercentage = 1.0
+                        // If we add completionDate to Goal model:
+                        // self.goal.completionDate = Date()
+                        
+                        // Calls the onUpdate closure passed from ContentView
+                        // to update the main goals array and persist changes.
+                        self.onUpdate(self.goal)
+                        print("Goal '\(self.goal.title)' marked as completed!")
+                    }
+                    // Optionally, we could implement "un-completing" logic here
+                    // if the button were to toggle completion.
+                },
+                bottomBarBackgroundColor: bottomBarBackgroundColor
+            ) // Closing parenthesis for ActionBottomBarView call
+            // Can disable the whole bar or parts of it based on goal.isCompleted
+            // For example:
+            // .disabled(goal.isCompleted)
 
-                Button {
-                    print("Progress tapped for \(goal.title)")
-                    progressButtonTapped.toggle()
-                    // Add actual progress action
-                } label: {
-                    Image(systemName: "chart.line.uptrend.xyaxis")
-                        .font(.system(size: 32))
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.orange.opacity(0.7)) // Orange button
-                        .cornerRadius(8)
-                        .symbolEffect(.pulse, value: progressButtonTapped)
-                }
-
-                Spacer()
-
-                Button {
-                    print("Finish tapped for \(goal.title)")
-                    // Simple animation
-                    
-                     withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
-                         finishButtonScale = 1.2 // Scale up
-                     }
-                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                         withAnimation(.spring()) {
-                             finishButtonScale = 1.0 // Scale back
-                         }
-                     }
-                    // Add actual finish action
-                } label: {
-                    Image(systemName: "checkmark.seal")
-                        .font(.system(size: 27))
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.green.opacity(0.6)) // Green button bg
-                        .cornerRadius(8)
-                        .scaleEffect(finishButtonScale)
-                }
-
-
-                Spacer()
-
-                Button {
-                    print("Delete tapped for \(goal.title)")
-                        deleteButtonTapped.toggle()
-                        onDelete(goal.id)
-                    
-                } label: {
-                     Image(systemName: "trash")
-                         .font(.system(size: 27))
-                         .foregroundColor(.white) //
-                         .padding()
-                         .background(Color.gray.opacity(0.8)) // Gray button bg
-                         .cornerRadius(8)
-                    
-                         .modifier(ShakeEffect(animatableData: deleteButtonTapped ? 1 : 0))
-
-                }
-
-            } // End of HStack content
-            .padding(.horizontal) // Give buttons space from screen edges
-            .padding(.top, 10) // Give space above icons within the bar
-            .padding(.bottom) // Give space from bottom edge
-            // ***** ADD THE BACKGROUND HERE *****
-            .frame(maxWidth: .infinity) // Make the background conceptually span width
-            .background(bottomBarBackgroundColor)
-            // Optional: If you want the color to go right to the screen edge:
-            // .ignoresSafeArea(.container, edges: .bottom)
-
-        } // End of VStack
-        .navigationTitle("Goal Details")
+        } // Closing brace for main VStack
+        .navigationTitle("Goal Details") // Or "" if removed this earlier
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showingProgressSheet) { // Sheet for GoalProgressView
+            GoalProgressView(goal: self.goal)
+        } // Closing brace for the first .sheet modifier
+        .sheet(isPresented: $showingEditSheet) { // Sheet for EditGoalView
+            // Make sure EditGoalView initializer is `init(goalToEdit: Goal, onSave: @escaping (Goal) -> Void)`
+            // or adjust this call properly.
+            EditGoalView(goalToEdit: self.goal) { updatedGoalFromEditView in
+                // This is for the onSave closure from EditGoalView
+                self.goal = updatedGoalFromEditView
+                self.onUpdate(updatedGoalFromEditView)
+            }
+        } // Closing brace for the second .sheet modifier
+        .sheet(isPresented: $showingAddCheckInNoteSheet) {
+                    AddCheckInNoteView { noteText_from_sheet in
+                        // This closure is called when AddCheckInNoteView calls onComplete
+                        // 'noteText' will be the String? containing the note.
+                        print(">>>>>> GOALDETAILVIEW: AddCheckInNoteView SHEET DISMISSED & onComplete CALLED! Note: '\(noteText_from_sheet ?? "NO NOTE PASSED")' <<<<<<")
+                        
+                        // Created the CheckInRecord with the (optional) note
+                        let newCheckIn = CheckInRecord(date: Date(), note: noteText_from_sheet)
+                        // Adding debug print for note to print
+                        print("DEBUG GoalDetailView: Creating CheckInRecord - Date: \(newCheckIn.note ?? "NIL")")
+                        goal.checkIns.append(newCheckIn)
 
-    }
-}
+                        // Recalculate completionPercentage
+                        if goal.targetCheckIns > 0 {
+                            let calculatedPercentage = Double(goal.checkIns.count) / Double(goal.targetCheckIns)
+                            goal.completionPercentage = min(1.0, max(0.0, calculatedPercentage))
+                        }
+                        
+                        if goal.checkIns.count >= goal.targetCheckIns {
+                            goal.completionPercentage = 1.0
+                            // Optionally auto-complete:
+                            // if !goal.isCompleted { goal.isCompleted = true }
+                        }
 
-// Simple Shake Effect Modifier (Example)
+                        onUpdate(goal) // Update the main list and save
+                        print("Checked in for '\(goal.title)' with note: '\(noteText_from_sheet ?? "N/A")'. Total: \(goal.checkIns.count). Progress: \(goal.completionPercentage * 100)%")
+                    }
+                }
+    } // Closing brace for var body: some View
+} // Closing brace for struct GoalDetailView: View
+// Simple Shake Effect Modifier -
 struct ShakeEffect: GeometryEffect {
-    var amount: CGFloat = 5 // How far to shake
-    var shakesPerUnit = 3 // How many shakes
-    var animatableData: CGFloat // Value to animate (e.g., 0 to 1)
+    var amount: CGFloat = 5
+    var shakesPerUnit = 3
+    var animatableData: CGFloat
 
     func effectValue(size: CGSize) -> ProjectionTransform {
         ProjectionTransform(CGAffineTransform(translationX:
@@ -138,19 +140,29 @@ struct ShakeEffect: GeometryEffect {
     }
 }
 
+// Previews
 struct GoalDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            GoalDetailView(
-                
-                goal: Goal(title: "Sample Preview Goal", dueDate: Date(), isCompleted: false),
-                onUpdate: { updatedGoalFromPreview in
-                    print("Preview: Goal updated to: \(updatedGoalFromPreview.title)")
-                },
-                onDelete: { goalIdFromPreview in
-                    print("Preview: Delete goal with ID: \(goalIdFromPreview)")
-                }
-            )
+    // Using a wrapper to manage @State for the preview
+    struct PreviewWrapper: View {
+        @State var sampleGoal = Goal(title: "Sample Preview Goal", dueDate: Date(), isCompleted: false, checkIns: [])
+
+        var body: some View {
+            NavigationView {
+                GoalDetailView(
+                    goal: sampleGoal, // Pass the @State variable
+                    onUpdate: { updatedGoalFromPreview in
+                        self.sampleGoal = updatedGoalFromPreview // Update the state
+                        print("Preview: Goal updated to: \(updatedGoalFromPreview.title)")
+                    },
+                    onDelete: { goalIdFromPreview in
+                        print("Preview: Delete goal with ID: \(goalIdFromPreview)")
+                    }
+                )
+            }
         }
+    }
+
+    static var previews: some View {
+        PreviewWrapper()
     }
 }
