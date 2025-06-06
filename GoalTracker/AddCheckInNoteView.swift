@@ -10,55 +10,38 @@
 import SwiftUI
 
 struct AddCheckInNoteView: View {
-    @State private var noteText: String = ""
-    let onComplete: (String?) -> Void
     @Environment(\.dismiss) var dismiss
+    @State private var note: String = ""
+    
+    // Closure to pass the note back
+    var onSave: (String?) -> Void
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 15) {
-                Text("Add a note to your check-in (optional):")
-                    .font(.headline)
-                    .padding(.top)
+            VStack {
+                TextEditor(text: $note)
+                    .frame(height: 150)
+                    .border(Color.gray, width: 1)
+                    .padding()
 
-                TextEditor(text: $noteText)
-                    .frame(height: 200)
-                    .border(Color.gray.opacity(0.3), width: 1)
-                    .cornerRadius(5)
-                
                 Spacer()
             }
-            .padding()
-            .navigationTitle("Check-in Note")
+            .navigationTitle("Add a Note")
             .navigationBarTitleDisplayMode(.inline)
-            
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Skip Note") {
-                        print("DEBUG AddCheckInNoteView: 'Skip Note' button tapped.")
-                        onComplete(nil)
+                    Button("Skip") {
+                        onSave(nil) // Pass back nil for no note
                         dismiss()
                     }
                 }
-
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        print("DEBUG AddCheckInNoteView: 'Done' button tapped. Note: '\(noteText)'")
-                        let finalNote = noteText.trimmingCharacters(in: .whitespacesAndNewlines)
-                        onComplete(finalNote.isEmpty ? nil : finalNote)
+                    Button("Save") {
+                        onSave(note.isEmpty ? nil : note) // Pass back the note, or nil if empty
                         dismiss()
                     }
                 }
             }
-            // --- END of revised TOOLBAR ---
-        }
-    }
-}
-
-struct AddCheckInNoteView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddCheckInNoteView { noteText_from_preview in
-            print("Preview: Note entered was - '\(noteText_from_preview ?? "No note provided")'")
         }
     }
 }

@@ -6,7 +6,6 @@
 //
 
 // In EditGoalView.swift
-
 import SwiftUI
 
 struct EditGoalView: View {
