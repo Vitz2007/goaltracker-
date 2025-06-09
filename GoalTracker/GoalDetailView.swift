@@ -4,12 +4,19 @@
 //
 //  Created by AJ on 2025/04/17.
 //
+//
+//  GoalDetailView.swift
+//  GoalTracker
+//
+//  Created by AJ on 2025/04/17.
+//
 import SwiftUI
 
 struct GoalDetailView: View {
-    @State var goal: Goal
-    var onUpdate: (Goal) -> Void
+    
+    @Binding var goal: Goal
     var onDelete: (UUID) -> Void
+    @State private var showingDeleteAlert = false
 
     // Animation states
     @State private var editButtonAnimationTrigger = false
@@ -25,60 +32,66 @@ struct GoalDetailView: View {
     @State private var lastCheckInNote: String? = nil
 
     let bottomBarBackgroundColor = Color.gray.opacity(0.1)
-
+    
+    // Reworked body with ZStack
     var body: some View {
         ZStack {
-            ScrollView {
-                VStack (spacing: 20) {
-                    Text(goal.title)
-                        .font(.largeTitle)
-                        .strikethrough(goal.isCompleted, color: .primary)
-                        .opacity(goal.isCompleted ? 0.6 : 1.0)
-                        .padding(.horizontal)
-                        .padding(.top)
+            // Main content layer with a VStack for vertical layout
+            VStack(spacing: 0) {
+                
+                // Scrollable content
+                ScrollView {
+                    VStack(spacing: 20) {
+                        Text(goal.title)
+                            .font(.largeTitle)
+                            .strikethrough(goal.isCompleted, color: .primary)
+                            .opacity(goal.isCompleted ? 0.6 : 1.0)
+                            .padding(.horizontal)
+                            .padding(.top)
 
-                    CheckInButtonView(title: goal.title) {
-                        if !goal.isCompleted {
-                            self.showingAddCheckInNoteSheet = true
+                        CheckInButtonView(title: goal.title) {
+                            if !goal.isCompleted {
+                                self.showingAddCheckInNoteSheet = true
+                            }
                         }
-                    }
-                    .disabled(goal.isCompleted)
+                        .disabled(goal.isCompleted)
+                        
+                    } // End of inner VStack for scrollable content
+                    .padding(.bottom)
+                } // End of ScrollView
+                
+                // Fixed bottom bar from moving up, outside the ScrollView
+                ActionBottomBarView(
+                    goal: $goal,
+                    onEditButtonTap: {
+                        if !goal.isCompleted {
+                            self.showingEditSheet = true
+                        }
+                    },
+                    onFinishButtonTap: {
+                        if !goal.isCompleted {
+                            self.goal.isCompleted = true
+                            self.goal.completionPercentage = 1.0
+                        }
+                    },
+                    // Tapping delete button in the bar will trigger state variable to 'true'
+                    onDeleteButton: {
+                        self.showingDeleteAlert = true
+                    },
+                    editButtonTapped: $editButtonAnimationTrigger,
+                    progressButtonTapped: $progressButtonAnimationTrigger,
+                    showingProgressSheet: $showingProgressSheet,
+                    finishButtonScale: $finishButtonScale,
+                    deleteButtonTapped: $deleteButtonAnimationTrigger,
+                    bottomBarBackgroundColor: bottomBarBackgroundColor
+                )
+                
+            } // End of main VStack
 
-                    Spacer()
-
-                    ActionBottomBarView(
-                        goal: $goal,
-                        onUpdate: onUpdate,
-                        onDelete: onDelete,
-                        editButtonTapped: $editButtonAnimationTrigger,
-                        progressButtonTapped: $progressButtonAnimationTrigger,
-                        showingProgressSheet: $showingProgressSheet,
-                        finishButtonScale: $finishButtonScale,
-                        deleteButtonTapped: $deleteButtonAnimationTrigger,
-                        onEditButtonTap: {
-                            if !goal.isCompleted {
-                                self.showingEditSheet = true
-                            }
-                        },
-                        onFinishButtonTap: {
-                            if !goal.isCompleted {
-                                self.goal.isCompleted = true
-                                self.goal.completionPercentage = 1.0
-                                self.onUpdate(self.goal)
-                            }
-                        },
-                        bottomBarBackgroundColor: bottomBarBackgroundColor
-                    )
-                }
-            }
-
-            // Pop-up view logic
+            // Pop-up View Layer
             if showingUndoCheckInConfirmation {
                 VStack {
                     Spacer()
-
-                    // --- FIX WAS HERE ---
-                    // Move modifiers to the View, not the VStack.
                     UndoCheckInConfirmationView(
                         message: lastCheckInNote == nil ? "Checked in!" : "Checked in with note.",
                         onUndo: {
@@ -90,21 +103,18 @@ struct GoalDetailView: View {
                             } else {
                                 goal.completionPercentage = 0
                             }
-                            
-                            onUpdate(goal)
-                            self.showingUndoCheckInConfirmation = false
                         },
                         onDismiss: {
                             self.showingUndoCheckInConfirmation = false
                         }
                     )
-                    .padding(.horizontal) // Better padding
+                    .padding(.horizontal)
                     .padding(.bottom, 20)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
                 .animation(.easeInOut, value: showingUndoCheckInConfirmation)
             }
-        }
+        } // End of ZStack
         .navigationTitle("Goal Details")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingProgressSheet) {
@@ -112,10 +122,9 @@ struct GoalDetailView: View {
         }
         .sheet(isPresented: $showingEditSheet) {
             EditGoalView(goalToEdit: self.goal) { updatedGoalFromEditView in
-                self.goal = updatedGoalFromEditView
-                self.onUpdate(updatedGoalFromEditView)
             }
         }
+        
         .sheet(isPresented: $showingAddCheckInNoteSheet) {
             AddCheckInNoteView { noteText_from_sheet in
                 let newCheckIn = CheckInRecord(date: Date(), note: noteText_from_sheet)
@@ -129,8 +138,6 @@ struct GoalDetailView: View {
                 if goal.checkIns.count >= goal.targetCheckIns {
                     goal.completionPercentage = 1.0
                 }
-
-                onUpdate(goal)
                 
                 self.lastCheckInNote = noteText_from_sheet
                 self.showingUndoCheckInConfirmation = true
@@ -147,8 +154,22 @@ struct GoalDetailView: View {
                 }
             }
         }
-    } // Closing brace for var body: some View
-} // Closing brace for struct GoalDetailView: View
+        // Add alert modifier for delete goal
+        .alert("Delete Goal?", isPresented: $showingDeleteAlert) {
+            // The destructive button. This is where the actual delete happens.
+            Button("Delete", role: .destructive) {
+                onDelete(goal.id) // Call the original onDelete closure
+            }
+            
+            // The cancel button does nothing, just dismisses the alert.
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Are you sure you want to delete this goal? This action cannot be undone.")
+        }
+    } // Closing brace for var body
+    
+} // Closing brace for struct GoalDetailView
+
 
 // Simple Shake Effect Modifier -
 struct ShakeEffect: GeometryEffect {
@@ -172,11 +193,7 @@ struct GoalDetailView_Previews: PreviewProvider {
         var body: some View {
             NavigationView {
                 GoalDetailView(
-                    goal: sampleGoal, // Pass the @State variable
-                    onUpdate: { updatedGoalFromPreview in
-                        self.sampleGoal = updatedGoalFromPreview // Update the state
-                        print("Preview: Goal updated to: \(updatedGoalFromPreview.title)")
-                    },
+                    goal: $sampleGoal,
                     onDelete: { goalIdFromPreview in
                         print("Preview: Delete goal with ID: \(goalIdFromPreview)")
                     }

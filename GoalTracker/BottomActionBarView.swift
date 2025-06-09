@@ -6,13 +6,14 @@
 //
 
 // In BottomActionBarView.swift
-
 import SwiftUI
 
 struct ActionBottomBarView: View {
     @Binding var goal: Goal
-    var onUpdate: (Goal) -> Void // This is for saving general goal updates
-    var onDelete: (UUID) -> Void
+    // Add new closures for clarity
+    var onEditButtonTap: () -> Void
+    var onFinishButtonTap: () -> Void
+    var onDeleteButton: () -> Void // New one for the delete button
     
 
     // Animation states
@@ -22,27 +23,23 @@ struct ActionBottomBarView: View {
     @Binding var finishButtonScale: CGFloat
     @Binding var deleteButtonTapped: Bool
 
-    // --- ADD THIS NEW PROPERTY ---
-    var onEditButtonTap: () -> Void  // Closure to execute when edit is tapped
-    var onFinishButtonTap: () -> Void // For finish action hitting goal button
-    // --- END OF NEW PROPERTY ---
 
     let bottomBarBackgroundColor: Color
 
     var body: some View {
         HStack {
             EditActionButtonView(isTapped: $editButtonTapped) {
-                // This is the 'action' for EditActionButtonView
+                // The 'action' for EditActionButtonView
                 print("Edit button tapped inside ActionBottomBarView for \(goal.title)")
                 self.editButtonTapped.toggle() // For the bounce animation
-                self.onEditButtonTap()         // << CALL THE NEW CLOSURE HERE
+                self.onEditButtonTap()         // << Calling the new closure
             }
 
             Spacer()
 
             ProgressActionButtonView(isTapped: $progressButtonTapped) {
                 print("Progress tapped for \(goal.title)")
-                // This action is specific to showing the progress sheet
+                // This action shows the progress sheet
                 self.progressButtonTapped.toggle() // For animation
                 self.showingProgressSheet = true
             }
@@ -60,16 +57,16 @@ struct ActionBottomBarView: View {
                          finishButtonScale = 1.0 // Scale back
                      }
                  }
-                // Call new closure that will implement actual function
+                // Call the new closure that will implement actual function
                 self.onFinishButtonTap() // Calls new closure
             }
 
             Spacer()
 
             DeleteActionButtonView(isTapped: $deleteButtonTapped) {
-                print("Delete tapped for \(goal.title)")
+                print("Delete button tapped, requesting confirmation from parent view...")
                 self.deleteButtonTapped.toggle() // For animation
-                onDelete(goal.id) // Directly call onDelete
+                self.onDeleteButton() // Calling the new closure for delete here
             }
         }
         .padding(.horizontal)

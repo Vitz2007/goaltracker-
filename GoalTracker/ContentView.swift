@@ -21,8 +21,8 @@ struct ContentView: View {
                     List {
                         ForEach($goals) { $goal in // Use $goals to pass bindings to GoalRowView if needed
                             NavigationLink(destination: GoalDetailView(
-                                goal: goal, // Pass the non-binding goal below
-                                onUpdate: updateGoal,
+                                goal: $goal, // Pass a BINDING using the '$' sign
+                                // onUpdate: updateGoal, // This is now deleted
                                 onDelete: deleteGoal
                             )) {
                                 GoalRowView(goal: $goal) { // Pass binding for direct modification

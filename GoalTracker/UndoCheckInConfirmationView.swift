@@ -18,8 +18,7 @@ struct UndoCheckInConfirmationView: View {
         HStack {
             Text(message)
                 .font(.subheadline)
-                .foregroundColor(.white)
-                .padding(.vertical, 8)
+                //.padding(.vertical, 8) <-- Keep??
             
             Spacer()
             
@@ -33,7 +32,8 @@ struct UndoCheckInConfirmationView: View {
         }
         .padding() // More padding for a better appearance
         .frame(maxWidth: .infinity)
-        .background(Color.black.opacity(0.8))
+        // Change from black to dynamic material color
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         .cornerRadius(12)
         .shadow(radius: 5)
         

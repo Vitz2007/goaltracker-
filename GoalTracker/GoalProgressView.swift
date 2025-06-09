@@ -13,17 +13,6 @@ struct GoalProgressView: View {
     let goal: Goal
     @Environment(\.dismiss) var dismiss
 
-    // Helper to format the last check-in date nicely - remains here as it's specific to this view's needs
-    private var lastCheckInDisplayString: String {
-        // Sort checkIns by date to find the most recent one
-        if let lastCheckInRecord = goal.checkIns.max(by: { $0.date < $1.date }) {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .short
-            return formatter.string(from: lastCheckInRecord.date)
-        }
-        return "Never"
-    }
 
     var body: some View {
         NavigationView {
@@ -47,10 +36,7 @@ struct GoalProgressView: View {
                     Divider()
                         .padding(.vertical, 10)
 
-                    ActivityLogView(
-                        checkIns: goal.checkIns,
-                        lastCheckInDisplayString: lastCheckInDisplayString
-                    )
+                    ActivityLogView(goal: goal)
 
                     Spacer() // Pushes content upwards
                 }
