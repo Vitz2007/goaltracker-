@@ -24,7 +24,7 @@ struct CheckInRecord: Identifiable, Codable, Hashable {
 
 
 // Defining Goal STRUCT ---
-struct Goal: Identifiable, Codable {
+struct Goal: Identifiable, Codable, Hashable {
     let id: UUID // No default value needed, handled by init
     var title: String
     var startDate: Date?

@@ -9,9 +9,22 @@ import SwiftUI
 struct ContentView: View {
     @State private var goals: [Goal] = []
     @State private var showingAddGoal = false // For AddGoalView sheet
+    
+    // NavigationPath is used by NavigationStack to track navigation state
+    @State private var path = NavigationPath()
+    
+    // Computed properties to automatically filter goals
+    private var activeGoals: [Goal] {
+        goals.filter { !0.isCompleted }
+    }
+    
+    // For read-only array of completed goals
+    private var completedGoals: [Goals] {
+        goals.filter { $0.isCompleted }
+    }
 
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $path) {
             VStack { // Main content of VStack
                 // Conditionally display empty state or list
                 if goals.isEmpty {
@@ -19,33 +32,43 @@ struct ContentView: View {
                         .frame(maxHeight: .infinity) // Allows EmptyStateView's Spacers to function
                 } else {
                     List {
-                        ForEach($goals) { $goal in // Use $goals to pass bindings to GoalRowView if needed
-                            NavigationLink(destination: GoalDetailView(
-                                goal: $goal, // Pass a BINDING using the '$' sign
-                                // onUpdate: updateGoal, // This is now deleted
-                                onDelete: deleteGoal
-                            )) {
-                                GoalRowView(goal: $goal) { // Pass binding for direct modification
-                                    // This functions as  onToggleCompletion action
-                                    goal.isCompleted.toggle()
-                                    updateGoal(goal) // Persist the change
+                        Section(header: Text("Active").font(.headline).foregroundColor(.primary)) {
+                            ForEach(activeGoals) { goal in
+                                // We need to find the binding to the original goal
+                                if let index = goals.firstIndex(where: { $0.id == goal.id }) {
+                                    NavigationLink(value: goal) {
+                                        GoalRowView(goal: $goals[index]) {
+                                            goals[index].isCompleted.toggle()
+                                            saveGoals()
+                                        }
+                                    }
                                 }
                             }
+                            .onDelete(perform: deleteActiveGoal)
                         }
-                        .onDelete(perform: deleteGoalAtIndexSet) // Swipe-to-delete
+                        if !completedGoals.isEmpty {
+                            Section(header: Text("Completed").font(.headline).foregroundColor(.primary)) {
+                                ForEach(completedGoals) { goal in
+                                    if let index = goals.firstIndex(where: { $0.id == goal.id }) {
+                                        NavigationLink(value: goal) {
+                                            GoalRowView(goal: $goals[index]) {
+                                                goals[index].isCompleted.toggle()
+                                                saveGoals()
+                                            }
+                                        }
+                                    }
+                                }
+                                .onDelete(perform: deleteCompletedGoal) // New delete function
+                            }
+                        }
                     }
                     .listStyle(.plain)
-                    .padding(.top, 35) // padding added because squashed
+                    .padding(.top, 35)
                 }
-
-                // Spacer to push button towards bottom, only if list is not empty
-                // If list is empty, EmptyStateView handles its own spacing.
                 if !goals.isEmpty {
                     Spacer()
                 }
-
-                // Plus Button, always visible or conditionally? Keep in mind...
-                // For now, keeping it as it was, consider placement if goals are empty.
+                
                 AddGoalButtonView {
                     // Adding Haptic Feedback to '+' here
                     let generator = UIImpactFeedbackGenerator(style: .medium)
@@ -66,6 +89,23 @@ struct ContentView: View {
                         .padding(.top, 35)       // Adjusted padding
                 }
             }
+            
+            // Modifier added to tell NavigationStack what view to buildwhen it sees some value of type Goal
+            .navigationDestination(for: Goal.self) { goal in
+                // Find binding to the goal in array to pass it
+                if let index = goals.firstIndex(where: { $0.id == goal.id}) {
+                    GoalDetailView(
+                        goal: $goals[index], // passing the live binding
+                        onDelete: { id in
+                            deleteGoal(id: id)
+                            // Tells navigation to go back one step after a delete
+                            if !path.isEmpty {
+                                path.removeLast()
+                            }
+                        }
+                    )
+                }}
+            
             .sheet(isPresented: $showingAddGoal) {
                 AddGoalView(goals: $goals, showingAddGoal: $showingAddGoal) {
                     saveGoals()
@@ -77,43 +117,42 @@ struct ContentView: View {
     }
 
     // --- Functions ---
-    func updateGoal(_ updatedGoal: Goal) {
-        if let index = goals.firstIndex(where: { $0.id == updatedGoal.id }) {
-            goals[index] = updatedGoal
-            saveGoals()
-        }
-    }
-
     func deleteGoal(id: UUID) {
         goals.removeAll { $0.id == id }
         saveGoals()
     }
-
-    func deleteGoalAtIndexSet(at offsets: IndexSet) {
-        goals.remove(atOffsets: offsets)
+    
+    // Helper function for swipe-to-delete on Active goals added
+    func deleteActiveGoal(at offsets: IndexSet) {
+        // Prioritize goals to be deleted from filtered 'activeGoals'
+        let goalsToDelete = offsets.map { activeGoals[$0] }
+        //  Get IDs
+        let idsToDelete = goalsToDelete.map { $0.id }
+        // Remove from the main 'goals' array
+        goals.removeALL { idsToDelete.contain($0.id) }
         saveGoals()
     }
-
+    
+    // Helper function to swipe-to-delete on 'Completed' goals
+    func deleteCompletedGoals(at offsets: IndexSet) {
+        let goalsToDelete = offsets.map { completedGoals[$0] }
+        let idsToDelete = goalsToDelete.map { $0.id }
+        goals.removeAll { idsToDelete.contains($0.id) }
+    }
+    
     func saveGoals() {
-        if let encoded = try? JSONEncoder().encode(goals) {
-            UserDefaults.standard.set(encoded, forKey: "savedGoals")
-            print("Goals saved successfully.")
-        } else {
-            print("Error: Failed to encode goals for saving.")
+            if let encoded = try? JSONEncoder().encode(goals) {
+                UserDefaults.standard.set(encoded, forKey: "savedGoals")
         }
     }
 
     func loadGoals() {
-        if let savedGoalsData = UserDefaults.standard.data(forKey: "savedGoals") {
-            if let decodedGoals = try? JSONDecoder().decode([Goal].self, from: savedGoalsData) {
-                goals = decodedGoals
-                print("Goals loaded successfully: \(goals.count) goals.")
-                return
-            } else {
-                print("Error: Failed to decode saved goals.")
-            }
-        } else {
-            print("No saved goals found in UserDefaults.")
+        func loadGoals() {
+                if let savedGoalsData = UserDefaults.standard.data(forKey: "savedGoals") {
+                    if let decodedGoals = try? JSONDecoder().decode([Goal].self, from: savedGoalsData) {
+                        goals = decodedGoals
+                        return
+                    }
         }
     }
 }
