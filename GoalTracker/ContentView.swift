@@ -138,6 +138,7 @@ struct ContentView: View {
         let goalsToDelete = offsets.map { completedGoals[$0] }
         let idsToDelete = goalsToDelete.map { $0.id }
         goals.removeAll { idsToDelete.contains($0.id) }
+        saveGoals()
     }
     
     func saveGoals() {
