@@ -8,33 +8,32 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var goals: [Goal] = []
-    @State private var showingAddGoal = false // For AddGoalView sheet
-    
-    // NavigationPath is used by NavigationStack to track navigation state
+    @State private var showingAddGoal = false
     @State private var path = NavigationPath()
-    
-    // Computed properties to automatically filter goals
+
+    // Create a read-only array of the active goals.
     private var activeGoals: [Goal] {
-        goals.filter { !0.isCompleted }
+        goals.filter { !$0.isCompleted }
     }
-    
-    // For read-only array of completed goals
-    private var completedGoals: [Goals] {
+
+    // Creates a read-only array of the completed goals.
+    private var completedGoals: [Goal] {
         goals.filter { $0.isCompleted }
     }
 
     var body: some View {
         NavigationStack(path: $path) {
-            VStack { // Main content of VStack
-                // Conditionally display empty state or list
+            VStack {
                 if goals.isEmpty {
                     EmptyStateView()
-                        .frame(maxHeight: .infinity) // Allows EmptyStateView's Spacers to function
+                        .frame(maxHeight: .infinity)
                 } else {
+                    
                     List {
+                        // For Active Goals
                         Section(header: Text("Active").font(.headline).foregroundColor(.primary)) {
                             ForEach(activeGoals) { goal in
-                                // We need to find the binding to the original goal
+                                // Find the binding to the original goal
                                 if let index = goals.firstIndex(where: { $0.id == goal.id }) {
                                     NavigationLink(value: goal) {
                                         GoalRowView(goal: $goals[index]) {
@@ -44,8 +43,10 @@ struct ContentView: View {
                                     }
                                 }
                             }
-                            .onDelete(perform: deleteActiveGoal)
+                            .onDelete(perform: deleteActiveGoal) // New delete function
                         }
+                        
+                        // Completed Goals
                         if !completedGoals.isEmpty {
                             Section(header: Text("Completed").font(.headline).foregroundColor(.primary)) {
                                 ForEach(completedGoals) { goal in
@@ -65,47 +66,39 @@ struct ContentView: View {
                     .listStyle(.plain)
                     .padding(.top, 35)
                 }
+
                 if !goals.isEmpty {
                     Spacer()
                 }
-                
+
                 AddGoalButtonView {
-                    // Adding Haptic Feedback to '+' here
                     let generator = UIImpactFeedbackGenerator(style: .medium)
                     generator.prepare()
                     generator.impactOccurred()
-                    // End Haptic Feedback Code
                     showingAddGoal = true
                 }
-                // For plus button at the very bottom,
-
-            } // End of main VStack
-            .navigationTitle("My Goals")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar { // Custom Toolbar
-                ToolbarItem(placement: .principal) {
-                    Text("My Goals")
-                        .font(.system(size: 41)) // Adjusted size for typical toolbar
-                        .padding(.top, 35)       // Adjusted padding
-                }
             }
-            
-            // Modifier added to tell NavigationStack what view to buildwhen it sees some value of type Goal
-            .navigationDestination(for: Goal.self) { goal in
-                // Find binding to the goal in array to pass it
-                if let index = goals.firstIndex(where: { $0.id == goal.id}) {
-                    GoalDetailView(
-                        goal: $goals[index], // passing the live binding
-                        onDelete: { id in
-                            deleteGoal(id: id)
-                            // Tells navigation to go back one step after a delete
-                            if !path.isEmpty {
-                                path.removeLast()
+            .navigationTitle("My Goals")
+                        .navigationBarTitleDisplayMode(.large) // This is more robust than a custom toolbar
+
+                        // This .onChange modifier is now our single source of truth for saving
+                        .onChange(of: goals) {
+                            saveGoals()
+                            print("A change was detected in the goals array. Data saved.")
+                        }
+                        .navigationDestination(for: Goal.self) { goal in
+                            if let index = goals.firstIndex(where: { $0.id == goal.id }) {
+                                GoalDetailView(
+                                    goal: $goals[index],
+                                    onDelete: { id in
+                                        deleteGoal(id: id)
+                                        if !path.isEmpty {
+                                            path.removeLast()
                             }
                         }
                     )
-                }}
-            
+                }
+            }
             .sheet(isPresented: $showingAddGoal) {
                 AddGoalView(goals: $goals, showingAddGoal: $showingAddGoal) {
                     saveGoals()
@@ -113,7 +106,6 @@ struct ContentView: View {
             }
             .onAppear(perform: loadGoals)
         }
-        // .navigationViewStyle(.stack) // Consider for iPad if needed
     }
 
     // --- Functions ---
@@ -121,39 +113,43 @@ struct ContentView: View {
         goals.removeAll { $0.id == id }
         saveGoals()
     }
-    
-    // Helper function for swipe-to-delete on Active goals added
+
+    // Helper function for swipe-to-delete on ACTIVE goals
     func deleteActiveGoal(at offsets: IndexSet) {
-        // Prioritize goals to be deleted from filtered 'activeGoals'
+        // Get goals to be deleted from the filtered 'activeGoals' array
         let goalsToDelete = offsets.map { activeGoals[$0] }
-        //  Get IDs
+        
+        // Get IDs
         let idsToDelete = goalsToDelete.map { $0.id }
+        
         // Remove from the main 'goals' array
-        goals.removeALL { idsToDelete.contain($0.id) }
+        goals.removeAll { idsToDelete.contains($0.id) }
+        
         saveGoals()
     }
     
-    // Helper function to swipe-to-delete on 'Completed' goals
-    func deleteCompletedGoals(at offsets: IndexSet) {
+    // Helper function for swipe-to-delete on COMPLETED goals
+    func deleteCompletedGoal(at offsets: IndexSet) {
         let goalsToDelete = offsets.map { completedGoals[$0] }
         let idsToDelete = goalsToDelete.map { $0.id }
         goals.removeAll { idsToDelete.contains($0.id) }
         saveGoals()
     }
     
+    // func deleteGoalAtIndexSet(at offsets: IndexSet) { ... } // This is now replaced
+
     func saveGoals() {
-            if let encoded = try? JSONEncoder().encode(goals) {
-                UserDefaults.standard.set(encoded, forKey: "savedGoals")
+        if let encoded = try? JSONEncoder().encode(goals) {
+            UserDefaults.standard.set(encoded, forKey: "savedGoals")
         }
     }
 
     func loadGoals() {
-        func loadGoals() {
-                if let savedGoalsData = UserDefaults.standard.data(forKey: "savedGoals") {
-                    if let decodedGoals = try? JSONDecoder().decode([Goal].self, from: savedGoalsData) {
-                        goals = decodedGoals
-                        return
-                    }
+        if let savedGoalsData = UserDefaults.standard.data(forKey: "savedGoals") {
+            if let decodedGoals = try? JSONDecoder().decode([Goal].self, from: savedGoalsData) {
+                goals = decodedGoals
+                return
+            }
         }
     }
 }

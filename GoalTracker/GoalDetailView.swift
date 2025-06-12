@@ -69,12 +69,24 @@ struct GoalDetailView: View {
                         }
                     },
                     onFinishButtonTap: {
-                        if !goal.isCompleted {
-                            self.goal.isCompleted = true
-                            self.goal.completionPercentage = 1.0
+                        // This handles both completing and un-completing the goal
+                        goal.isCompleted.toggle()
+
+                        // This logic later updates the progress percentage accordingly
+                        if goal.isCompleted {
+                            // If goal is now "Finished", set progress to 100%
+                            goal.completionPercentage = 1.0
+                        } else {
+                            // If goal is now "Re-opened", recalculate the true progress.
+                            if goal.targetCheckIns > 0 {
+                                let calculatedPercentage = Double(goal.checkIns.count) / Double(goal.targetCheckIns)
+                                goal.completionPercentage = min(1.0, max(0.0, calculatedPercentage))
+                            } else {
+                                goal.completionPercentage = 0
+                            }
                         }
                     },
-                    // Tapping delete button in the bar will trigger state variable to 'true'
+                    // Tapping delete button in the bar triggers state variable to 'true'
                     onDeleteButton: {
                         self.showingDeleteAlert = true
                     },

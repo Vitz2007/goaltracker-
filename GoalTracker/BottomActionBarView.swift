@@ -46,7 +46,10 @@ struct ActionBottomBarView: View {
 
             Spacer()
 
-            FinishActionButtonView(scale: $finishButtonScale) {
+            FinishActionButtonView(
+                isCompleted: goal.isCompleted,
+                scale: $finishButtonScale
+            ) {
                 print("Finish button tapped (animation part) for \(goal.title)")
                 // Existing finish button animation and action logic
                  withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {

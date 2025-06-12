@@ -51,23 +51,38 @@ struct ProgressActionButtonView: View {
 }
 
 // New struct for finish action button
+// This code goes at the bottom of your BottomActionBarView.swift file,
+// replacing the old FinishActionButtonView struct.
+
+import SwiftUI
+
 struct FinishActionButtonView: View {
-    @Binding var scale: CGFloat // For scaleEffect
+    // This new property checks the goal's status
+    var isCompleted: Bool
+
+    @Binding var scale: CGFloat
     let action: () -> Void
+    
+    // Easy access to adjusting icon size
+    // private let iconSize: CGFloat = 55.5
 
     var body: some View {
-        Button {
-            action()
-            // Animation handled in the action closure passed from the parent
-        } label: {
-            Image(systemName: "checkmark.seal")
-                .font(.system(size: 27))
-                .foregroundColor(.white)
-                .padding()
-                .background(Color.green.opacity(0.6)) // Green button bg
-                .cornerRadius(8)
-                .scaleEffect(scale)
-        }
+        Button(action: action) {
+            // This 'if' statement dynamically changes the button's appearance
+            if isCompleted {
+                // Re-open icon
+                    Image(systemName: "arrowshape.turn.up.backward.circle.fill")
+                    .font(.system(size: 65))
+                        .foregroundColor(.teal)
+                
+            } else {
+                // The "Finish" icon
+                    Image(systemName: "checkmark.seal.fill")
+                    .font(.system(size: 59.5))
+                        .foregroundColor(.green)
+                }
+            }
+        .scaleEffect(scale)
     }
 }
 
