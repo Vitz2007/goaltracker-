@@ -4,6 +4,7 @@
 //
 //  Created by AJ on 2025/04/07.
 //
+
 import SwiftUI
 
 struct ContentView: View {
@@ -11,14 +12,49 @@ struct ContentView: View {
     @State private var showingAddGoal = false
     @State private var path = NavigationPath()
 
-    // Create a read-only array of the active goals.
+    // State variables for sorting and filtering
+    @State private var currentSortOrder: SortOrder = .byCreationDate
+    @State private var currentFilter: GoalFilter = .active
+
     private var activeGoals: [Goal] {
         goals.filter { !$0.isCompleted }
     }
 
-    // Creates a read-only array of the completed goals.
     private var completedGoals: [Goal] {
         goals.filter { $0.isCompleted }
+    }
+    
+    var goalListView: some View {
+        List {
+            Section(header: Text("Active").font(.headline).foregroundColor(.primary)) {
+                ForEach(activeGoals) { goal in
+                    if let index = goals.firstIndex(where: { $0.id == goal.id }) {
+                        NavigationLink(value: goal) {
+                            GoalRowView(goal: $goals[index]) {
+                                goals[index].isCompleted.toggle()
+                            }
+                        }
+                    }
+                }
+                .onDelete(perform: deleteActiveGoal)
+            }
+            
+            if !completedGoals.isEmpty {
+                Section(header: Text("Completed").font(.headline).foregroundColor(.primary)) {
+                    ForEach(completedGoals) { goal in
+                        if let index = goals.firstIndex(where: { $0.id == goal.id }) {
+                            NavigationLink(value: goal) {
+                                GoalRowView(goal: $goals[index]) {
+                                    goals[index].isCompleted.toggle()
+                                }
+                            }
+                        }
+                    }
+                    .onDelete(perform: deleteCompletedGoal)
+                }
+            }
+        }
+        .listStyle(.plain)
     }
 
     var body: some View {
@@ -28,43 +64,8 @@ struct ContentView: View {
                     EmptyStateView()
                         .frame(maxHeight: .infinity)
                 } else {
-                    
-                    List {
-                        // For Active Goals
-                        Section(header: Text("Active").font(.headline).foregroundColor(.primary)) {
-                            ForEach(activeGoals) { goal in
-                                // Find the binding to the original goal
-                                if let index = goals.firstIndex(where: { $0.id == goal.id }) {
-                                    NavigationLink(value: goal) {
-                                        GoalRowView(goal: $goals[index]) {
-                                            goals[index].isCompleted.toggle()
-                                            saveGoals()
-                                        }
-                                    }
-                                }
-                            }
-                            .onDelete(perform: deleteActiveGoal) // New delete function
-                        }
-                        
-                        // Completed Goals
-                        if !completedGoals.isEmpty {
-                            Section(header: Text("Completed").font(.headline).foregroundColor(.primary)) {
-                                ForEach(completedGoals) { goal in
-                                    if let index = goals.firstIndex(where: { $0.id == goal.id }) {
-                                        NavigationLink(value: goal) {
-                                            GoalRowView(goal: $goals[index]) {
-                                                goals[index].isCompleted.toggle()
-                                                saveGoals()
-                                            }
-                                        }
-                                    }
-                                }
-                                .onDelete(perform: deleteCompletedGoal) // New delete function
-                            }
-                        }
-                    }
-                    .listStyle(.plain)
-                    .padding(.top, 35)
+                    // Call our simple 'goalListView' property.
+                    goalListView
                 }
 
                 if !goals.isEmpty {
@@ -79,30 +80,44 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("My Goals")
-                        .navigationBarTitleDisplayMode(.large) // This is more robust than a custom toolbar
-
-                        // This .onChange modifier is now our single source of truth for saving
-                        .onChange(of: goals) {
-                            saveGoals()
-                            print("A change was detected in the goals array. Data saved.")
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Menu {
+                        Picker("Sort By", selection: $currentSortOrder) {
+                            ForEach(SortOrder.allCases) { order in
+                                Text(order.rawValue).tag(order)
+                            }
                         }
-                        .navigationDestination(for: Goal.self) { goal in
-                            if let index = goals.firstIndex(where: { $0.id == goal.id }) {
-                                GoalDetailView(
-                                    goal: $goals[index],
-                                    onDelete: { id in
-                                        deleteGoal(id: id)
-                                        if !path.isEmpty {
-                                            path.removeLast()
+
+                        Picker("Filter", selection: $currentFilter) {
+                            ForEach(GoalFilter.allCases) { filter in
+                                Text(filter.rawValue).tag(filter)
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                    }
+                }
+            }
+            .onChange(of: goals) {
+                saveGoals()
+            }
+            .navigationDestination(for: Goal.self) { goal in
+                if let index = goals.firstIndex(where: { $0.id == goal.id }) {
+                    GoalDetailView(
+                        goal: $goals[index],
+                        onDelete: { id in
+                            deleteGoal(id: id)
+                            if !path.isEmpty {
+                                path.removeLast()
                             }
                         }
                     )
                 }
             }
             .sheet(isPresented: $showingAddGoal) {
-                AddGoalView(goals: $goals, showingAddGoal: $showingAddGoal) {
-                    saveGoals()
-                }
+                AddGoalView(goals: $goals, showingAddGoal: $showingAddGoal, onGoalAdded: saveGoals)
             }
             .onAppear(perform: loadGoals)
         }
@@ -111,32 +126,19 @@ struct ContentView: View {
     // --- Functions ---
     func deleteGoal(id: UUID) {
         goals.removeAll { $0.id == id }
-        saveGoals()
     }
 
-    // Helper function for swipe-to-delete on ACTIVE goals
     func deleteActiveGoal(at offsets: IndexSet) {
-        // Get goals to be deleted from the filtered 'activeGoals' array
         let goalsToDelete = offsets.map { activeGoals[$0] }
-        
-        // Get IDs
         let idsToDelete = goalsToDelete.map { $0.id }
-        
-        // Remove from the main 'goals' array
         goals.removeAll { idsToDelete.contains($0.id) }
-        
-        saveGoals()
     }
     
-    // Helper function for swipe-to-delete on COMPLETED goals
     func deleteCompletedGoal(at offsets: IndexSet) {
         let goalsToDelete = offsets.map { completedGoals[$0] }
         let idsToDelete = goalsToDelete.map { $0.id }
         goals.removeAll { idsToDelete.contains($0.id) }
-        saveGoals()
     }
-    
-    // func deleteGoalAtIndexSet(at offsets: IndexSet) { ... } // This is now replaced
 
     func saveGoals() {
         if let encoded = try? JSONEncoder().encode(goals) {
@@ -153,7 +155,6 @@ struct ContentView: View {
         }
     }
 }
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()

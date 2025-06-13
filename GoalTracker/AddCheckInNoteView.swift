@@ -7,6 +7,7 @@
 
 // Create a new Swift file:
 // AddCheckInNoteView.swift
+
 import SwiftUI
 
 struct AddCheckInNoteView: View {

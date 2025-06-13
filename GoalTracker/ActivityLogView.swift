@@ -4,6 +4,7 @@
 //
 //  Created by AJ on 2025/05/19.
 //
+
 import SwiftUI
 
 // Cleaner code to go with GoalDetailView.swift

@@ -6,6 +6,7 @@
 //
 
 // In AddGoalView.swift
+
 import SwiftUI
 
 struct AddGoalView: View {
@@ -31,7 +32,7 @@ struct AddGoalView: View {
         return SDate...
     }
     
-    // Computed property for start date range (can't be after due date)
+    // Computed property for start date range
     private var startDateRange: PartialRangeThrough<Date> {
         // If due date is set, start date can't be after it.
         // Otherwise, allow any past or present date.
@@ -69,14 +70,13 @@ struct AddGoalView: View {
                             in: 1...365) // Example range here
                 }
 
-                // --- New section for initial progress ---
+                // Initial progress ---
                 Section(header: Text("Initial Progress (Optional)")) {
                     VStack(alignment: .leading) {
                         Text("Percentage: \(Int(newGoalCompletionPercentage * 100))%")
                         Slider(value: $newGoalCompletionPercentage, in: 0...1, step: 0.01)
                     }
                 }
-                // --- End of new section ---
 
                 Button("Add Goal") {
                     if !newGoalTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
@@ -87,7 +87,7 @@ struct AddGoalView: View {
                             isCompleted: (newGoalCompletionPercentage == 1.0), // Auto-complete if 100%
                             completionPercentage: newGoalCompletionPercentage, // Set initial percentage
                             targetCheckIns: newGoalTargetCheckIns
-                            // checkIns will always default to empty as per Goal model
+                            // checkIns will default to empty as per Goal model
                         )
                         goals.append(newGoal)
                         onGoalAdded()
@@ -111,14 +111,14 @@ struct AddGoalView: View {
     }
 }
 
-// Preview for AddGoalView (ensure it works with all the bindings)
+// Preview for AddGoalView
 // In AddGoalView.swift
 
 // AddGoalView struct definition needs to be above this
 
 struct AddGoalView_Previews: PreviewProvider {
 
-    // --- Defining helper struct below (if not already defined elsewhere)
+    // Helper struct below
     
     struct PreviewHost: View {
         @State private var goals: [Goal] = [] // State for the goals binding
@@ -127,7 +127,7 @@ struct AddGoalView_Previews: PreviewProvider {
 
         var body: some View {
             // VStack for a placeholder to host the .sheet modifier.
-            // Contents not very visible if the sheet is always presented.
+            // Contents not visible if the sheet is always presented.
             VStack {
                 Text("Previewing AddGoalView Sheet...")
                     .opacity(0) // Make it invisible if we only care about the sheet
@@ -143,7 +143,7 @@ struct AddGoalView_Previews: PreviewProvider {
             }
         }
     }
-    // --- End of helper struct definition ---
+    // --- End helper struct definition here ---
 
     // Use the helper struct in the previews
     static var previews: some View {
