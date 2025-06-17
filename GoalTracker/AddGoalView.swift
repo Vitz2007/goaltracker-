@@ -22,6 +22,10 @@ struct AddGoalView: View {
     @State private var includeStartDate: Bool = false
     @State private var selectedStartDate: Date = Date() // Default if user toggles it on
     @State private var newGoalCompletionPercentage: Double = 0.0 // Defaults to 0%
+    
+    // New state vars for the reminder function
+    @State private var reminderIsEnabled: Bool = false
+    @State private var reminderDate: Date = Date()
 
     var onGoalAdded: () -> Void // Closure to trigger saving in ContentView
     @Environment(\.dismiss) var dismiss
@@ -38,7 +42,11 @@ struct AddGoalView: View {
         // Otherwise, allow any past or present date.
         return ...newGoalDueDate
     }
-
+    
+    // Computed property for the reminder date range (NOT in the past)
+    private var reminderDateRange: PartialRangeFrom<Date> {
+        return Date()...
+    }
 
     var body: some View {
         NavigationView {
@@ -64,6 +72,18 @@ struct AddGoalView: View {
                                displayedComponents: .date)
                 }
                 
+                // Adding new reminder section here
+                Section(header: Text("Reminder")) {
+                    Toggle("Set a Reminder", isOn: $reminderIsEnabled.animation())
+                    
+                    if reminderIsEnabled {
+                        DatePicker("Remind Me At",
+                                   selection: $reminderDate,
+                                   in: reminderDateRange, // Ensure reminder is NOT in the past
+                                   displayedComponents: [.date, .hourAndMinute])
+                    }
+                }
+                
                 Section(header: Text("Tracking Method")) {
                     Stepper("Target Check-ins: \(newGoalTargetCheckIns)",
                             value: $newGoalTargetCheckIns,
@@ -86,10 +106,18 @@ struct AddGoalView: View {
                             dueDate: newGoalDueDate,
                             isCompleted: (newGoalCompletionPercentage == 1.0), // Auto-complete if 100%
                             completionPercentage: newGoalCompletionPercentage, // Set initial percentage
-                            targetCheckIns: newGoalTargetCheckIns
-                            // checkIns will default to empty as per Goal model
+                            targetCheckIns: newGoalTargetCheckIns,
+                            
+                            // New reminder properties added
+                            reminderIsEnabled: self.reminderIsEnabled,
+                            reminderDate: self.reminderDate
+                            
                         )
                         goals.append(newGoal)
+                        
+                        // If reminder is enabled for new goal, schedule the notification
+                        NotificationManager.scheduleNotification(for: newGoal)
+                        
                         onGoalAdded()
                         showingAddGoal = false
                         // dismiss() // or use dismiss here

@@ -200,8 +200,17 @@ struct ShakeEffect: GeometryEffect {
 struct GoalDetailView_Previews: PreviewProvider {
     // Using a wrapper to manage @State for the preview
     struct PreviewWrapper: View {
-        @State var sampleGoal = Goal(title: "Sample Preview Goal", dueDate: Date(), isCompleted: false, checkIns: [])
-
+        @State var sampleGoal = Goal(
+            title: "Sample Preview Goal",
+            startDate: Date(),
+            dueDate: Date(),
+            isCompleted: false,
+            checkIns: [],
+            targetCheckIns: 10,
+            reminderIsEnabled: false,
+            reminderDate: Date()
+        )
+        
         var body: some View {
             NavigationView {
                 GoalDetailView(

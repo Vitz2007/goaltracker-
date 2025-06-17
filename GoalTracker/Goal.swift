@@ -23,18 +23,20 @@ struct CheckInRecord: Identifiable, Codable, Hashable {
 // End of CheckInRecord
 
 
-// Defining Goal STRUCT ---
+// Defining Goal struct
 struct Goal: Identifiable, Codable, Hashable {
-    let id: UUID // No default value needed, handled by init
+    let id: UUID // No default value needed because handled by init
     var title: String
     var startDate: Date?
     var dueDate: Date?
     var isCompleted: Bool
-    var completionPercentage: Double
-
+    var completionPercentage: Double = 0.0
     var checkIns: [CheckInRecord] // Now uses the defined CheckInRecord
-
-    var targetCheckIns: Int
+    var targetCheckIns: Int = 1 // Force default to 1 to avoid division by zero
+    
+    // New properties for building out notification reminder details
+    var reminderIsEnabled: Bool = false
+    var reminderDate: Date = Date() // Default to now, user can change it
 
     // Initializer handles providing a default UUID for 'id'
     init(id: UUID = UUID(),
@@ -44,7 +46,10 @@ struct Goal: Identifiable, Codable, Hashable {
          isCompleted: Bool = false,
          completionPercentage: Double = 0.0,
          checkIns: [CheckInRecord] = [], // Parameter uses defined CheckInRecord
-         targetCheckIns: Int = 30) {
+         targetCheckIns: Int = 30,
+         reminderIsEnabled: Bool = false,
+         reminderDate: Date = Date()) {
+        
         self.id = id
         self.title = title
         self.startDate = startDate
