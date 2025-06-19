@@ -11,30 +11,35 @@ import SwiftUI
 struct EditGoalView: View {
     @Environment(\.dismiss) var dismiss
     
-    @State var goalToEdit: Goal // A mutable copy passed in
+    // Local copy of the goal to be edited.
+    @State private var goalToEdit: Goal
     var onSave: (Goal) -> Void
     
-    // State for managing the optional start date UI
+    // State for managing optional start date UI
     @State private var includeStartDate: Bool
-    @State private var selectedStartDateForPicker: Date // Temporary state for the DatePicker when visible
     
-    // Custom initializer to set up the @State properties based on the passed goal
+    // new state vars added for the reminder
+    @State private var reminderIsEnabled: Bool
+    @State private var reminderDate: Date
+
+    // Custom initializer to set up the @State properties
     init(goalToEdit: Goal, onSave: @escaping (Goal) -> Void) {
-        // Initialize @State properties that don't have default values
-        // using the underscore prefix for the State wrapper itself.
+        // Using _goalToEdit to set the initial value of the @State wrapper
         self._goalToEdit = State(initialValue: goalToEdit)
         self.onSave = onSave
         
-        if let existingStartDate = goalToEdit.startDate {
+        // Initialize state for the start date toggle
+        if let _ = goalToEdit.startDate {
             self._includeStartDate = State(initialValue: true)
-            self._selectedStartDateForPicker = State(initialValue: existingStartDate)
         } else {
             self._includeStartDate = State(initialValue: false)
-            self._selectedStartDateForPicker = State(initialValue: Date()) // Default if user toggles it on
         }
+        
+        // Initialize new reminder state
+        self._reminderIsEnabled = State(initialValue: goalToEdit.reminderIsEnabled)
+        self._reminderDate = State(initialValue: goalToEdit.reminderDate)
     }
     
-    // In EditGoalView.swift
     var body: some View {
         NavigationView {
             Form {
@@ -45,54 +50,44 @@ struct EditGoalView: View {
                 Section(header: Text("Progress")) {
                     VStack(alignment: .leading) {
                         Text("Completion: \(Int(goalToEdit.completionPercentage * 100))%")
-                        Slider(
-                            value: $goalToEdit.completionPercentage,
-                            in: 0...1,
-                            step: 0.01
-                        )
+                        Slider(value: $goalToEdit.completionPercentage, in: 0...1, step: 0.01)
                     }
                 }
                 
                 Section(header: Text("Dates")) {
+                    // Leave Start and Due dates as is because complex
+                    // Add the new section below
                     Toggle("Set a Start Date", isOn: $includeStartDate.animation())
-                        .onChange(of: includeStartDate) { oldValue, newValue in
-                            if !newValue {
-                                goalToEdit.startDate = nil
-                            } else {
-                                goalToEdit.startDate = selectedStartDateForPicker
-                            }
-                        }
-                    
                     if includeStartDate {
                         DatePicker("Start Date",
-                                   selection: $selectedStartDateForPicker,
-                                   in: ...(goalToEdit.dueDate ?? .distantFuture),
-                                   displayedComponents: .date)
-                        .onChange(of: selectedStartDateForPicker) { oldValue, newValue in
-                            if includeStartDate {
-                                goalToEdit.startDate = newValue
-                            }
-                        }
-                        .id("startDatePicker-\(includeStartDate)") // Keeps DatePicker state fresh
+                                 selection: Binding(get: { goalToEdit.startDate ?? Date() }, set: { goalToEdit.startDate = $0 }),
+                                 in: ...(goalToEdit.dueDate ?? .distantFuture),
+                                 displayedComponents: .date)
                     }
                     
-                    // FOR ONLY DEADLINE PICKER
                     DatePicker("Deadline",
-                               selection: Binding( // Binding helper for optional Date
-                                get: { goalToEdit.dueDate ?? Date() },
-                                set: { goalToEdit.dueDate = $0 }
-                                                 ),
-                               in: (goalToEdit.startDate ?? .distantPast)..., // Deadline after start date
+                               selection: Binding(get: { goalToEdit.dueDate ?? Date() }, set: { goalToEdit.dueDate = $0 }),
+                               in: (goalToEdit.startDate ?? .distantPast)...,
                                displayedComponents: .date)
-                } // End of "Dates" Section
+                }
                 
-                // Having "Tracking" as its own top area section
+                // Adding new reminder section below
+                Section(header: Text("Reminder")) {
+                    Toggle("Set a Reminder", isOn: $reminderIsEnabled.animation())
+                    
+                    if reminderIsEnabled {
+                        DatePicker("Remind Me At",
+                                   selection: $reminderDate,
+                                   in: Date()..., // Ensures reminder is not set in the past
+                                   displayedComponents: [.date, .hourAndMinute])
+                    }
+                }
+                
                 Section(header: Text("Tracking Method")) {
                     Stepper("Target Check-ins: \(goalToEdit.targetCheckIns)", value: $goalToEdit.targetCheckIns, in: 1...365)
                 }
-                // End of "Tracking" section
                 
-            } // End of Form
+            }
             .navigationTitle("Edit Goal")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -103,45 +98,64 @@ struct EditGoalView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        if !includeStartDate {
-                            goalToEdit.startDate = nil
+                        // Update save logic
+                        
+                        // Update goal object with latest reminder settings
+                        goalToEdit.reminderIsEnabled = self.reminderIsEnabled
+                        goalToEdit.reminderDate = self.reminderDate
+                        
+                        // Schedule or cancel the notification
+                        if goalToEdit.reminderIsEnabled {
+                            // Works for both new and updated reminders.
+                            NotificationManager.scheduleNotification(for: goalToEdit)
                         } else {
-                            // Ensure that picker's current value is assigned if the toggle was just turned on
-                            goalToEdit.startDate = selectedStartDateForPicker
+                            // If toggle was turned off, cancel any old notification.
+                            NotificationManager.cancelNotification(for: goalToEdit)
                         }
+                        
+                        // Save goal and dismiss the view
                         onSave(goalToEdit)
                         dismiss()
                     }
                     .disabled(goalToEdit.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
             }
-        } // End of body
-    } // End of struct
-    // Updated preview for EditGoalView
-    struct EditGoalView_Previews: PreviewProvider {
-        static var previews: some View {
-            // Sample goal WITH a start date
-            let sampleGoalWithStartDate = Goal(title: "Fitness Challenge",
-                                               startDate: Calendar.current.date(byAdding: .day, value: -5, to: Date()),
-                                               dueDate: Calendar.current.date(byAdding: .day, value: 30, to: Date()),
-                                               isCompleted: false)
-            
-            // Sample goal WITHOUT a start date
-            let sampleGoalWithoutStartDate = Goal(title: "Read New Book",
-                                                  startDate: nil,
-                                                  dueDate: Calendar.current.date(byAdding: .day, value: 14, to: Date()),
-                                                  isCompleted: false)
-            Group {
-                EditGoalView(goalToEdit: sampleGoalWithStartDate) { updatedGoal in
-                    print("Preview (With Start Date): Goal saved - \(updatedGoal.title), Start: \(String(describing: updatedGoal.startDate))")
-                }
-                .previewDisplayName("Editing Goal With Start Date")
-                
-                EditGoalView(goalToEdit: sampleGoalWithoutStartDate) { updatedGoal in
-                    print("Preview (No Start Date): Goal saved - \(updatedGoal.title), Start: \(String(describing: updatedGoal.startDate))")
-                }
-                .previewDisplayName("Editing Goal Without Start Date")
+        }
+    }
+}
+
+// Updated preview provider
+struct EditGoalView_Previews: PreviewProvider {
+    static var previews: some View {
+        // Goal initializers now need the reminder properties
+        let sampleGoalWithStartDate = Goal(
+            title: "Fitness Challenge",
+            startDate: Calendar.current.date(byAdding: .day, value: -5, to: Date()),
+            dueDate: Calendar.current.date(byAdding: .day, value: 30, to: Date()),
+            isCompleted: false,
+            reminderIsEnabled: true,
+            reminderDate: Date()
+        )
+        
+        let sampleGoalWithoutStartDate = Goal(
+            title: "Read New Book",
+            startDate: nil,
+            dueDate: Calendar.current.date(byAdding: .day, value: 14, to: Date()),
+            isCompleted: false,
+            reminderIsEnabled: false,
+            reminderDate: Date()
+        )
+        
+        Group {
+            EditGoalView(goalToEdit: sampleGoalWithStartDate) { updatedGoal in
+                print("Preview: Goal saved - \(updatedGoal.title)")
             }
+            .previewDisplayName("Editing Goal With Reminder")
+            
+            EditGoalView(goalToEdit: sampleGoalWithoutStartDate) { updatedGoal in
+                print("Preview: Goal saved - \(updatedGoal.title)")
+            }
+            .previewDisplayName("Editing Goal Without Reminder")
         }
     }
 }

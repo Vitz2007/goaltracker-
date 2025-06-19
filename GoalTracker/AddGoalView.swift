@@ -111,8 +111,8 @@ struct AddGoalView: View {
                             // New reminder properties added
                             reminderIsEnabled: self.reminderIsEnabled,
                             reminderDate: self.reminderDate
-                            
                         )
+                        
                         goals.append(newGoal)
                         
                         // If reminder is enabled for new goal, schedule the notification

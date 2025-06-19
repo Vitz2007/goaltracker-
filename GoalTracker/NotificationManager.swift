@@ -39,4 +39,11 @@ struct NotificationManager {
         }
     }
     // Place holder for function to cancel notifications here ===
+    static func cancelNotification(for goal: Goal) {
+        let center = UNUserNotificationCenter.current()
+        // Cancel a notification by providing the its unique id aka goal's id
+        let identifier = goal.id.uuidString
+        center.removePendingNotificationRequests(withIdentifiers: [identifier])
+        print("Attempted to cancel a notification for goal: \(goal.title) (ID: \(identifier))")
+    }
 }

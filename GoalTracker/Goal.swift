@@ -58,5 +58,9 @@ struct Goal: Identifiable, Codable, Hashable {
         self.completionPercentage = max(0.0, min(1.0, completionPercentage))
         self.checkIns = checkIns
         self.targetCheckIns = max(1, targetCheckIns) // Ensure target is at least 1
+        
+        // Set reminder properties from the parameters
+        self.reminderIsEnabled = reminderIsEnabled
+        self.reminderDate = reminderDate
     }
 }
