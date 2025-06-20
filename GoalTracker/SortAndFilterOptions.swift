@@ -20,3 +20,12 @@ enum GoalFilter: String, CaseIterable, Identifiable {
     
     var id: String { self.rawValue }
 }
+
+enum GoalCadence: String, CaseIterable, Identifiable, Codable {
+    case daily = "Every Day"
+    case everyTwoDays = "Every 2 Days"
+    case everyThreeDays = "Every 3 Days"
+    case weekly = "Once a Week"
+    
+    var id: String { self.rawValue }
+}

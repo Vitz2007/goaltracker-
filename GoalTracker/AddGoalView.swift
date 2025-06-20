@@ -7,6 +7,7 @@
 
 // In AddGoalView.swift
 
+// In AddGoalView.swift
 import SwiftUI
 
 struct AddGoalView: View {
@@ -17,33 +18,26 @@ struct AddGoalView: View {
     @State private var newGoalTitle: String = ""
     @State private var newGoalDueDate: Date = Date()
     @State private var newGoalTargetCheckIns: Int = 30
-
-    // New state variables for optional start date and completion percentage
     @State private var includeStartDate: Bool = false
-    @State private var selectedStartDate: Date = Date() // Default if user toggles it on
-    @State private var newGoalCompletionPercentage: Double = 0.0 // Defaults to 0%
-    
-    // New state vars for the reminder function
+    @State private var selectedStartDate: Date = Date()
+    @State private var newGoalCompletionPercentage: Double = 0.0
     @State private var reminderIsEnabled: Bool = false
     @State private var reminderDate: Date = Date()
+    
+    // Add new state for cadence
+    @State private var selectedCadence: GoalCadence = .daily
 
-    var onGoalAdded: () -> Void // Closure to trigger saving in ContentView
+    var onGoalAdded: () -> Void
     @Environment(\.dismiss) var dismiss
 
-    // Computed property to define the valid range for the due date picker
-    private var dueDateRange: PartialRangeFrom<Date> { // << Updated revised TYPE
+    // Computed properties for date ranges...
+    private var dueDateRange: PartialRangeFrom<Date> {
         let SDate = Calendar.current.startOfDay(for: includeStartDate ? selectedStartDate : Date())
         return SDate...
     }
-    
-    // Computed property for start date range
     private var startDateRange: PartialRangeThrough<Date> {
-        // If due date is set, start date can't be after it.
-        // Otherwise, allow any past or present date.
         return ...newGoalDueDate
     }
-    
-    // Computed property for the reminder date range (NOT in the past)
     private var reminderDateRange: PartialRangeFrom<Date> {
         return Date()...
     }
@@ -56,41 +50,33 @@ struct AddGoalView: View {
                 }
 
                 Section(header: Text("Dates")) {
-                    // Optional Start Date
                     Toggle("Set a Start Date", isOn: $includeStartDate.animation())
                     if includeStartDate {
-                        DatePicker("Start Date",
-                                   selection: $selectedStartDate,
-                                   in: startDateRange, // Start date can be up to the due date
-                                   displayedComponents: .date)
+                        DatePicker("Start Date", selection: $selectedStartDate, in: startDateRange, displayedComponents: .date)
                     }
-
-                    // Due Date
-                    DatePicker("Due Date",
-                               selection: $newGoalDueDate,
-                               in: dueDateRange, // Due date must be on or after start date (or today)
-                               displayedComponents: .date)
+                    DatePicker("Due Date", selection: $newGoalDueDate, in: dueDateRange, displayedComponents: .date)
                 }
                 
-                // Adding new reminder section here
+                // Add new frequency portion
+                Section(header: Text("Frequency")) {
+                    Picker("Track Streak", selection: $selectedCadence) {
+                        ForEach(GoalCadence.allCases) { cadence in
+                            Text(cadence.rawValue).tag(cadence)
+                        }
+                    }
+                }
+                
                 Section(header: Text("Reminder")) {
                     Toggle("Set a Reminder", isOn: $reminderIsEnabled.animation())
-                    
                     if reminderIsEnabled {
-                        DatePicker("Remind Me At",
-                                   selection: $reminderDate,
-                                   in: reminderDateRange, // Ensure reminder is NOT in the past
-                                   displayedComponents: [.date, .hourAndMinute])
+                        DatePicker("Remind Me At", selection: $reminderDate, in: reminderDateRange, displayedComponents: [.date, .hourAndMinute])
                     }
                 }
                 
                 Section(header: Text("Tracking Method")) {
-                    Stepper("Target Check-ins: \(newGoalTargetCheckIns)",
-                            value: $newGoalTargetCheckIns,
-                            in: 1...365) // Example range here
+                    Stepper("Target Check-ins: \(newGoalTargetCheckIns)", value: $newGoalTargetCheckIns, in: 1...365)
                 }
 
-                // Initial progress ---
                 Section(header: Text("Initial Progress (Optional)")) {
                     VStack(alignment: .leading) {
                         Text("Percentage: \(Int(newGoalCompletionPercentage * 100))%")
@@ -100,27 +86,24 @@ struct AddGoalView: View {
 
                 Button("Add Goal") {
                     if !newGoalTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        // Update goal initializer
                         let newGoal = Goal(
                             title: newGoalTitle,
-                            startDate: includeStartDate ? selectedStartDate : nil, // Use selected start date if included
+                            startDate: includeStartDate ? selectedStartDate : nil,
                             dueDate: newGoalDueDate,
-                            isCompleted: (newGoalCompletionPercentage == 1.0), // Auto-complete if 100%
-                            completionPercentage: newGoalCompletionPercentage, // Set initial percentage
+                            isCompleted: (newGoalCompletionPercentage == 1.0),
+                            completionPercentage: newGoalCompletionPercentage,
                             targetCheckIns: newGoalTargetCheckIns,
-                            
-                            // New reminder properties added
                             reminderIsEnabled: self.reminderIsEnabled,
-                            reminderDate: self.reminderDate
+                            reminderDate: self.reminderDate,
+                            
+                            // Add the selected cadence
+                            cadence: self.selectedCadence
                         )
-                        
                         goals.append(newGoal)
-                        
-                        // If reminder is enabled for new goal, schedule the notification
                         NotificationManager.scheduleNotification(for: newGoal)
-                        
                         onGoalAdded()
                         showingAddGoal = false
-                        // dismiss() // or use dismiss here
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -129,16 +112,15 @@ struct AddGoalView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        showingAddGoal = false
-                        // dismiss()
-                    }
+                    Button("Cancel") { showingAddGoal = false }
+                    // dismiss()
                 }
             }
         }
     }
 }
 
+// Preview provider remains the same...
 // Preview for AddGoalView
 // In AddGoalView.swift
 
@@ -171,7 +153,7 @@ struct AddGoalView_Previews: PreviewProvider {
             }
         }
     }
-    // --- End helper struct definition here ---
+    // End of helper struct definition
 
     // Use the helper struct in the previews
     static var previews: some View {

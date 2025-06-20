@@ -106,3 +106,21 @@ struct DeleteActionButtonView: View {
         }
     }
 }
+
+// New struct for streak badges
+struct StreakBadgeView: View {
+    let streakCount: Int
+    
+    var body: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "flame.fill")
+            Text("\(streakCount)")
+        }
+        .font(.caption.weight(.bold))
+        .foregroundColor(.orange)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+        .background(Color.orange.opacity(0.2))
+        .clipShape(Capsule())
+    }
+}
