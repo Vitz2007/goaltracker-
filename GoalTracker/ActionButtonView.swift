@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Charts // for chart framwork
 
 // New struct for edit button
 struct EditActionButtonView: View {
@@ -51,9 +52,6 @@ struct ProgressActionButtonView: View {
 }
 
 // New struct for finish action button
-// This code goes at the bottom of your BottomActionBarView.swift file,
-// replacing the old FinishActionButtonView struct.
-
 import SwiftUI
 
 struct FinishActionButtonView: View {
@@ -122,5 +120,49 @@ struct StreakBadgeView: View {
         .padding(.vertical, 4)
         .background(Color.orange.opacity(0.2))
         .clipShape(Capsule())
+    }
+}
+
+// New struct for charts
+struct ActivityBarChartView: View {
+    let activityData: [DayActivity]
+    
+    // Formatter to get the first letter of the weekday ie: M for Monday
+    private var weekdayFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E" // Letter E gives "Mon", "Tue", etc
+        return formatter
+    }
+    
+    var body: some View {
+        Chart(activityData) { day in
+            // Create bar representing each day
+            // If checkInCount > 0, the bar goes up, if 0 show tiny line
+            BarMark (
+                x: .value("Date", day.date, unit: .day),
+                y: .value("Check-ins", day.checkInCount > 0 ? 1 : 0) // concerned about check-ins only, not frequency of check-ins
+            )
+            .foregroundStyle(day.checkInCount > 0 ? Color.green.gradient : Color.gray.opacity(0.3).gradient)
+            .cornerRadius(4)
+        }
+        
+        // Add styling to chart
+        .chartYAxis(.hidden) // Hide 0.0, 0.5, 1.0 labels on the side
+        .chartXAxis {
+            AxisMarks(values: .stride(by: .day)) { value in
+                // Add a line and a label for each day mark
+                AxisGridLine()
+                AxisTick()
+                // Get the date for the current mark
+                if let date = value.as(Date.self) {
+                    // Formatting to get the day initial (ie: "M")
+                    let dayInitial = String(weekdayFormatter.string(from: date).first!)
+                    AxisValueLabel(dayInitial)
+                        .font(.caption)
+                }
+            }
+        }
+        .frame(height: 50) // Some fixed height
+        .padding(.top)
     }
 }

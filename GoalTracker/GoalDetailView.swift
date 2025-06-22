@@ -56,6 +56,19 @@ struct GoalDetailView: View {
                         }
                         .disabled(goal.isCompleted)
                         
+                        // New chart section
+                        VStack {
+                            Divider()
+                            Text("Last 7 Days Activity")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal)
+                            
+                            ActivityBarChartView(activityData: goal.recentActivity)
+                                .padding(.horizontal)
+                        }
+                        .padding(.top)
+                        
                     } // End of inner VStack for scrollable content
                     .padding(.bottom)
                 } // End of ScrollView
@@ -133,8 +146,8 @@ struct GoalDetailView: View {
             ActivityLogView(goal: self.goal)
         }
         .sheet(isPresented: $showingEditSheet) {
-            EditGoalView(goalToEdit: self.goal) { updatedGoalFromEditView in
-            }
+            // Passing a direct binding to the goal
+            EditGoalView(goal: $goal)
         }
         
         .sheet(isPresented: $showingAddCheckInNoteSheet) {
