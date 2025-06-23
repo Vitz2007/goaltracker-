@@ -11,10 +11,14 @@ import UserNotifications
 struct ContentView: View {
     @State private var goals: [Goal] = []
     @State private var showingAddGoal = false
+    @State private var showingSettings = false
     @State private var path = NavigationPath()
 
     @State private var currentSortOrder: SortOrder = .byCreationDate
     @State private var currentFilter: GoalFilter = .active
+    
+    // Accessing the shared settings object
+    @State private var appSettings = AppSettings.shared
 
     private var filteredAndSortedGoals: [Goal] {
         let filtered: [Goal]
@@ -79,6 +83,7 @@ struct ContentView: View {
             .navigationTitle("My Goals")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
+                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
                         Picker("Sort By", selection: $currentSortOrder) {
@@ -92,6 +97,18 @@ struct ContentView: View {
                                 Text(filter.rawValue).tag(filter)
                             }
                         }
+                        
+                        // Divider to separate the sections visually
+                        Divider()
+                                    
+                        // New button to open the Settings screen
+                        Button {
+                            showingSettings = true
+                        } label: {
+                            // A Label gives us both an icon and text, perfect for a menu item.
+                                Text("Settings")
+                            }
+                        
                     } label: {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                     }
@@ -111,6 +128,12 @@ struct ContentView: View {
                     )
                 }
             }
+            
+            // Adding new sheet for settings
+            .sheet(isPresented: $showingSettings) {
+                SettingsView()
+            }
+            
             .sheet(isPresented: $showingAddGoal) {
                 AddGoalView(goals: $goals, showingAddGoal: $showingAddGoal, onGoalAdded: saveGoals)
             }
@@ -126,7 +149,7 @@ struct ContentView: View {
     private func row(for goal: Goal) -> some View {
         if let index = goals.firstIndex(where: { $0.id == goal.id }) {
             NavigationLink(value: goal) {
-                GoalRowView(goal: $goals[index]) {
+                GoalRowView(goal: $goals[index], settings: self.appSettings) {
                     if !$goals[index].wrappedValue.isCompleted {
                         NotificationManager.cancelNotification(for: $goals[index].wrappedValue)
                     }

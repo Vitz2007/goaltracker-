@@ -9,6 +9,8 @@ import SwiftUI
 
 struct GoalRowView: View {
     @Binding var goal: Goal
+    // Receive Appsettings object
+    let settings: AppSettings
     var onToggleCompletion: () -> Void
 
     // New state to control halo's animation
@@ -25,9 +27,9 @@ struct GoalRowView: View {
                 .background(
                     // A circle that actd as our glow
                     Circle()
-                        .fill(Color.teal.opacity(showHalo ? (triggerComebackAnimation ? 20.5 : 0.38) : 0)) // The halo is visible only when showHalo is true
+                        .fill(Color.teal.opacity(showHalo && settings.streaksEnabled ? 0.38 : 0)) // The halo is visible only when showHalo is true
                         .blur(radius: 10)
-                        .scaleEffect(showHalo ? (triggerComebackAnimation ? 4.0 : 1.3) : 1) // Apply animation effects
+                        .scaleEffect(showHalo && settings.streaksEnabled ? (triggerComebackAnimation ? 4.0 : 1.3) : 1) // Apply animation effects
                 )
 
                 .onTapGesture {

@@ -8,40 +8,57 @@ import SwiftUI
 
 struct EmptyStateView: View {
     var body: some View {
-        VStack(spacing: 20) { // Wrap in VStack to allow Spacer() to work
+        VStack(spacing: 24) { // Wrap in VStack to allow Spacer() to work
             Spacer() // Pushes content towards center if VStack fills space
-            Image(systemName: "sparkles")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 80, height: 80)
-                .foregroundStyle(LinearGradient(gradient: Gradient(colors: [Color.yellow, Color.orange.opacity(0.8)]), startPoint: .topLeading, endPoint: .bottomTrailing
-                )
-            )
-                .padding(.bottom, 10)
-                .offset(y: -20)
-                .foregroundColor(.secondary)
-                .padding(.bottom, 10) // Space below icon
             
-            Text("No Goals Yet?")
-                .font(.title2)
-                .fontWeight(.semibold)
+            ZStack {
+                // A more subtle background shape
+                Circle()
+                    .fill(Color(.systemGray6))
+                    .frame(width: 140, height: 140)
+                
+                // The main icon
+                Image(systemName: "flag.checkered.2.crossed")
+                    .font(.system(size: 60))
+                    .foregroundStyle(.teal)
+                
+                // A subtle accent
+                Image(systemName: "sparkles")
+                    .font(.system(size: 50))
+                    .foregroundStyle(.yellow)
+                    .offset(x: 35, y: -35)
+                    .opacity(0.8)
+            }
             
-            Text("Tap the '+' button below to add your first goal and start tracking your progress.")
-                .font(.body)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center) // For longer text
-                .padding(.horizontal, 40) // Prevents from text being too long/wide
-            
-            Spacer() // Pushes content towards the center
-        }
-        // Ensure VStack tries to take up space if available by its parent
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
+            // An engaging and encouraging text
+            VStack(spacing: 12) {
+                            Text("Your Journey Begins!")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.primary)
+
+                            Text("Every great accomplishment starts with a single step. Tap the '+' button to create your first goal.")
+                                .font(.headline)
+                                .fontWeight(.regular)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding(.horizontal, 40) // Keep text from getting too wide
+                        
+                        Spacer()
+                        Spacer() // Using two spacers pushes the content a bit higher than using true center
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+            }
 
 struct EmptyStateView_Previews: PreviewProvider {
     static var previews: some View {
-        EmptyStateView()
-            .padding() // Add some possible padding?
+        // Best to preview within a NavigationView to simulate how it looks in your actual app.
+        NavigationView {
+            EmptyStateView()
+                .navigationTitle("My Goals")
+                .navigationBarTitleDisplayMode(.large)
+        }
     }
 }
