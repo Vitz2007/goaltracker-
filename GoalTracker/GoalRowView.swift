@@ -25,9 +25,9 @@ struct GoalRowView: View {
                 .background(
                     // A circle that actd as our glow
                     Circle()
-                        .fill(Color.teal.opacity(showHalo ? 0.4 : 0)) // The halo is visible only when showHalo is true
-                        .blur(radius: 12)
-                        .scaleEffect(showHalo ? (triggerComebackAnimation ? 1.8 : 1.5) : 1) // Apply animation effects
+                        .fill(Color.teal.opacity(showHalo ? (triggerComebackAnimation ? 20.5 : 0.38) : 0)) // The halo is visible only when showHalo is true
+                        .blur(radius: 10)
+                        .scaleEffect(showHalo ? (triggerComebackAnimation ? 4.0 : 1.3) : 1) // Apply animation effects
                 )
 
                 .onTapGesture {
@@ -53,7 +53,7 @@ struct GoalRowView: View {
         }
         .padding(.vertical, 8)
         
-        // Modifier monitors the haloState and controls the UI
+        // Important modifier monitors the haloState and controls the UI
         .onChange(of: goal.haloState) { oldValue, newValue in
             // Using a switch to handle each state clearly
             switch newValue {

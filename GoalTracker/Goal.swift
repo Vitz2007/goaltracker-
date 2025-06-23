@@ -56,12 +56,17 @@ struct Goal: Identifiable, Codable, Hashable {
             guard !checkIns.isEmpty else { return .none }
             
             let calendar = Calendar.current
-            let uniqueDates = Set(checkIns.map { calendar.startOfDay(for: $0.date) })
+            let now = Date()
+        
+            let pastAndPresentCheckIns = checkIns.filter { $0.date <= now }
+            guard !pastAndPresentCheckIns.isEmpty else { return .none }
+        
+            let uniqueDates = Set(pastAndPresentCheckIns.map { calendar.startOfDay(for: $0.date) })
             let sortedDates = uniqueDates.sorted(by: >)
             
             guard let mostRecentDate = sortedDates.first else { return .none }
             
-            let daysSinceLastCheckIn = calendar.dateComponents([.day], from: mostRecentDate, to: calendar.startOfDay(for: Date())).day ?? 0
+            let daysSinceLastCheckIn = calendar.dateComponents([.day], from: mostRecentDate, to: calendar.startOfDay(for: now)).day ?? 0
             
             let allowedGap: Int
             switch self.cadence {

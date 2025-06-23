@@ -13,6 +13,10 @@ struct EditGoalView: View {
     @Environment(\.dismiss) var dismiss
     
     @Binding var goal: Goal
+    
+    // State variable for debug UI
+    @State private var fakeCheckInDate: Date = Date()
+    
 
     var body: some View {
         NavigationView {
@@ -72,6 +76,24 @@ struct EditGoalView: View {
                 Section(header: Text("Tracking Method")) {
                     Stepper("Target Check-ins: \(goal.targetCheckIns)", value: $goal.targetCheckIns, in: 1...365)
                 }
+                
+                // --- ADDING THE DEBUG SECTION BACK IN ---
+                                Section(header: Text("Debug: Fake Check-ins")) {
+                                    if !goal.checkIns.isEmpty {
+                                        ForEach(goal.checkIns) { checkIn in
+                                            Text("Checked in on: \(checkIn.date, style: .date)")
+                                        }
+                                        .onDelete { indexSet in
+                                            goal.checkIns.remove(atOffsets: indexSet)
+                                        }
+                                    }
+                                    DatePicker("Fake Check-in Date", selection: $fakeCheckInDate, displayedComponents: .date)
+                                    Button("Add Fake Check-in") {
+                                        let newCheckIn = CheckInRecord(date: fakeCheckInDate)
+                                        goal.checkIns.append(newCheckIn)
+                                        goal.checkIns.sort(by: { $0.date > $1.date })
+                                    }
+                                }
                 
             }
             .navigationTitle("Edit Goal")
