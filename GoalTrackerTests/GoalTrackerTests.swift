@@ -2,10 +2,11 @@
 //  GoalTrackerTests.swift
 //  GoalTrackerTests
 //
-//  Created by AJ on 2025/07/23.
+//  Created by AJ on 2025/07/02.
 //
 
 import Testing
+@testable import GoalTracker
 
 struct GoalTrackerTests {
 

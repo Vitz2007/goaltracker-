@@ -1,0 +1,296 @@
+/* 
+  Localizable.strings
+  GoalTracker
+
+  Created by AJ on 2025/07/24.
+  
+*/
+
+/* GoalTracker App - Japanese */
+
+"common.done" = "完了";
+"common.save" = "保存";
+"common.cancel" = "キャンセル";
+"quote.1" = "前進する秘訣は、始めることだ。";
+"quote.2" = "千里の道も一歩から。";
+"quote.3" = "できると信じれば、もう半分は達成している。";
+"quote.4" = "言うは易く行うは難し。";
+"quote.5" = "止まらない限り、どれだけゆっくり進んでも問題ない。";
+
+/* Settings view */
+"settings.title" = "設定";
+"settings.motivation.header" = "私のモチベーション";
+"settings.motivation.anotherQuoteButton" = "別の名言";
+"settings.motivation.writeOwnButton" = "自分で書く";
+"settings.motivation.footer" = "個人的な引用を追加して、通知をより意味のあるものにしましょう。";
+"settings.appearance.header" = "外観";
+"settings.data.header" = "データ管理";
+"settings.data.viewArchived" = "アーカイブされた目標を見る";
+"settings.support.label" = "サポートとフィードバック";
+"language.selector.title" = "言語";
+"language.change.note" = "注意：言語の変更を適用するには、アプリの再起動が必要です。";
+"editMotivation.title" = "私のモチベーション";
+"editMotivation.placeholder" = "あなたのモチベーション...";
+
+/* ContentView Keys */
+"contentView.title" = "私の目標";
+"contentView.menu.filter" = "フィルター";
+"contentView.filter.all" = "すべて";
+"contentView.filter.active" = "進行中";
+"contentView.tab.dashboard" = "ダッシュボード";
+
+/* Accessiblity Labels*/
+"accessibility.editButton.label" = "編集";
+"accessibility.progressButton.label" = "進捗を見る";
+"accessibility.markComplete.label" = "完了にする";
+"accessibility.markIncomplete.label" = "未完了にする";
+"accessibility.deleteButton.label" = "削除";
+"accessibility.streak.label" = "連続日数";
+
+/* Empty State View */
+"emptyState.title" = "今日は新たな可能性に満ちています";
+"emptyState.subtitle" = "今日は何を育てますか？「+」ボタンをタップして始めましょう。";
+
+/* Chart View */
+"chart.date.label" = "日付";
+"chart.checkins.label" = "チェックイン";
+
+/* Dashboard View */
+"dashboard.activity.title" = "アクティビティ";
+
+/* Activity Log View */
+"activityLog.emptyState.message" = "まだチェックインがありません。";
+
+/* Activity Log Navigation Title */
+"activityLog.title" = "アクティビティログ";
+
+/* Add/Edit Note View */
+"addNote.title" = "ノートを追加";
+"common.skip" = "スキップ";
+"common.save" = "保存";
+
+/* Goal Cadence */
+"cadence.daily" = "毎日";
+"cadence.everyTwoDays" = "2日ごと";
+"cadence.everyThreeDays" = "3日ごと";
+"cadence.weekly" = "週に一回";
+
+/* Handling formatted strings with numbers */
+"addGoal.stepper.targetCheckins" = "目標チェックイン数: %d";
+"addGoal.text.initialProgress" = "初期進捗: %d%%";
+
+/* Color Names */
+"color.defaultBlue" = "デフォルト (青)";
+"color.green" = "緑";
+"color.red" = "赤";
+"color.purple" = "紫";
+"color.orange" = "オレンジ";
+
+/* Archive View */
+"archive.title" = "アーカイブ";
+"archive.emptyState.message" = "アーカイブされた目標はありません";
+"archive.completedOnDate" = "完了日: %@";
+"archive.button.unarchive" = "アーカイブ解除";
+
+/* Check-In Button Accessibility */
+"checkinButton.accessibility.complete" = "完了にする";
+"checkinButton.accessibility.incomplete" = "未完了にする";
+
+/* App Intents */
+"intent.checkin.title" = "チェックイン";
+"intent.goalID.param.title" = "目標ID";
+
+/* Congratulations View */
+"congrats.title" = "目標達成！";
+"congrats.dismissButton" = "素晴らしい！";
+
+/* Dashboard View */
+"dashboard.title" = "ダッシュボード";
+"dashboard.momentum.title" = "勢い";
+"dashboard.momentum.checkinsThisWeek" = "今週のチェックイン";
+"dashboard.momentum.checkinsThisMonth" = "今月のチェックイン";
+"dashboard.trophyRoom.title" = "トロフィールーム";
+"dashboard.trophyRoom.emptyState" = "完了した目標はまだありません。頑張りましょう！";
+"dashboard.trophyRoom.completedDateRange" = "完了: %@ - %@";
+
+/* Donut Chart Labels */
+"chart.label.completed" = "完了";
+"chart.label.remaining" = "残り";
+
+/* Edit Goal View */
+"editGoal.title" = "目標を編集";
+"editGoal.section.details" = "目標の詳細";
+"editGoal.placeholder.goalTitle" = "目標のタイトル";
+"editGoal.section.progress" = "進捗";
+"editGoal.text.completion" = "達成率: %d%%";
+
+/* Goal Date Info */
+"goal.startDate.label" = "開始日:";
+"goal.deadline.label" = "締め切り:";
+
+/* Common / Reusable */
+"common.edit" = "編集";
+"common.delete" = "削除";
+"common.undo" = "元に戻す";
+
+/* Goal Detail View */
+"goalDetail.title" = "目標の詳細";
+"goalDetail.button.checkInToday" = "今日のチェックイン";
+"goalDetail.chart.title" = "過去7日間のアクティビティ";
+"goalDetail.button.reopen" = "再開する";
+"goalDetail.button.finish" = "完了";
+"goalDetail.popup.checkedIn" = "チェックインしました！";
+"category.general" = "一般";
+
+/* Delete Alert */
+"goalDetail.alert.delete.title" = "目標を削除しますか？";
+"goalDetail.alert.delete.message" = "この目標を本当に削除しますか？この操作は元に戻せません。";
+
+// MARK: - Goal Categories
+"category.financial.name" = "金融";
+"category.health.name" = "健康とウェルネス";
+"category.career.name" = "キャリアと開発";
+
+// MARK: - Financial Presets
+"category.financial.preset.automateSavings.title" = "貯蓄を自動化する";
+"category.financial.preset.automateSavings.template" = "毎月`[1日]`に`[金額]`を普通預金口座に自動的に振り替える。";
+"category.financial.preset.automateSavings.rationale" = "プロセスを自動化することで、一貫した習慣が身につき、失敗の共通点である日々のモチベーションの必要性がなくなります。これは、より多くのお金を貯めるという一般的な目標に向けた、具体的で測定可能な行動です。";
+
+"category.financial.preset.accelerateDebt.title" = "借金返済を加速する";
+"category.financial.preset.accelerateDebt.template" = "毎月`[クレジットカード/ローン]`の借金に`[金額]`の追加支払いを行う。";
+"category.financial.preset.accelerateDebt.rationale" = "この目標は具体的で測定可能であり、「借金をなくす」という漠然とした願望を、具体的で追跡可能な行動に変えます。これは多くの人にとって最優先の財政的優先事項です。";
+
+"category.financial.preset.emergencyFund.title" = "緊急資金を構築する";
+"category.financial.preset.emergencyFund.template" = "`[日付]`までに`[金額]`を貯めて、非常時のための資金を確立する。";
+"category.financial.preset.emergencyFund.rationale" = "期限付きの具体的な目標を設定することは、あいまいな目標よりも効果的であることが証明されているSMARTフレームワークの中核的な原則です。これは広範な財政的不安に対処します。";
+
+"category.financial.preset.trackSpending.title" = "支出を追跡する";
+"category.financial.preset.trackSpending.template" = "毎週`[日曜日]`に`[15分]`をかけて、週ごとの支出を見直す。";
+"category.financial.preset.trackSpending.rationale" = "これは、漠然と「支出を減らす」のではなく、財政を効果的に管理するために必要なデータを提供する、小さくて繰り返し可能な習慣（プロセス目標）を作成します。";
+
+// MARK: - Health Presets
+"category.health.preset.workoutRoutine.title" = "トレーニングルーチンを確立する";
+"category.health.preset.workoutRoutine.template" = "毎週`[30分]`のトレーニングを`[3]`回完了する。";
+"category.health.preset.workoutRoutine.rationale" = "これは、「体力をつける」という漠然としてしばしば失敗する目標を、具体的で、測定可能で、達成可能なプロセスに置き換えます。長期的な成功のためには、強度よりも一貫性が重要です。";
+
+"category.health.preset.improveNutrition.title" = "栄養を改善する";
+"category.health.preset.improveNutrition.template" = "毎日、昼食と夕食に`[野菜]`を1サービング追加する。";
+"category.health.preset.improveNutrition.rationale" = "これは、心理的に「回避」目標（悪いものをやめる）よりも効果的な、小さな、実行可能な「アプローチ」目標（良いものを追加する）です。";
+
+"category.health.preset.dailyMindfulness.title" = "毎日のマインドフルネスを実践する";
+"category.health.preset.dailyMindfulness.template" = "`[アプリ名またはテクニック]`を使って毎日`[10分]`瞑想する。";
+"category.health.preset.dailyMindfulness.rationale" = "この目標は具体的で、期限があり、小さくて管理しやすい習慣に焦点を当てています。メンタルヘルスの改善は、世界的な最優先事項です。";
+
+"category.health.preset.digitalDetox.title" = "デジタルデトックスを実施する";
+"category.health.preset.digitalDetox.template" = "毎晩寝る前に`[1時間]`スマートフォンを片付ける。";
+"category.health.preset.digitalDetox.rationale" = "これは、スクリーンタイムを減らしたいという人々の増大する傾向に直接対処します。それは漠然とした願いではなく、具体的で制御可能な行動です。";
+
+// MARK: - Career Presets
+"category.career.preset.learnSkill.title" = "新しい専門スキルを学ぶ";
+"category.career.preset.learnSkill.template" = "`[日付]`までに`[例：Python、プロジェクト管理]`のオンラインコースを完了する。";
+"category.career.preset.learnSkill.rationale" = "継続的な学習は若い世代の主要な動機付けです。この目標は、具体的で、測定可能で、現代のキャリアの野心に関連しています。";
+
+"category.career.preset.polishProfile.title" = "プロフェッショナルプロフィールを磨く";
+"category.career.preset.polishProfile.template" = "今月末までに履歴書を改訂し、LinkedInプロフィールを更新する。";
+"category.career.preset.polishProfile.rationale" = "専門的な資料を最新の状態に保つことは、常に新しい機会に備えるための影響の大きいタスクです。それはキャリア管理の基本的なステップです。";
+
+/* Goal Row */
+"goalRow.due" = "期限:";
+
+/* Common */
+"common.close" = "閉じる";
+
+/* Icon Picker */
+"iconPicker.title" = "アイコンを選択";
+"iconPicker.noIconButton" = "アイコンなし";
+
+/* Icon Accessibility Labels */
+"icon.target" = "ターゲット";
+"icon.flag" = "旗";
+"icon.star" = "星";
+"icon.heart" = "ハート";
+"icon.flame" = "炎";
+"icon.book" = "本";
+"icon.pencil" = "鉛筆";
+"icon.graduationCap" = "卒業帽";
+"icon.dollarSign" = "ドル記号";
+"icon.chartBar" = "棒グラフ";
+"icon.calendar" = "カレンダー";
+"icon.walk" = "歩いている人";
+"icon.dumbbell" = "ダンベル";
+"icon.airplane" = "飛行機";
+"icon.house" = "家";
+"icon.lightbulb" = "電球";
+
+/* Language Selection */
+"language.picker.accessibilityTitle" = "言語を選択";
+"language.name.en_US" = "英語（米国）";
+"language.name.en_GB" = "英語（英国）";
+"language.name.ja" = "日本語";
+"language.name.es" = "スペイン語";
+"language.name.fr" = "フランス語";
+"language.name.de" = "ドイツ語";
+"language.name.zh_Hans" = "中国語（簡体字）";
+
+/* Notifications */
+"notification.title" = "目標のリマインダー";
+"notification.body" = "目標に取り組むのを忘れないでください: %@";
+
+/* Onboarding Goal Creation View */
+"onboarding.goalCreation.title" = "達成したいことは何ですか？";
+"onboarding.goalCreation.placeholder" = "例：5キロレースを走る";
+"onboarding.goalCreation.subtitle" = "期日やリマインダーなどの詳細は後で追加できます。";
+
+/* Onboarding Final View */
+"onboarding.final.title" = "準備完了です！";
+"onboarding.final.subtitle" = "目標を追跡する人は、達成する可能性が42%高くなります。";
+"onboarding.final.startButton" = "始める";
+
+/* Onboarding Welcoem View */
+"onboarding.welcome.title" = "千里の道も一歩から。";
+"onboarding.welcome.subtitle" = "あなたの願望を日々の達成に変えましょう。さあ、始めましょう。";
+
+/* Widgets */
+"widget.placeholder.title" = "私の素晴らしい目標";
+"widget.header.nextGoal" = "次の目標";
+"widget.label.due" = "期限: %@";
+"widget.emptyState.title" = "アクティブな目標はありません";
+"widget.emptyState.subtitle" = "アプリで新しい目標を追加しましょう！";
+"widget.config.displayName" = "次の目標";
+"widget.config.description" = "次に来る目標を表示します。";
+
+/* Live Activity & Dynamic Island */
+"liveActivity.lockScreen.greeting" = "こんにちは %@";
+"liveActivity.dynamicIsland.expanded.leading" = "左側";
+"liveActivity.dynamicIsland.expanded.trailing" = "右側";
+"liveActivity.dynamicIsland.expanded.bottom" = "下部 %@";
+"liveActivity.dynamicIsland.compact.leading" = "左";
+"liveActivity.dynamicIsland.compact.trailing" = "右 %@";
+
+/* Control Widget */
+"widget.control.toggle.startTimer" = "タイマーを開始";
+"widget.control.displayName" = "タイマー";
+"widget.control.description" = "タイマーを実行するコントロールの例です。";
+
+/* Common */
+"common.on" = "オン";
+"common.off" = "オフ";
+
+/* Timer Configuration Intent */
+"intent.timerConfig.title" = "タイマー名の設定";
+"intent.timerConfig.param.timerName.title" = "タイマー名";
+"intent.timerConfig.param.timerName.default" = "タイマー";
+
+/* Start Timer Intent */
+"intent.startTimer.title" = "タイマーを開始する";
+"intent.startTimer.param.isRunning.title" = "タイマー実行中";
+
+/* Static Test Widget */
+"widget.staticTest.title" = "テストウィジェット";
+"widget.staticTest.subtitle" = "これが表示されれば、動作しています！";
+"widget.staticTest.config.displayName" = "静的テスト";
+"widget.staticTest.config.description" = "シンプルなテストウィジェットです。";
+
+
+
+

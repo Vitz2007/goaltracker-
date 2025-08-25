@@ -1,0 +1,294 @@
+/* 
+  Localizable.strings
+  GoalTracker
+
+  Created by AJ on 2025/07/24.
+  
+*/
+
+/* GoalTracker App - French */
+
+"common.done" = "Terminé";
+"common.save" = "Enregistrer";
+"common.cancel" = "Annuler";
+"quote.1" = "Le secret pour avancer, c'est de commencer.";
+"quote.2" = "Un voyage de mille lieues commence par un premier pas.";
+"quote.3" = "Croyez en vous et vous aurez déjà fait la moitié du chemin.";
+"quote.4" = "Bien fait vaut mieux que bien dit.";
+"quote.5" = "Peu importe la lenteur à laquelle vous allez, tant que vous ne vous arrêtez pas.";
+
+/* Settings View */
+"settings.title" = "Réglages";
+"settings.motivation.header" = "Ma Motivation";
+"settings.motivation.anotherQuoteButton" = "Autre Citation";
+"settings.motivation.writeOwnButton" = "Écrire la Vôtre";
+"settings.motivation.footer" = "Ajoutez une citation personnelle pour rendre vos notifications plus pertinentes.";
+"settings.appearance.header" = "Apparence";
+"settings.data.header" = "Gestion des Données";
+"settings.data.viewArchived" = "Voir les Objectifs Archivés";
+"settings.support.label" = "Support et Commentaires";
+"language.selector.title" = "Langue";
+"language.change.note" = "Remarque : Le redémarrage de l'application est requis pour appliquer le changement de langue.";
+"editMotivation.title" = "Ma Motivation";
+"editMotivation.placeholder" = "Votre motivation...";
+
+/* ContentView Keys */
+"contentView.title" = "Mes Objectifs";
+"contentView.menu.filter" = "Filtre";
+"contentView.filter.all" = "Tous";
+"contentView.filter.active" = "Actifs";
+"contentView.tab.dashboard" = "Tableau de bord";
+
+/* Accessiblity Labels*/
+"accessibility.editButton.label" = "Modifier";
+"accessibility.progressButton.label" = "Voir le Progrès";
+"accessibility.markComplete.label" = "Marquer comme Terminé";
+"accessibility.markIncomplete.label" = "Marquer comme Incomplet";
+"accessibility.deleteButton.label" = "Supprimer";
+"accessibility.streak.label" = "Série de Jours";
+
+/* Empty State View */
+"emptyState.title" = "Aujourd'hui offre de nouvelles possibilités";
+"emptyState.subtitle" = "Qu'allez-vous faire pousser aujourd'hui ? Appuyez sur le bouton '+' pour commencer.";
+
+/* Chart View */
+"chart.date.label" = "Date";
+"chart.checkins.label" = "Visites";
+
+/* Dashboard View */
+"dashboard.activity.title" = "Activité";
+
+/* Activity Log View */
+"activityLog.emptyState.message" = "Aucun enregistrement pour le moment.";
+
+/* Activity Log Navigation Title */
+"activityLog.title" = "Journal d'activité";
+
+/* Add/Edit Note View */
+"addNote.title" = "Ajouter une note";
+"common.skip" = "Passer";
+"common.save" = "Enregistrer";
+
+/* Goal Cadence */
+"cadence.daily" = "Chaque jour";
+"cadence.everyTwoDays" = "Tous les 2 jours";
+"cadence.everyThreeDays" = "Tous les 3 jours";
+"cadence.weekly" = "Une fois par semaine";
+
+/* Handling formatted strings with numbers */
+"addGoal.stepper.targetCheckins" = "目标签到次数: %d";
+"addGoal.text.initialProgress" = "初始进度: %d%%";
+
+/* Color Names */
+"color.defaultBlue" = "Bleu (Défaut)";
+"color.green" = "Vert";
+"color.red" = "Rouge";
+"color.purple" = "Violet";
+"color.orange" = "Orange";
+
+/* Archive View */
+"archive.title" = "Archive";
+"archive.emptyState.message" = "Aucun objectif archivé";
+"archive.completedOnDate" = "Terminé : %@";
+"archive.button.unarchive" = "Désarchiver";
+
+/* Check-In Button Accessibility */
+"checkinButton.accessibility.complete" = "Marquer comme terminé";
+"checkinButton.accessibility.incomplete" = "Marquer comme incomplet";
+
+/* App Intents */
+"intent.checkin.title" = "Pointer";
+"intent.goalID.param.title" = "ID de l'Objectif";
+
+/* Congratulations View */
+"congrats.title" = "OBJECTIF ATTEINT !";
+"congrats.dismissButton" = "Génial !";
+
+/* Dashboard View */
+"dashboard.title" = "Tableau de bord";
+"dashboard.momentum.title" = "Élan";
+"dashboard.momentum.checkinsThisWeek" = "Visites cette semaine";
+"dashboard.momentum.checkinsThisMonth" = "Visites ce mois-ci";
+"dashboard.trophyRoom.title" = "Salle des Trophées";
+"dashboard.trophyRoom.emptyState" = "Aucun objectif terminé pour l'instant. Continuez !";
+"dashboard.trophyRoom.completedDateRange" = "Terminé : %@ - %@";
+
+/* Donut Chart Labels */
+"chart.label.completed" = "Complété";
+"chart.label.remaining" = "Restant";
+
+/* Edit Goal View */
+"editGoal.title" = "Modifier l'Objectif";
+"editGoal.section.details" = "Détails de l'Objectif";
+"editGoal.placeholder.goalTitle" = "Titre de l'Objectif";
+"editGoal.section.progress" = "Progrès";
+"editGoal.text.completion" = "Complétion : %d%%";
+
+/* Goal Date Info */
+"goal.startDate.label" = "Date de début :";
+"goal.deadline.label" = "Date limite :";
+
+/* Common / Reusable */
+"common.edit" = "Modifier";
+"common.delete" = "Supprimer";
+"common.undo" = "Annuler";
+
+/* Goal Detail View */
+"goalDetail.title" = "Détails de l'Objectif";
+"goalDetail.button.checkInToday" = "Pointer pour Aujourd'hui";
+"goalDetail.chart.title" = "Activité des 7 derniers jours";
+"goalDetail.button.reopen" = "Rouvrir";
+"goalDetail.button.finish" = "Terminer";
+"goalDetail.popup.checkedIn" = "Pointé !";
+"category.general" = "Général";
+
+/* Delete Alert */
+"goalDetail.alert.delete.title" = "Supprimer l'objectif ?";
+"goalDetail.alert.delete.message" = "Êtes-vous sûr de vouloir supprimer cet objectif ? Cette action est irréversible.";
+
+// MARK: - Goal Categories
+"category.financial.name" = "Financier";
+"category.health.name" = "Santé et Bien-être";
+"category.career.name" = "Carrière et Développement";
+
+// MARK: - Financial Presets
+"category.financial.preset.automateSavings.title" = "Automatisez votre épargne";
+"category.financial.preset.automateSavings.template" = "Transférer automatiquement `[Montant $]` sur mon compte épargne le `[1er de chaque mois]`.";
+"category.financial.preset.automateSavings.rationale" = "L'automatisation du processus crée une habitude constante et élimine le besoin de motivation quotidienne, un point d'échec courant. C'est une action spécifique et mesurable vers l'objectif populaire d'épargner plus d'argent.";
+
+"category.financial.preset.accelerateDebt.title" = "Accélérez le remboursement de vos dettes";
+"category.financial.preset.accelerateDebt.template" = "Effectuer un paiement supplémentaire de `[Montant $]` sur ma dette de `[Carte de crédit/Prêt]` chaque mois.";
+"category.financial.preset.accelerateDebt.rationale" = "Cet objectif est spécifique et mesurable, transformant le vague désir de 'se désendetter' en une action concrète et traçable. C'est une priorité financière absolue pour beaucoup.";
+
+"category.financial.preset.emergencyFund.title" = "Constituez un fonds d'urgence";
+"category.financial.preset.emergencyFund.template" = "Épargner `[Montant $]` d'ici le `[Date]` pour établir un fonds de prévoyance.";
+"category.financial.preset.emergencyFund.rationale" = "La création d'un objectif spécifique et limité dans le temps est un principe fondamental du cadre SMART, qui s'est avéré plus efficace que les objectifs ambigus. Cela répond à une insécurité financière généralisée.";
+
+"category.financial.preset.trackSpending.title" = "Suivez vos dépenses";
+"category.financial.preset.trackSpending.template" = "Consacrer `[15 minutes]` chaque `[dimanche]` pour examiner mes dépenses hebdomadaires.";
+"category.financial.preset.trackSpending.rationale" = "Cela crée une petite habitude répétable (un objectif de processus) qui fournit les données nécessaires pour gérer efficacement les finances, plutôt que de simplement 'dépenser moins' de manière vague.";
+
+// MARK: - Health Presets
+"category.health.preset.workoutRoutine.title" = "Établissez une routine d'entraînement";
+"category.health.preset.workoutRoutine.template" = "Effectuer `[3]` entraînements de `[30 minutes]` chaque semaine.";
+"category.health.preset.workoutRoutine.rationale" = "Cela remplace l'objectif vague et souvent échoué de 'se mettre en forme' par un processus spécifique, mesurable et réalisable. La régularité est plus importante que l'intensité pour un succès à long terme.";
+
+"category.health.preset.improveNutrition.title" = "Améliorez votre nutrition";
+"category.health.preset.improveNutrition.template" = "Ajouter une portion de `[légumes]` à mon déjeuner et à mon dîner chaque jour.";
+"category.health.preset.improveNutrition.rationale" = "C'est un petit objectif 'd'approche' (ajouter quelque chose de bon) qui est psychologiquement plus efficace qu'un objectif 'd'évitement' (supprimer les mauvaises choses).";
+
+"category.health.preset.dailyMindfulness.title" = "Pratiquez la pleine conscience au quotidien";
+"category.health.preset.dailyMindfulness.template" = "Méditer pendant `[10 minutes]` chaque jour en utilisant `[Nom de l'application ou technique]`.";
+"category.health.preset.dailyMindfulness.rationale" = "Cet objectif est spécifique, limité dans le temps et se concentre sur une petite habitude gérable. L'amélioration de la santé mentale est une priorité mondiale de premier ordre.";
+
+"category.health.preset.digitalDetox.title" = "Mettez en place une désintoxication numérique";
+"category.health.preset.digitalDetox.template" = "Ranger mon téléphone pendant `[1 heure]` avant de me coucher chaque soir.";
+"category.health.preset.digitalDetox.rationale" = "Cela répond directement à la tendance croissante des gens à vouloir réduire leur temps d'écran. C'est une action spécifique et contrôlable plutôt qu'un vague souhait.";
+
+// MARK: - Career Presets
+"category.career.preset.learnSkill.title" = "Apprenez une nouvelle compétence professionnelle";
+"category.career.preset.learnSkill.template" = "Terminer un cours en ligne sur `[ex: Python, Gestion de projet]` d'ici le `[Date]`.";
+"category.career.preset.learnSkill.rationale" = "L'apprentissage continu est un facteur de motivation principal pour les jeunes générations. Cet objectif est spécifique, mesurable et pertinent pour les ambitions de carrière modernes.";
+
+"category.career.preset.polishProfile.title" = "Soignez votre profil professionnel";
+"category.career.preset.polishProfile.template" = "Réviser mon CV et mettre à jour mon profil LinkedIn d'ici la fin de ce mois.";
+"category.career.preset.polishProfile.rationale" = "Garder vos documents professionnels à jour est une tâche à fort impact qui garantit que vous êtes toujours prêt pour de nouvelles opportunités. C'est une étape fondamentale de la gestion de carrière.";
+
+/* Goal Row */
+"goalRow.due" = "Échéance :";
+
+/* Common */
+"common.close" = "Fermer";
+
+/* Icon Picker */
+"iconPicker.title" = "Choisissez une icône";
+"iconPicker.noIconButton" = "Aucune icône";
+
+/* Icon Accessibility Labels */
+"icon.target" = "Cible";
+"icon.flag" = "Drapeau";
+"icon.star" = "Étoile";
+"icon.heart" = "Cœur";
+"icon.flame" = "Flamme";
+"icon.book" = "Livre";
+"icon.pencil" = "Crayon";
+"icon.graduationCap" = "Chapeau de diplômé";
+"icon.dollarSign" = "Signe dollar";
+"icon.chartBar" = "Graphique à barres";
+"icon.calendar" = "Calendrier";
+"icon.walk" = "Personne qui marche";
+"icon.dumbbell" = "Haltère";
+"icon.airplane" = "Avion";
+"icon.house" = "Maison";
+"icon.lightbulb" = "Ampoule";
+
+/* Language Selection */
+"language.picker.accessibilityTitle" = "Sélectionnez une langue";
+"language.name.en_US" = "Anglais (États-Unis)";
+"language.name.en_GB" = "Anglais (Royaume-Uni)";
+"language.name.ja" = "Japonais";
+"language.name.es" = "Espagnol";
+"language.name.fr" = "Français";
+"language.name.de" = "Allemand";
+"language.name.zh_Hans" = "Chinois (simplifié)";
+
+/* Notifications */
+"notification.title" = "Rappel d'Objectif";
+"notification.body" = "N'oubliez pas de travailler sur votre objectif : %@";
+
+/* Onboarding Goal Creation View */
+"onboarding.goalCreation.title" = "Quelle est la chose que vous aimeriez accomplir ?";
+"onboarding.goalCreation.placeholder" = "ex: Courir une course de 5 km";
+"onboarding.goalCreation.subtitle" = "Vous pourrez ajouter plus de détails comme les dates d'échéance et les rappels plus tard.";
+
+/* Onboarding Final View */
+"onboarding.final.title" = "Vous êtes prêt !";
+"onboarding.final.subtitle" = "Les personnes qui suivent leurs objectifs ont 42 % de chances en plus de les atteindre.";
+"onboarding.final.startButton" = "Commencer";
+
+/* Onboarding Welcome View */
+"onboarding.welcome.title" = "Un voyage commence par un simple pas.";
+"onboarding.welcome.subtitle" = "Transformez vos aspirations en réussites quotidiennes. Commençons !";
+
+/* Widgets */
+"widget.placeholder.title" = "Mon Objectif Génial";
+"widget.header.nextGoal" = "PROCHAIN OBJECTIF";
+"widget.label.due" = "Échéance : %@";
+"widget.emptyState.title" = "Aucun objectif actif";
+"widget.emptyState.subtitle" = "Ajoutez un nouvel objectif dans l'application !";
+"widget.config.displayName" = "Prochain Objectif";
+"widget.config.description" = "Affiche votre prochain objectif.";
+
+/* Live Activity & Dynamic Island */
+"liveActivity.lockScreen.greeting" = "Bonjour %@";
+"liveActivity.dynamicIsland.expanded.leading" = "Gauche";
+"liveActivity.dynamicIsland.expanded.trailing" = "Droite";
+"liveActivity.dynamicIsland.expanded.bottom" = "Bas %@";
+"liveActivity.dynamicIsland.compact.leading" = "G";
+"liveActivity.dynamicIsland.compact.trailing" = "D %@";
+
+/* Control Widget */
+"widget.control.toggle.startTimer" = "Démarrer le Minuteur";
+"widget.control.displayName" = "Minuteur";
+"widget.control.description" = "Un contrôle d'exemple qui lance un minuteur.";
+
+/* Common */
+"common.on" = "Activé";
+"common.off" = "Désactivé";
+
+/* Timer Configuration Intent */
+"intent.timerConfig.title" = "Configuration du Nom du Minuteur";
+"intent.timerConfig.param.timerName.title" = "Nom du Minuteur";
+"intent.timerConfig.param.timerName.default" = "Minuteur";
+
+/* Start Timer Intent */
+"intent.startTimer.title" = "Démarrer un minuteur";
+"intent.startTimer.param.isRunning.title" = "Le minuteur est en cours";
+
+/* Static Test Widget */
+"widget.staticTest.title" = "Widget de Test";
+"widget.staticTest.subtitle" = "Si vous voyez ceci, ça fonctionne !";
+"widget.staticTest.config.displayName" = "Test Statique";
+"widget.staticTest.config.description" = "Un simple widget de test.";
+
+

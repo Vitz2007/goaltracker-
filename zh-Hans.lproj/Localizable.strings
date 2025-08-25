@@ -1,0 +1,298 @@
+/* 
+  Localizable.strings
+  GoalTracker
+
+  Created by AJ on 2025/07/24.
+  
+*/
+
+/* GoalTracker App - Chinese (Simplified) */
+
+"common.done" = "完成";
+"common.save" = "保存";
+"common.cancel" = "取消";
+
+
+"quote.1" = "取得进步的秘诀在于开始。";
+"quote.2" = "千里之行，始于足下。";
+"quote.3" = "相信自己能做到，你就已经成功了一半。";
+"quote.4" = "做得好胜于说得好。";
+"quote.5" = "只要你不停下脚步，走得再慢也无所谓。";
+
+/* Settings View */
+"settings.title" = "设置";
+"settings.motivation.header" = "我的动力";
+"settings.motivation.anotherQuoteButton" = "换一句";
+"settings.motivation.writeOwnButton" = "自定义";
+"settings.motivation.footer" = "添加个人引言，让您的通知更有意义。";
+"settings.appearance.header" = "外观";
+"settings.data.header" = "数据管理";
+"settings.data.viewArchived" = "查看已归档的目标";
+"settings.support.label" = "支持与反馈";
+"language.selector.title" = "语言";
+"language.change.note" = "注意：需要重启应用才能应用语言更改。";
+"editMotivation.title" = "我的动力";
+"editMotivation.placeholder" = "你的动力...";
+
+/* ContentView Keys */
+"contentView.title" = "我的目标";
+"contentView.menu.filter" = "筛选";
+"contentView.filter.all" = "全部";
+"contentView.filter.active" = "进行中";
+"contentView.tab.dashboard" = "仪表盘";
+
+/* Accessibility Labels*/
+"accessibility.editButton.label" = "编辑";
+"accessibility.progressButton.label" = "查看进度";
+"accessibility.markComplete.label" = "标记为完成";
+"accessibility.markIncomplete.label" = "标记为未完成";
+"accessibility.deleteButton.label" = "删除";
+"accessibility.streak.label" = "连续天数";
+
+/* Empty State View */
+"emptyState.title" = "今天充满新的可能";
+"emptyState.subtitle" = "今天你将培育什么？点击“+”按钮开始。";
+
+/* Chart View */
+"chart.date.label" = "日期";
+"chart.checkins.label" = "签到次数";
+
+/* zdshboard View */
+"dashboard.activity.title" = "活动记录";
+
+/* Activity Log View */
+"activityLog.emptyState.message" = "尚无签到记录。";
+
+/* Activity Log Navigation Title */
+"activityLog.title" = "活动日志";
+
+/* Add/Edit Note View */
+"addNote.title" = "添加备注";
+"common.skip" = "跳过";
+"common.save" = "保存";
+
+/* Goal Cadence */
+"cadence.daily" = "每天";
+"cadence.everyTwoDays" = "每2天";
+"cadence.everyThreeDays" = "每3天";
+"cadence.weekly" = "每周一次";
+
+/* Handling formatted strings with numbers */
+"addGoal.stepper.targetCheckins" = "目标签到次数: %d";
+"addGoal.text.initialProgress" = "初始进度: %d%%";
+
+/* Color Names */
+"color.defaultBlue" = "默认蓝色";
+"color.green" = "绿色";
+"color.red" = "红色";
+"color.purple" = "紫色";
+"color.orange" = "橙色";
+
+/* Archive View */
+"archive.title" = "归档";
+"archive.emptyState.message" = "没有已归档的目标";
+"archive.completedOnDate" = "完成于: %@";
+"archive.button.unarchive" = "取消归档";
+
+/* Check-In Button Accessibility */
+"checkinButton.accessibility.complete" = "标记为完成";
+"checkinButton.accessibility.incomplete" = "标记为未完成";
+
+/* App Intents */
+"intent.checkin.title" = "签到";
+"intent.goalID.param.title" = "目标ID";
+
+/* Congratulations View */
+"congrats.title" = "目标完成！";
+"congrats.dismissButton" = "太棒了！";
+
+/* Dashboard View */
+"dashboard.title" = "仪表盘";
+"dashboard.momentum.title" = "势頭";
+"dashboard.momentum.checkinsThisWeek" = "本周签到";
+"dashboard.momentum.checkinsThisMonth" = "本月签到";
+"dashboard.trophyRoom.title" = "奖杯室";
+"dashboard.trophyRoom.emptyState" = "还没有完成的目标。继续加油！";
+"dashboard.trophyRoom.completedDateRange" = "完成于: %@ - %@";
+
+/* Donut Chart Labels */
+"chart.label.completed" = "已完成";
+"chart.label.remaining" = "剩余";
+
+/* Edit Goal View */
+"editGoal.title" = "编辑目标";
+"editGoal.section.details" = "目标详情";
+"editGoal.placeholder.goalTitle" = "目标标题";
+"editGoal.section.progress" = "进度";
+"editGoal.text.completion" = "完成度: %d%%";
+
+/* Goal Date Info */
+"goal.startDate.label" = "开始日期:";
+"goal.deadline.label" = "截止日期:";
+
+/* Common / Reusable */
+"common.edit" = "编辑";
+"common.delete" = "删除";
+"common.undo" = "撤销";
+
+/* Goal Detail View */
+"goalDetail.title" = "目标详情";
+"goalDetail.button.checkInToday" = "今日签到";
+"goalDetail.chart.title" = "过去7天的活动";
+"goalDetail.button.reopen" = "重新打开";
+"goalDetail.button.finish" = "完成";
+"goalDetail.popup.checkedIn" = "已签到！";
+"category.general" = "通用";
+
+
+/* Delete Alert */
+"goalDetail.alert.delete.title" = "删除目标？";
+"goalDetail.alert.delete.message" = "您确定要删除这个目标吗？此操作无法撤销。";
+
+// MARK: - Goal Categories
+"category.financial.name" = "金融";
+"category.health.name" = "健康与保健";
+"category.career.name" = "职业与发展";
+
+// MARK: - Financial Presets
+"category.financial.preset.automateSavings.title" = "自动化您的储蓄";
+"category.financial.preset.automateSavings.template" = "每月`[1日]`自动转账`[金额]`到我的储蓄账户。";
+"category.financial.preset.automateSavings.rationale" = "自动化过程可以培养持续的习惯，无需日常激励，而这正是常见的失败点。这是朝着储蓄更多这一普遍目标迈出的具体、可衡量的行动。";
+
+"category.financial.preset.accelerateDebt.title" = "加速偿还债务";
+"category.financial.preset.accelerateDebt.template" = "每月额外支付`[金额]`以偿还我的`[信用卡/贷款]`债务。";
+"category.financial.preset.accelerateDebt.rationale" = "这个目标具体且可衡量，将‘摆脱债务’的模糊愿望转变为具体、可追踪的行动。这是许多人的首要财务重点。";
+
+"category.financial.preset.emergencyFund.title" = "建立应急基金";
+"category.financial.preset.emergencyFund.template" = "在`[日期]`前储蓄`[金额]`以建立备用金。";
+"category.financial.preset.emergencyFund.rationale" = "创建一个有时间限制的具体目标是SMART框架的核心原则，事实证明这比模糊的目标更有效。这解决了普遍存在的财务不安全感。";
+
+"category.financial.preset.trackSpending.title" = "追踪您的支出";
+"category.financial.preset.trackSpending.template" = "每周`[星期日]`花`[15分钟]`回顾我的每周支出。";
+"category.financial.preset.trackSpending.rationale" = "这创建了一个小而可重复的习惯（过程目标），为有效管理财务提供了所需数据，而不仅仅是模糊地‘减少开支’。";
+
+// MARK: - Health Presets
+"category.health.preset.workoutRoutine.title" = "建立锻炼常规";
+"category.health.preset.workoutRoutine.template" = "每周完成`[3]`次，每次`[30分钟]`的锻炼。";
+"category.health.preset.workoutRoutine.rationale" = "这取代了模糊且常常失败的‘健身’目标，代之以具体、可衡量、可实现的过程。对于长期成功而言，坚持比强度更重要。";
+
+"category.health.preset.improveNutrition.title" = "改善您的营养";
+"category.health.preset.improveNutrition.template" = "每天在午餐和晚餐中增加一份`[蔬菜]`。";
+"category.health.preset.improveNutrition.rationale" = "这是一个小的、可操作的‘接近’目标（增加好的东西），在心理上比‘回避’目标（戒掉坏的东西）更有效。";
+
+"category.health.preset.dailyMindfulness.title" = "练习每日正念";
+"category.health.preset.dailyMindfulness.template" = "每天使用`[应用程序名称或技巧]`冥想`[10分钟]`。";
+"category.health.preset.dailyMindfulness.rationale" = "这个目标具体、有时间限制，并专注于一个小的、可管理的习惯。改善心理健康是全球的重中之重。";
+
+"category.health.preset.digitalDetox.title" = "实施数字排毒";
+"category.health.preset.digitalDetox.template" = "每晚睡前将手机收起`[1小时]`。";
+"category.health.preset.digitalDetox.rationale" = "这直接解决了人们日益希望减少屏幕时间的趋势。这是一个具体、可控的行动，而非模糊的愿望。";
+
+// MARK: - Career Presets
+"category.career.preset.learnSkill.title" = "学习一项新的专业技能";
+"category.career.preset.learnSkill.template" = "在`[日期]`前完成一门`[例如，Python、项目管理]`的在线课程。";
+"category.career.preset.learnSkill.rationale" = "持续学习是年轻一代的主要动力。这个目标具体、可衡量，并且与现代职业抱负相关。";
+
+"category.career.preset.polishProfile.title" = "完善您的职业档案";
+"category.career.preset.polishProfile.template" = "在本月底前修改我的简历并更新我的领英个人资料。";
+"category.career.preset.polishProfile.rationale" = "保持您的专业材料最新是一项高影响力的任务，确保您随时准备迎接新机会。这是职业管理的基础步骤。";
+
+/* Goal Row */
+"goalRow.due" = "截止:";
+
+/* Common */
+"common.close" = "关闭";
+
+/* Icon Picker */
+"iconPicker.title" = "选择一个图标";
+"iconPicker.noIconButton" = "无图标";
+
+/* Accessibility Labels */
+"icon.target" = "靶心";
+"icon.flag" = "旗帜";
+"icon.star" = "星星";
+"icon.heart" = "心形";
+"icon.flame" = "火焰";
+"icon.book" = "书本";
+"icon.pencil" = "铅笔";
+"icon.graduationCap" = "毕业帽";
+"icon.dollarSign" = "美元符号";
+"icon.chartBar" = "条形图";
+"icon.calendar" = "日历";
+"icon.walk" = "行走的人";
+"icon.dumbbell" = "哑铃";
+"icon.airplane" = "飞机";
+"icon.house" = "房子";
+"icon.lightbulb" = "灯泡";
+
+/* Language Selection */
+"language.picker.accessibilityTitle" = "选择一种语言";
+"language.name.en_US" = "英语（美国）";
+"language.name.en_GB" = "英语（英国）";
+"language.name.ja" = "日语";
+"language.name.es" = "西班牙语";
+"language.name.fr" = "法语";
+"language.name.de" = "德语";
+"language.name.zh_Hans" = "简体中文";
+
+/* Notifications */
+"notification.title" = "目标提醒";
+"notification.body" = "别忘了为你的目标努力: %@";
+
+/* Onboarding Goal Creation View */
+"onboarding.goalCreation.title" = "你最想实现的一件事是什么？";
+"onboarding.goalCreation.placeholder" = "例如，跑一场5公里比赛";
+"onboarding.goalCreation.subtitle" = "稍后您可以添加更多细节，如截止日期和提醒。";
+
+/* Onboarding Final View */
+"onboarding.final.title" = "一切就绪！";
+"onboarding.final.subtitle" = "追踪目标的人实现目标的可能性要高出42%。";
+"onboarding.final.startButton" = "开始";
+
+/* Onboarding Welcome View */
+"onboarding.welcome.title" = "千里之行，始于足下。";
+"onboarding.welcome.subtitle" = "将您的抱负转化为日常成就。让我们开始吧。";
+"onboarding.welcome.title" = "千里之行，始于足下。";
+"onboarding.welcome.subtitle" = "将您的抱负转化为日常成就。让我们开始吧。";
+
+/* Widget */
+"widget.placeholder.title" = "我的超棒目标";
+"widget.header.nextGoal" = "下一个目标";
+"widget.label.due" = "截止于: %@";
+"widget.emptyState.title" = "没有进行中的目标";
+"widget.emptyState.subtitle" = "在应用中添加一个新目标！";
+"widget.config.displayName" = "下一个目标";
+"widget.config.description" = "显示您的下一个即将到来的目标。";
+
+/* Live Activity & Dynamic Island */
+"liveActivity.lockScreen.greeting" = "你好 %@";
+"liveActivity.dynamicIsland.expanded.leading" = "左侧";
+"liveActivity.dynamicIsland.expanded.trailing" = "右侧";
+"liveActivity.dynamicIsland.expanded.bottom" = "底部 %@";
+"liveActivity.dynamicIsland.compact.leading" = "左";
+"liveActivity.dynamicIsland.compact.trailing" = "右 %@";
+
+/* Control Widget */
+"widget.control.toggle.startTimer" = "启动计时器";
+"widget.control.displayName" = "计时器";
+"widget.control.description" = "一个运行计时器的示例控件。";
+
+/* Common */
+"common.on" = "开";
+"common.off" = "关";
+
+/* Timer Configuration Intent */
+"intent.timerConfig.title" = "计时器名称配置";
+"intent.timerConfig.param.timerName.title" = "计时器名称";
+"intent.timerConfig.param.timerName.default" = "计时器";
+
+/* Start Timer Intent */
+"intent.startTimer.title" = "启动一个计时器";
+"intent.startTimer.param.isRunning.title" = "计时器正在运行";
+
+/* Static Test Widget */
+"widget.staticTest.title" = "测试小组件";
+"widget.staticTest.subtitle" = "如果您看到这个，说明它能用！";
+"widget.staticTest.config.displayName" = "静态测试";
+"widget.staticTest.config.description" = "一个简单的测试小组件。";
+
