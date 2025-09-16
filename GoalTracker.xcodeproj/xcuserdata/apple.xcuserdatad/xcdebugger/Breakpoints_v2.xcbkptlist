@@ -33,14 +33,6 @@
                   symbolName = "*0x7ffa1e9fb7d6"
                   usesParentBreakpointCondition = "Yes">
                </Location>
-               <Location
-                  uuid = "FC252337-2EF9-4C67-A6DA-74B7A3BC7FB0 - a03e22df35ba1aad"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "*0x7ffa1e9fb7d6"
-                  usesParentBreakpointCondition = "Yes">
-               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>

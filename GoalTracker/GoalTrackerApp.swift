@@ -18,8 +18,10 @@ struct GoalTrackerApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(settings)
-                .id(appLanguage)
-        }
-        // The .modelContainer modifier has been removed.
-    }
-}
+                                // ✅ This modifier forces the entire view to be recreated when the language changes
+                                .id(appLanguage)
+                                // ✅ This modifier injects the selected locale into the environment for all views
+                                .environment(\.locale, Locale(identifier: appLanguage))
+                        }
+                    }
+                }

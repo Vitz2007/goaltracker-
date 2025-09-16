@@ -32,6 +32,8 @@
 "settings.data.header" = "Data Management";
 "settings.data.viewArchived" = "View Archived Goals";
 "settings.support.label" = "Support & Feedback";
+"settings.theme" = "Theme";
+"settings.language" = "Language";
 
 /* LANGUAGE SELECTION VIEW */
 "language.selector.title" = "Language";
@@ -231,6 +233,8 @@
 
 /* Common */
 "common.close" = "Close";
+"common.settings" = "Settings";
+"common.cancel" = "Cancel";
 
 /* Icon Picker */
 "iconPicker.title" = "Choose an Icon";
@@ -327,9 +331,6 @@
 "preview.activityLog.withCheckins" = "With Check-ins";
 "preview.activityLog.noCheckins" = "No Check-ins";
 
-/* Common */
-"common.settings" = "Settings";
-"common.cancel" = "Cancel";
 
 /* Sort and Filter Options */
 "filter.all" = "All";

@@ -8,44 +8,61 @@
 import SwiftUI
 
 struct GoalRowView: View {
-    @Binding var goal: Goal
+    let goal: Goal
     let settings: AppSettings
-    let onCheckIn: () -> Void
+    let onCheckIn: (CGPoint) -> Void
 
     private var category: GoalCategory? {
         GoalLibrary.categories.first { $0.id == goal.categoryID }
     }
     
     private var categoryColor: Color {
-        switch category?.colorName {
-        case "green": return .green
-        case "red": return .red
-        case "blue": return .blue
-        default: return settings.currentAccentColor
+        settings.themeColor(for: category?.colorName ?? "")
+    }
+    
+    private var iconNameToDisplay: String {
+        if let iconName = goal.iconName, !iconName.isEmpty {
+            return iconName
         }
+        if let iconName = category?.iconName, !iconName.isEmpty {
+            return iconName
+        }
+        return "target"
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .top) {
-                Image(systemName: goal.iconName ?? category?.iconName ?? "target")
+                Image(systemName: iconNameToDisplay)
                     .font(.title2)
                     .foregroundStyle(categoryColor)
                     .frame(width: 30)
                 
-                Text(LocalizedStringKey(goal.title))
-                    .font(.headline)
-                    .fontWeight(.bold)
+                if goal.title.contains("category.") {
+                    Text(LocalizedStringKey(goal.title))
+                        .font(.headline)
+                        .fontWeight(.bold)
+                } else {
+                    Text(goal.title)
+                        .font(.headline)
+                        .fontWeight(.bold)
+                }
                 
                 Spacer()
                 
-                // CheckInButtonView now just needs a simple closure
-                Button(action: onCheckIn) {
-                    Image(systemName: goal.isCompleted ? "checkmark.circle.fill" : "circle")
-                        .font(.title)
-                        .foregroundStyle(goal.isCompleted ? .green : categoryColor)
+                GeometryReader { proxy in
+                    Button(action: {
+                        let frame = proxy.frame(in: .global)
+                        let center = CGPoint(x: frame.midX, y: frame.midY)
+                        onCheckIn(center)
+                    }) {
+                        Image(systemName: goal.isCompleted ? "checkmark.circle.fill" : "circle")
+                            .font(.title)
+                            .foregroundStyle(goal.isCompleted ? .green : categoryColor)
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
+                .frame(width: 30, height: 30)
             }
             
             HStack {

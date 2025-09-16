@@ -15,18 +15,25 @@ struct GoalDetailView: View {
     @State private var showingEditSheet = false
     @State private var showingDeleteAlert = false
     @State private var showingUndoConfirmation = false
+    
+    @EnvironmentObject var appSettings: AppSettings
 
     private var category: GoalCategory? {
         GoalLibrary.categories.first { $0.id == goal.categoryID }
     }
     
     private var categoryColor: Color {
-        switch category?.colorName {
-        case "green": return .green
-        case "red": return .red
-        case "blue": return .blue
-        default: return .accentColor
+        appSettings.themeColor(for: category?.colorName ?? "")
+    }
+    
+    private var iconNameToDisplay: String {
+        if let iconName = goal.iconName, !iconName.isEmpty {
+            return iconName
         }
+        if let iconName = category?.iconName, !iconName.isEmpty {
+            return iconName
+        }
+        return "target"
     }
 
     var body: some View {
@@ -38,18 +45,17 @@ struct GoalDetailView: View {
             checkInButton
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
-            
-            activityChart
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
-        .overlay(alignment: .bottom) { actionToolbar }
+        .overlay(alignment: .bottom) {
+            ActionSliderView(onAction: handle, isCompleted: goal.isCompleted)
+                .padding(.bottom)
+        }
         .overlay(alignment: .bottom) { undoPopup }
         .animation(.easeInOut, value: showingUndoConfirmation)
         .navigationTitle("goalDetail.title")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showingEditSheet) { EditGoalView(goal: $goal) } // Pass as binding
+        .sheet(isPresented: $showingEditSheet) { EditGoalView(goal: $goal) }
         .alert("goalDetail.alert.delete.title", isPresented: $showingDeleteAlert) {
             Button("common.delete", role: .destructive) { onDelete(goal.id) }
             Button("common.cancel", role: .cancel) {}
@@ -57,13 +63,23 @@ struct GoalDetailView: View {
             Text("goalDetail.alert.delete.message")
         }
     }
-
-    // --- View Components ---
+    
+    private func handle(_ action: GoalAction) {
+        switch action {
+        case .edit:
+            showingEditSheet = true
+        case .finish:
+            goal.isCompleted.toggle()
+            updateProgress()
+        case .delete:
+            showingDeleteAlert = true
+        }
+    }
 
     private var goalInfoCard: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Image(systemName: goal.iconName ?? category?.iconName ?? "target")
+                Image(systemName: iconNameToDisplay)
                     .font(.title)
                     .foregroundStyle(categoryColor)
                 
@@ -74,10 +90,17 @@ struct GoalDetailView: View {
                 Spacer()
             }
             
-            Text(goal.title)
-                .font(.largeTitle.bold())
-                .strikethrough(goal.isCompleted, color: .primary)
-                .opacity(goal.isCompleted ? 0.6 : 1.0)
+            if goal.title.contains("category.") {
+                Text(LocalizedStringKey(goal.title))
+                    .font(.largeTitle.bold())
+                    .strikethrough(goal.isCompleted, color: .primary)
+                    .opacity(goal.isCompleted ? 0.6 : 1.0)
+            } else {
+                Text(goal.title)
+                    .font(.largeTitle.bold())
+                    .strikethrough(goal.isCompleted, color: .primary)
+                    .opacity(goal.isCompleted ? 0.6 : 1.0)
+            }
             
             HStack {
                 if let startDate = goal.startDate {
@@ -98,7 +121,7 @@ struct GoalDetailView: View {
     private var checkInButton: some View {
         Button(action: {
             if !goal.isCompleted {
-                goal.checkIns.append(CheckInRecord()) // Use checkIns and add a CheckInRecord
+                goal.checkIns.append(CheckInRecord())
                 self.showingUndoConfirmation = true
                 updateProgress()
             }
@@ -115,56 +138,6 @@ struct GoalDetailView: View {
         .disabled(goal.isCompleted)
     }
     
-    private var activityChart: some View {
-        VStack(alignment: .leading) {
-            Text("goalDetail.chart.title")
-                .font(.headline)
-            
-            // This assumes your Goal struct has a recentActivity computed property
-            // that is compatible with the Codable model.
-            // ActivityBarChartView(activityData: goal.recentActivity)
-        }
-        .padding()
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
-    }
-    
-    private var actionToolbar: some View {
-        HStack {
-            Button { self.showingEditSheet = true } label: {
-                Label("common.edit", systemImage: "pencil")
-            }
-            .disabled(goal.isCompleted)
-            
-            Spacer()
-            
-            Button {
-                goal.isCompleted.toggle()
-                updateProgress()
-            } label: {
-                Label(goal.isCompleted ? LocalizedStringKey("goalDetail.button.reopen") : LocalizedStringKey("goalDetail.button.finish"), systemImage: goal.isCompleted ? "arrow.counterclockwise" : "flag.checkered.2.crossed")
-            }
-            
-            Spacer()
-            
-            if goal.isCompleted {
-                Button {
-                    goal.isArchived = true
-                    dismiss()
-                } label: {
-                    Label("archive.title", systemImage: "archivebox.fill")
-                }
-            } else {
-                Button(role: .destructive) {
-                    self.showingDeleteAlert = true
-                } label: {
-                    Label("common.delete", systemImage: "trash")
-                }
-            }
-        }
-        .padding()
-        .background(.bar)
-    }
-    
     private var undoPopup: some View {
         Group {
             if showingUndoConfirmation {
@@ -172,7 +145,7 @@ struct GoalDetailView: View {
                     Text("goalDetail.popup.checkedIn")
                     Spacer()
                     Button("common.undo") {
-                        _ = goal.checkIns.popLast() // Use checkIns
+                        _ = goal.checkIns.popLast()
                         updateProgress()
                     }
                 }

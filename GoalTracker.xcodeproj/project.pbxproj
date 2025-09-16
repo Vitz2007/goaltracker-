@@ -13,6 +13,7 @@
 		189F540C2E31DA590045218D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 189F53D92E31D2E50045218D /* WidgetKit.framework */; };
 		189F540D2E31DA590045218D /* WidgetKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 189F53D92E31D2E50045218D /* WidgetKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		18A56E3D2E321E0200B5978A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 18A56E3B2E321E0100B5978A /* Localizable.strings */; };
+		18CECAB22E60D1C2004A6B23 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 18A56E3B2E321E0100B5978A /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,29 +80,30 @@
 		18A56E412E321E5D00B5978A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		18A56E422E321E5E00B5978A /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		18A56E432E321FCB00B5978A /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		18CECAB32E60D618004A6B23 /* GoalTrackerWidgetsExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GoalTrackerWidgetsExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		189F540E2E31DB2B0045218D /* Exceptions for "GoalTrackerWidgets" folder in "GoalTrackerWidgetsExtension" target */ = {
+		182F736D2E6FF11B000D25F2 /* Exceptions for "GoalTracker" folder in "GoalTracker" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 189F53032E30BF250045218D /* GoalTracker */;
+		};
+		182F736E2E6FF128000D25F2 /* Exceptions for "GoalTrackerWidgets" folder in "GoalTrackerWidgetsExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
 			target = 189F53D62E31D2E50045218D /* GoalTrackerWidgetsExtension */;
 		};
-		18B159032E31FAA4008CD952 /* Exceptions for "GoalTracker" folder in "GoalTrackerWidgetsExtension" target */ = {
+		182F73722E6FF212000D25F2 /* Exceptions for "GoalTracker" folder in "GoalTrackerWidgetsExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AddGoalView.swift,
 				CheckInIntent.swift,
 				DataManager.swift,
-				DayActivity.swift,
-				EditGoalView.swift,
 				Goal.swift,
-				GoalLibrary.swift,
-				HaloState.swift,
-				IconPickerView.swift,
-				NotificationManager.swift,
 				SortAndFilterOptions.swift,
 			);
 			target = 189F53D62E31D2E50045218D /* GoalTrackerWidgetsExtension */;
@@ -112,7 +114,8 @@
 		189F53062E30BF250045218D /* GoalTracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				18B159032E31FAA4008CD952 /* Exceptions for "GoalTracker" folder in "GoalTrackerWidgetsExtension" target */,
+				182F736D2E6FF11B000D25F2 /* Exceptions for "GoalTracker" folder in "GoalTracker" target */,
+				182F73722E6FF212000D25F2 /* Exceptions for "GoalTracker" folder in "GoalTrackerWidgetsExtension" target */,
 			);
 			path = GoalTracker;
 			sourceTree = "<group>";
@@ -130,7 +133,7 @@
 		189F53DD2E31D2E50045218D /* GoalTrackerWidgets */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				189F540E2E31DB2B0045218D /* Exceptions for "GoalTrackerWidgets" folder in "GoalTrackerWidgetsExtension" target */,
+				182F736E2E6FF128000D25F2 /* Exceptions for "GoalTrackerWidgets" folder in "GoalTrackerWidgetsExtension" target */,
 			);
 			path = GoalTrackerWidgets;
 			sourceTree = "<group>";
@@ -174,6 +177,7 @@
 		189F52FB2E30BF240045218D = {
 			isa = PBXGroup;
 			children = (
+				18CECAB32E60D618004A6B23 /* GoalTrackerWidgetsExtension.entitlements */,
 				18A56E3B2E321E0100B5978A /* Localizable.strings */,
 				189F53062E30BF250045218D /* GoalTracker */,
 				189F53152E30BF290045218D /* GoalTrackerTests */,
@@ -381,6 +385,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18CECAB22E60D1C2004A6B23 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,6 +593,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GoalTracker/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -628,6 +634,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GoalTracker/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -754,6 +761,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = GoalTrackerWidgetsExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YXAD8H48M3;
@@ -783,6 +791,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = GoalTrackerWidgetsExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YXAD8H48M3;

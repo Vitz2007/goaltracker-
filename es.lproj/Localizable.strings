@@ -11,6 +11,7 @@
 "common.done" = "Hecho";
 "common.save" = "Guardar";
 "common.cancel" = "Cancelar";
+"common.settings" = "ajustes";
 "quote.1" = "El secreto para salir adelante es empezar.";
 "quote.2" = "Un viaje de mil millas comienza con un solo paso.";
 "quote.3" = "Cree que puedes y ya estás a medio camino.";
@@ -38,6 +39,7 @@
 "contentView.filter.all" = "Todos";
 "contentView.filter.active" = "Activos";
 "contentView.tab.dashboard" = "Panel";
+"contentView.menu.sortBy" = "Ordenar por";
 
 /* Accessiblity Labels*/
 "accessibility.editButton.label" = "Editar";

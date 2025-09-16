@@ -31,6 +31,8 @@
 "settings.data.header" = "Data Management";
 "settings.data.viewArchived" = "View Archived Goals";
 "settings.support.label" = "Support & Feedback";
+"settings.theme" = "Theme";
+"settings.language" = "Language";
 
 /* LANGUAGE SELECTION VIEW */
 "language.selector.title" = "Language";
@@ -86,7 +88,7 @@
 
 /* Handling formatted strings with numbers */
 "addGoal.stepper.targetCheckins" = "Target Check-ins: %d";
-"addGoal.text.initialProgress" = "Initial Progress: %d%%";
+// "addGoal.text.initialProgress" = "Initial Progress: %d%%";
 
 /* Color Names */
 "color.defaultBlue" = "Default Blue";
@@ -323,6 +325,7 @@
 /* AddGoalView */
 "addGoal.title" = "Add New Goal";
 "addGoal.button.add" = "Add Goal";
+"addGoal.picker.category" = "Category";
 "addGoal.section.details" = "Goal Details";
 "addGoal.placeholder.goalTitle" = "Goal Title";
 "addGoal.section.dates" = "Dates";
@@ -335,7 +338,7 @@
 "addGoal.toggle.setReminder" = "Set a Reminder";
 "addGoal.datePicker.remindMeAt" = "Remind Me At";
 "addGoal.section.trackingMethod" = "Tracking Method";
-"addGoal.stepper.targetCheckins" = "Target Check-ins: %d";
+// "addGoal.stepper.targetCheckins" = "Target Check-ins: %d";
 "addGoal.section.initialProgress" = "Initial Progress (Optional)";
 "addGoal.text.percentage" = "Percentage: %d%%";
 

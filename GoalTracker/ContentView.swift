@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UserNotifications
+import WidgetKit
 
 struct ContentView: View {
     @State private var goals: [Goal] = []
@@ -20,6 +21,7 @@ struct ContentView: View {
     @EnvironmentObject var appSettings: AppSettings
     @State private var onboardingManager = OnboardingManager()
     @State private var selectedTab: Int = 0
+    @State private var confettiStartPoint: CGPoint? = nil
 
     private var filteredAndSortedGoals: [Goal] {
         let filtered: [Goal]
@@ -45,6 +47,7 @@ struct ContentView: View {
             mainAppView
         } else {
             OnboardingView(manager: onboardingManager) { goalTitle in
+                requestNotificationPermission()
                 if !goalTitle.trimmingCharacters(in: .whitespaces).isEmpty {
                     let newGoal = Goal(
                         title: goalTitle,
@@ -58,100 +61,40 @@ struct ContentView: View {
         }
     }
     
-    // ✅ This view is now simpler.
     private var mainAppView: some View {
         NavigationStack(path: $path) {
-            tabViewContent
-        }
-    }
-    
-    // ✅ The complex TabView and its modifiers have been extracted here.
-    private var tabViewContent: some View {
-        TabView(selection: $selectedTab) {
-            goalsList
-                .tabItem { Label("contentView.title", systemImage: "list.bullet.circle.fill") }
-                .tag(0)
-            
-            DashboardView(goals: goals)
-                .tabItem { Label("contentView.tab.dashboard", systemImage: "chart.pie.fill") }
-                .tag(1)
-        }
-        .navigationTitle(selectedTab == 0 ? LocalizedStringKey("contentView.title") : LocalizedStringKey("dashboard.title"))
-        .navigationBarTitleDisplayMode(.large)
-        .toolbar {
-            if selectedTab == 0 {
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Menu {
-                        Menu("contentView.menu.sortBy") {
-                            Button { currentSortOrder = .byTitle } label: { Label(LocalizedStringKey("sort.byTitle"), systemImage: currentSortOrder == .byTitle ? "checkmark" : "") }
-                            Button { currentSortOrder = .byDueDate } label: { Label(LocalizedStringKey("sort.byDueDate"), systemImage: currentSortOrder == .byDueDate ? "checkmark" : "") }
-                            Button { currentSortOrder = .byCreationDate } label: { Label(LocalizedStringKey("sort.byCreationDate"), systemImage: currentSortOrder == .byCreationDate ? "checkmark" : "") }
-                        }
-                        Menu("contentView.menu.filter") {
-                            Button { currentFilter = .all } label: { Label(LocalizedStringKey("filter.all"), systemImage: currentFilter == .all ? "checkmark" : "") }
-                            Button { currentFilter = .active } label: { Label(LocalizedStringKey("filter.active"), systemImage: currentFilter == .active ? "checkmark" : "") }
-                        }
-                        Divider()
-                        Button { showingSettings = true } label: { Label("common.settings", systemImage: "gearshape") }
-                    } label: { Image(systemName: "line.3.horizontal.decrease.circle") }
+            MainTabView(
+                goals: $goals,
+                path: $path,
+                selectedTab: $selectedTab,
+                showingAddGoal: $showingAddGoal,
+                showingSettings: $showingSettings,
+                currentFilter: $currentFilter,
+                currentSortOrder: $currentSortOrder,
+                confettiStartPoint: $confettiStartPoint
+            )
+            .navigationDestination(for: Goal.self) { goal in
+                if let index = goals.firstIndex(where: { $0.id == goal.id }) {
+                    GoalDetailView(goal: $goals[index], onDelete: deleteGoal)
                 }
             }
-        }
-        .navigationDestination(for: Goal.self) { goal in
-            if let index = goals.firstIndex(where: { $0.id == goal.id }) {
-                GoalDetailView(goal: $goals[index], onDelete: deleteGoal)
+            .sheet(isPresented: $showingSettings) { SettingsView() }
+            .sheet(isPresented: $showingAddGoal) {
+                AddGoalView(goals: $goals, showingAddGoal: $showingAddGoal, onGoalAdded: saveGoals)
             }
-        }
-        .sheet(isPresented: $showingSettings) { SettingsView() }
-        .sheet(isPresented: $showingAddGoal) {
-            AddGoalView(goals: $goals, showingAddGoal: $showingAddGoal, onGoalAdded: saveGoals)
         }
         .onAppear(perform: loadGoals)
         .onChange(of: goals) { _, _ in saveGoals() }
     }
-    
-    private var goalsList: some View {
-        VStack {
-            if filteredAndSortedGoals.isEmpty {
-                EmptyStateView()
-            } else {
-                List {
-                    ForEach(filteredAndSortedGoals) { goal in
-                        if let index = goals.firstIndex(where: { $0.id == goal.id }) {
-                            NavigationLink(value: goal) {
-                                GoalRowView(goal: $goals[index], settings: appSettings) {
-                                    if !goals[index].isCompleted {
-                                        // CelebrationManager.shared.start(goal: goals[index])
-                                    }
-                                    goals[index].isCompleted.toggle()
-                                }
-                            }
-                            .listRowBackground(Color.clear)
-                            .listRowSeparator(.hidden)
-                        }
-                    }
-                    .onDelete(perform: deleteGoal)
-                }
-                .listStyle(.plain)
-            }
-            
-            AddGoalButtonView { showingAddGoal = true }
-                .padding(.bottom)
-        }
-    }
 
-    func deleteGoal(at offsets: IndexSet) {
-        let goalsToDelete = offsets.map { filteredAndSortedGoals[$0] }
-        let idsToDelete = Set(goalsToDelete.map { $0.id })
-        goals.removeAll { idsToDelete.contains($0.id) }
-    }
-    
     func deleteGoal(id: UUID) {
         goals.removeAll { $0.id == id }
+        saveGoals()
     }
 
     func saveGoals() {
         DataManager.shared.save(goals: self.goals)
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     func loadGoals() {

@@ -33,7 +33,7 @@ struct Goal: Identifiable, Codable, Hashable {
     var cadence: GoalCadence
     var categoryID: UUID?
     var iconName: String?
-    var isArchived: Bool = false
+    var isArchived: Bool
 
     init(id: UUID = UUID(),
          title: String,

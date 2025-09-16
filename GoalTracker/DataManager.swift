@@ -42,4 +42,14 @@ class DataManager {
             print("Failed to save goals: \(error.localizedDescription)")
         }
     }
+    
+    // ✅ ADD THIS NEW FUNCTION
+    // It loads all goals, finds only the next one, and returns just that.
+    func loadNextGoal() -> Goal? {
+        let allGoals = self.load()
+        let activeGoals = allGoals.filter { !$0.isCompleted && !$0.isArchived && $0.dueDate != nil }
+        
+        let nextGoal = activeGoals.sorted { $0.dueDate! < $1.dueDate! }.first
+        return nextGoal
+    }
 }

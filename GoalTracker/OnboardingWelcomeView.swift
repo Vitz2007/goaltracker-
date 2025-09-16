@@ -24,7 +24,7 @@ struct OnboardingWelcomeView: View {
                 .fontWeight(.bold)
                 .multilineTextAlignment(.center)
             
-            Text("onboarding.welome.subtitle")
+            Text("onboarding.welcome.subtitle")
                 .font(.title3)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)

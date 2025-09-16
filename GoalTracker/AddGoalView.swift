@@ -26,6 +26,7 @@ struct AddGoalView: View {
     @State private var selectedPresetID: UUID?
     @State private var selectedIconName: String? = "target"
     @State private var showingIconPicker = false
+    @State private var newGoalCompletionPercentage: Double = 0.0
     
     private var selectedCategory: GoalCategory? {
         GoalLibrary.categories.first { $0.id == selectedCategoryID }
@@ -43,10 +44,11 @@ struct AddGoalView: View {
                 datesSection
                 schedulingSection
                 trackingSection
+                initialProgressSection
             }
-            .onChange(of: selectedCategoryID) { selectedPresetID = nil }
-            .onChange(of: selectedPresetID) {
-                guard let presetID = selectedPresetID else {
+            .onChange(of: selectedCategoryID) { _, _ in selectedPresetID = nil }
+            .onChange(of: selectedPresetID) { _, newValue in
+                guard let presetID = newValue else {
                     newGoalTitle = ""
                     return
                 }
@@ -71,11 +73,16 @@ struct AddGoalView: View {
     }
     
     private func saveGoal() {
+        
+        print("--- Saving goal with iconName: \(self.selectedIconName ?? "nil") ---")
+                
+        
         if !newGoalTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             let newGoal = Goal(
                 title: newGoalTitle,
                 startDate: includeStartDate ? selectedStartDate : nil,
                 dueDate: newGoalDueDate,
+                completionPercentage: newGoalCompletionPercentage,
                 targetCheckIns: newGoalTargetCheckIns,
                 reminderIsEnabled: self.reminderIsEnabled,
                 reminderDate: self.reminderDate,
@@ -88,22 +95,14 @@ struct AddGoalView: View {
             showingAddGoal = false
         }
     }
-}
-
-private extension AddGoalView {
-    // --- VIEW COMPONENTS (Sections) ---
-    var goalDetailsSection: some View {
+    
+    private var goalDetailsSection: some View {
         Section(header: Text("addGoal.section.details")) {
             HStack {
-                Button {
-                    showingIconPicker = true
-                } label: {
+                Button { showingIconPicker = true } label: {
                     Image(systemName: selectedIconName ?? "questionmark.circle.fill")
-                        .font(.title3)
-                        .frame(width: 30, height: 30)
-                        .foregroundStyle(Color.accentColor)
-                }
-                .accessibilityLabel("Select an icon")
+                        .font(.title3).frame(width: 30, height: 30).foregroundStyle(Color.accentColor)
+                }.accessibilityLabel("Select an icon")
                 
                 TextField("addGoal.placeholder.goalTitle", text: $newGoalTitle)
             }
@@ -114,25 +113,37 @@ private extension AddGoalView {
                     ForEach(category.presets) { preset in
                         Text(LocalizedStringKey(preset.title)).tag(preset.id as UUID?)
                     }
-                }
-                .pickerStyle(.menu)
+                }.pickerStyle(.menu)
             }
         }
     }
     
-    var categorySection: some View {
+    private var categorySection: some View {
         Section {
             Picker("addGoal.picker.category", selection: $selectedCategoryID) {
                 Text("common.none").tag(nil as UUID?)
                 ForEach(GoalLibrary.categories) { category in
-                    Label(LocalizedStringKey(category.name), systemImage: category.iconName)
-                        .tag(category.id as UUID?)
+                    HStack {
+                        Image(systemName: category.iconName)
+                            .renderingMode(.original)
+                            .foregroundStyle(color(for: category.colorName))
+                        Text(LocalizedStringKey(category.name))
+                    }.tag(category.id as UUID?)
                 }
-            }
+            }.pickerStyle(.menu)
         }
     }
     
-    var datesSection: some View {
+    private func color(for name: String) -> Color {
+        switch name {
+        case "green": return .green
+        case "red": return .red
+        case "blue": return .blue
+        default: return .primary
+        }
+    }
+    
+    private var datesSection: some View {
         Section(header: Text("addGoal.section.dates")) {
             Toggle("addGoal.toggle.setStartDate", isOn: $includeStartDate.animation())
             if includeStartDate {
@@ -142,8 +153,8 @@ private extension AddGoalView {
         }
     }
     
-    var schedulingSection: some View {
-        Section(header: Text("addGoal.section.scheduling")) {
+    private var schedulingSection: some View {
+        Section(header: Text("addGoal.section.frequency")) {
             Picker("addGoal.picker.trackStreak", selection: $selectedCadence) {
                 ForEach(GoalCadence.allCases) { cadence in
                     Text(cadence.localizedKey).tag(cadence)
@@ -157,10 +168,43 @@ private extension AddGoalView {
         }
     }
     
-    var trackingSection: some View {
+    private var trackingSection: some View {
         Section(header: Text("addGoal.section.trackingMethod")) {
             let formatString = NSLocalizedString("addGoal.stepper.targetCheckins", comment: "")
             Stepper(String(format: formatString, newGoalTargetCheckIns), value: $newGoalTargetCheckIns, in: 1...365)
         }
     }
+    
+    private var initialProgressSection: some View {
+        Section(header: Text("addGoal.section.initialProgress")) {
+            VStack(alignment: .leading) {
+                let formatString = NSLocalizedString("addGoal.text.percentage", comment: "")
+                Text(String(format: formatString, Int(newGoalCompletionPercentage * 100)))
+                Slider(value: $newGoalCompletionPercentage, in: 0...1, step: 0.01)
+            }
+        }
+    }
+}
+
+
+#Preview {
+    struct PreviewHost: View {
+        @State private var goals: [Goal] = []
+        @State private var showingAddGoal = true
+
+        var body: some View {
+            VStack {}
+            .sheet(isPresented: $showingAddGoal) {
+                AddGoalView(
+                    goals: $goals,
+                    showingAddGoal: $showingAddGoal,
+                    onGoalAdded: {
+                        print("Preview: Goal added! Total goals: \(goals.count)")
+                    }
+                )
+            }
+        }
+    }
+    
+    return PreviewHost()
 }

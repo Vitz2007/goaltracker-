@@ -7,20 +7,14 @@
 
 import WidgetKit
 import SwiftUI
-import SwiftData
+import AppIntents
 
-// This is the "brain" of the widget. It provides the data for the timeline.
 // This is the "brain" of the widget.
-// In your GoalTrackerWidgets.swift file
-
 struct Provider: AppIntentTimelineProvider {
     
     @MainActor
     private func createTimelineEntry() -> SimpleEntry {
-        let allGoals = DataManager.shared.load()
-        let activeGoals = allGoals.filter { !$0.isCompleted && $0.dueDate != nil }
-        let nextGoal = activeGoals.sorted { $0.dueDate! < $1.dueDate! }.first
-
+        let nextGoal = DataManager.shared.loadNextGoal()
         return SimpleEntry(date: .now, goal: nextGoal)
     }
     
@@ -31,12 +25,10 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        // ✅ ADD await HERE
         await createTimelineEntry()
     }
 
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        // ✅ AND ADD await HERE
         let entry = await createTimelineEntry()
         
         let nextUpdate = Calendar.current.date(byAdding: .hour, value: 1, to: .now)!
@@ -45,20 +37,17 @@ struct Provider: AppIntentTimelineProvider {
         return timeline
     }
 }
-    
-    // The old createTimelineEntry() function is no longer needed for this workaround.
 
 
-// This struct holds the data for a single point in time for the widget.
+// This struct holds the data for the widget.
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let id: String? // Using simple types for Sendable safety
+    let id: String?
     let title: String?
     let dueDate: Date?
     let isCompleted: Bool?
     let completionPercentage: Double?
 
-    // An initializer to easily convert a Goal into a SimpleEntry.
     init(date: Date, goal: Goal?) {
         self.date = date
         self.id = goal?.id.uuidString
@@ -67,19 +56,9 @@ struct SimpleEntry: TimelineEntry {
         self.isCompleted = goal?.isCompleted
         self.completionPercentage = goal?.completionPercentage
     }
-
-    // A separate initializer for creating a placeholder manually.
-    init(date: Date, title: String?, dueDate: Date?, isCompleted: Bool?, completionPercentage: Double?) {
-        self.date = date
-        self.id = nil
-        self.title = title
-        self.dueDate = dueDate
-        self.isCompleted = isCompleted
-        self.completionPercentage = completionPercentage
-    }
     
     static func noGoals() -> SimpleEntry {
-        return SimpleEntry(date: .now, title: nil, dueDate: nil, isCompleted: nil, completionPercentage: nil)
+        return SimpleEntry(date: .now, goal: nil)
     }
 }
 
@@ -88,6 +67,20 @@ struct GoalTrackerWidgetsEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
+        // ✅ Wrap the entire view in a Link if a goal exists to allow deep linking
+        if let goalIDString = entry.id, let url = URL(string: "goaltracker://goal?id=\(goalIDString)") {
+            Link(destination: url) {
+                widgetContent
+            }
+            .tint(.primary) // Ensure the content doesn't get colored like a link
+        } else {
+            // If there's no goal, just show the content without a link
+            widgetContent
+        }
+    }
+    
+    // This private property holds the actual UI for the widget
+    private var widgetContent: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("widget.header.nextGoal")
                 .font(.caption)
@@ -101,7 +94,6 @@ struct GoalTrackerWidgetsEntryView : View {
                let goalIDString = entry.id,
                let goalID = UUID(uuidString: goalIDString) {
                 
-                // Goal Info
                 VStack(alignment: .leading) {
                     Text(LocalizedStringKey(title))
                         .font(.headline)
@@ -113,20 +105,16 @@ struct GoalTrackerWidgetsEntryView : View {
                     let formatString = NSLocalizedString("widget.label.due", comment: "")
                     let dueDateFormatted = dueDate.formatted(date: .numeric, time: .omitted)
                     Text(String(format: formatString, dueDateFormatted))
-                                            .font(.caption2)
-                                            .foregroundStyle(.secondary)
-                                    }
-
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
                 Spacer()
-
-                // Interactive Button
                 Button(intent: CheckInIntent(goalID: goalID)) {
                     Label("intent.checkin.title", systemImage: "checkmark.circle.fill")
                 }
                 .tint(Color.green.gradient)
                 
             } else {
-                // This part is for when there are no goals.
                 Spacer()
                 Text("widget.emptyState.title")
                     .font(.headline)
@@ -148,8 +136,9 @@ struct GoalTrackerWidgets: Widget {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             GoalTrackerWidgetsEntryView(entry: entry)
         }
-        .configurationDisplayName(LocalizedStringKey("widget.config.displayName"))
-                .description(LocalizedStringKey("widget.config.description"))
-                .supportedFamilies([.systemSmall, .systemMedium])
-            }
-        }
+        // ✅ CORRECTED: These modifiers require LocalizedStringResource
+        .configurationDisplayName(LocalizedStringResource("widget.config.displayName"))
+        .description(LocalizedStringResource("widget.config.description"))
+        .supportedFamilies([.systemSmall, .systemMedium])
+    }
+}

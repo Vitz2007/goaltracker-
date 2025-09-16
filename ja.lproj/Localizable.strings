@@ -31,13 +31,19 @@
 "language.change.note" = "注意：言語の変更を適用するには、アプリの再起動が必要です。";
 "editMotivation.title" = "私のモチベーション";
 "editMotivation.placeholder" = "あなたのモチベーション...";
+"settings.section.appearance" = "テーマ";
+"settings.language" = "言語";
+"common.settings" = "設定";
+
 
 /* ContentView Keys */
 "contentView.title" = "私の目標";
 "contentView.menu.filter" = "フィルター";
+"contentView.menu.sortBy" = "並べ替え";
 "contentView.filter.all" = "すべて";
 "contentView.filter.active" = "進行中";
 "contentView.tab.dashboard" = "ダッシュボード";
+
 
 /* Accessiblity Labels*/
 "accessibility.editButton.label" = "編集";
@@ -291,6 +297,19 @@
 "widget.staticTest.config.displayName" = "静的テスト";
 "widget.staticTest.config.description" = "シンプルなテストウィジェットです。";
 
-
+/* Add Goal settings */
+"addGoal.title" = "新しい目標を追加";
+"addGoal.section.details" = "目標の詳細";
+"addGoal.placeholder.goalTitle" = "目標タイトル";
+"addGoal.picker.category" = "カテゴリ";
+"common.none" = "なし";
+"addGoal.section.dates" = "日付";
+"addGoal.toggle.setStartDate" = "開始日を設定する";
+"addGoal.datePicker.dueDate" = "期日";
+"addGoal.section.frequency" = "頻度";
+"addGoal.picker.trackStreak" = "継続記録";
+"addGoal.toggle.setReminder" = "リマインダーを設定する";
+"addGoal.section.trackingMethod" = "追跡方法";
+"addGoal.section.initialProgress" = "初期の進捗状況（オプション)";
 
 
