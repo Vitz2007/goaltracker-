@@ -1,7 +1,10 @@
 {
   "images" : [
     {
+<<<<<<< HEAD
       "filename" : "msicon1024.png",
+=======
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

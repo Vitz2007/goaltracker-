@@ -6,6 +6,7 @@
 	objectVersion = 77;
 	objects = {
 
+<<<<<<< HEAD
 /* Begin PBXBuildFile section */
 		189F53ED2E31D2EC0045218D /* GoalTrackerWidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 189F53D72E31D2E50045218D /* GoalTrackerWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		189F54092E31DA570045218D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 189F53DB2E31D2E50045218D /* SwiftUI.framework */; };
@@ -121,15 +122,52 @@
 			sourceTree = "<group>";
 		};
 		189F53152E30BF290045218D /* GoalTrackerTests */ = {
+=======
+/* Begin PBXContainerItemProxy section */
+		180685512DA3BE1E006153C9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1806853B2DA3BE19006153C9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 180685422DA3BE19006153C9;
+			remoteInfo = GoalTracker;
+		};
+		1806855B2DA3BE1E006153C9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1806853B2DA3BE19006153C9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 180685422DA3BE19006153C9;
+			remoteInfo = GoalTracker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		180685432DA3BE19006153C9 /* GoalTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		180685502DA3BE1E006153C9 /* GoalTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GoalTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1806855A2DA3BE1E006153C9 /* GoalTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GoalTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		180685452DA3BE19006153C9 /* GoalTracker */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = GoalTracker;
+			sourceTree = "<group>";
+		};
+		180685532DA3BE1E006153C9 /* GoalTrackerTests */ = {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = GoalTrackerTests;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
 		189F531F2E30BF290045218D /* GoalTrackerUITests */ = {
+=======
+		1806855D2DA3BE1E006153C9 /* GoalTrackerUITests */ = {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = GoalTrackerUITests;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
 		189F53DD2E31D2E50045218D /* GoalTrackerWidgets */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -142,26 +180,41 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		189F53012E30BF250045218D /* Frameworks */ = {
+=======
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		180685402DA3BE19006153C9 /* Frameworks */ = {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+<<<<<<< HEAD
 		189F530F2E30BF290045218D /* Frameworks */ = {
+=======
+		1806854D2DA3BE1E006153C9 /* Frameworks */ = {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+<<<<<<< HEAD
 		189F53192E30BF290045218D /* Frameworks */ = {
+=======
+		180685572DA3BE1E006153C9 /* Frameworks */ = {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+<<<<<<< HEAD
 		189F53D42E31D2E50045218D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -195,10 +248,32 @@
 				189F53122E30BF290045218D /* GoalTrackerTests.xctest */,
 				189F531C2E30BF290045218D /* GoalTrackerUITests.xctest */,
 				189F53D72E31D2E50045218D /* GoalTrackerWidgetsExtension.appex */,
+=======
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1806853A2DA3BE19006153C9 = {
+			isa = PBXGroup;
+			children = (
+				180685452DA3BE19006153C9 /* GoalTracker */,
+				180685532DA3BE1E006153C9 /* GoalTrackerTests */,
+				1806855D2DA3BE1E006153C9 /* GoalTrackerUITests */,
+				180685442DA3BE19006153C9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		180685442DA3BE19006153C9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				180685432DA3BE19006153C9 /* GoalTracker.app */,
+				180685502DA3BE1E006153C9 /* GoalTrackerTests.xctest */,
+				1806855A2DA3BE1E006153C9 /* GoalTrackerUITests.xctest */,
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
 		189F53D82E31D2E50045218D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,19 +294,38 @@
 				189F53012E30BF250045218D /* Frameworks */,
 				189F53022E30BF250045218D /* Resources */,
 				189F53F22E31D2EC0045218D /* Embed Foundation Extensions */,
+=======
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		180685422DA3BE19006153C9 /* GoalTracker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 180685642DA3BE1E006153C9 /* Build configuration list for PBXNativeTarget "GoalTracker" */;
+			buildPhases = (
+				1806853F2DA3BE19006153C9 /* Sources */,
+				180685402DA3BE19006153C9 /* Frameworks */,
+				180685412DA3BE19006153C9 /* Resources */,
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 			buildRules = (
 			);
 			dependencies = (
+<<<<<<< HEAD
 				189F53EC2E31D2EC0045218D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				189F53062E30BF250045218D /* GoalTracker */,
+=======
+			);
+			fileSystemSynchronizedGroups = (
+				180685452DA3BE19006153C9 /* GoalTracker */,
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 			name = GoalTracker;
 			packageProductDependencies = (
 			);
 			productName = GoalTracker;
+<<<<<<< HEAD
 			productReference = 189F53042E30BF250045218D /* GoalTracker.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -242,19 +336,39 @@
 				189F530E2E30BF290045218D /* Sources */,
 				189F530F2E30BF290045218D /* Frameworks */,
 				189F53102E30BF290045218D /* Resources */,
+=======
+			productReference = 180685432DA3BE19006153C9 /* GoalTracker.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1806854F2DA3BE1E006153C9 /* GoalTrackerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 180685672DA3BE1E006153C9 /* Build configuration list for PBXNativeTarget "GoalTrackerTests" */;
+			buildPhases = (
+				1806854C2DA3BE1E006153C9 /* Sources */,
+				1806854D2DA3BE1E006153C9 /* Frameworks */,
+				1806854E2DA3BE1E006153C9 /* Resources */,
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 			buildRules = (
 			);
 			dependencies = (
+<<<<<<< HEAD
 				189F53142E30BF290045218D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				189F53152E30BF290045218D /* GoalTrackerTests */,
+=======
+				180685522DA3BE1E006153C9 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				180685532DA3BE1E006153C9 /* GoalTrackerTests */,
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 			name = GoalTrackerTests;
 			packageProductDependencies = (
 			);
 			productName = GoalTrackerTests;
+<<<<<<< HEAD
 			productReference = 189F53122E30BF290045218D /* GoalTrackerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -265,19 +379,39 @@
 				189F53182E30BF290045218D /* Sources */,
 				189F53192E30BF290045218D /* Frameworks */,
 				189F531A2E30BF290045218D /* Resources */,
+=======
+			productReference = 180685502DA3BE1E006153C9 /* GoalTrackerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		180685592DA3BE1E006153C9 /* GoalTrackerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1806856A2DA3BE1E006153C9 /* Build configuration list for PBXNativeTarget "GoalTrackerUITests" */;
+			buildPhases = (
+				180685562DA3BE1E006153C9 /* Sources */,
+				180685572DA3BE1E006153C9 /* Frameworks */,
+				180685582DA3BE1E006153C9 /* Resources */,
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 			buildRules = (
 			);
 			dependencies = (
+<<<<<<< HEAD
 				189F531E2E30BF290045218D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				189F531F2E30BF290045218D /* GoalTrackerUITests */,
+=======
+				1806855C2DA3BE1E006153C9 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1806855D2DA3BE1E006153C9 /* GoalTrackerUITests */,
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 			name = GoalTrackerUITests;
 			packageProductDependencies = (
 			);
 			productName = GoalTrackerUITests;
+<<<<<<< HEAD
 			productReference = 189F531C2E30BF290045218D /* GoalTrackerUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -331,11 +465,41 @@
 				};
 			};
 			buildConfigurationList = 189F52FF2E30BF240045218D /* Build configuration list for PBXProject "GoalTracker" */;
+=======
+			productReference = 1806855A2DA3BE1E006153C9 /* GoalTrackerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1806853B2DA3BE19006153C9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1630;
+				LastUpgradeCheck = 1630;
+				TargetAttributes = {
+					180685422DA3BE19006153C9 = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					1806854F2DA3BE1E006153C9 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 180685422DA3BE19006153C9;
+					};
+					180685592DA3BE1E006153C9 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 180685422DA3BE19006153C9;
+					};
+				};
+			};
+			buildConfigurationList = 1806853E2DA3BE19006153C9 /* Build configuration list for PBXProject "GoalTracker" */;
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+<<<<<<< HEAD
 				"en-GB",
 				fr,
 				de,
@@ -354,11 +518,25 @@
 				189F53112E30BF290045218D /* GoalTrackerTests */,
 				189F531B2E30BF290045218D /* GoalTrackerUITests */,
 				189F53D62E31D2E50045218D /* GoalTrackerWidgetsExtension */,
+=======
+			);
+			mainGroup = 1806853A2DA3BE19006153C9;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 180685442DA3BE19006153C9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				180685422DA3BE19006153C9 /* GoalTracker */,
+				1806854F2DA3BE1E006153C9 /* GoalTrackerTests */,
+				180685592DA3BE1E006153C9 /* GoalTrackerUITests */,
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+<<<<<<< HEAD
 		189F53022E30BF250045218D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -368,44 +546,67 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		189F53102E30BF290045218D /* Resources */ = {
+=======
+		180685412DA3BE19006153C9 /* Resources */ = {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+<<<<<<< HEAD
 		189F531A2E30BF290045218D /* Resources */ = {
+=======
+		1806854E2DA3BE1E006153C9 /* Resources */ = {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+<<<<<<< HEAD
 		189F53D52E31D2E50045218D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				18CECAB22E60D1C2004A6B23 /* Localizable.strings in Resources */,
+=======
+		180685582DA3BE1E006153C9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+<<<<<<< HEAD
 		189F53002E30BF250045218D /* Sources */ = {
+=======
+		1806853F2DA3BE19006153C9 /* Sources */ = {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+<<<<<<< HEAD
 		189F530E2E30BF290045218D /* Sources */ = {
+=======
+		1806854C2DA3BE1E006153C9 /* Sources */ = {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+<<<<<<< HEAD
 		189F53182E30BF290045218D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -414,6 +615,9 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		189F53D32E31D2E50045218D /* Sources */ = {
+=======
+		180685562DA3BE1E006153C9 /* Sources */ = {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -423,6 +627,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+<<<<<<< HEAD
 		189F53142E30BF290045218D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 189F53032E30BF250045218D /* GoalTracker */;
@@ -459,11 +664,30 @@
 
 /* Begin XCBuildConfiguration section */
 		189F53242E30BF290045218D /* Debug */ = {
+=======
+		180685522DA3BE1E006153C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 180685422DA3BE19006153C9 /* GoalTracker */;
+			targetProxy = 180685512DA3BE1E006153C9 /* PBXContainerItemProxy */;
+		};
+		1806855C2DA3BE1E006153C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 180685422DA3BE19006153C9 /* GoalTracker */;
+			targetProxy = 1806855B2DA3BE1E006153C9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		180685622DA3BE1E006153C9 /* Debug */ = {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+<<<<<<< HEAD
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+=======
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -493,7 +717,10 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+<<<<<<< HEAD
 				DEAD_CODE_STRIPPING = YES;
+=======
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXAD8H48M3;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -513,22 +740,37 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+<<<<<<< HEAD
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+<<<<<<< HEAD
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+=======
+				SDKROOT = iphoneos;
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
+<<<<<<< HEAD
 		189F53252E30BF290045218D /* Release */ = {
+=======
+		180685632DA3BE1E006153C9 /* Release */ = {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+<<<<<<< HEAD
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+=======
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -558,7 +800,10 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+<<<<<<< HEAD
 				DEAD_CODE_STRIPPING = YES;
+=======
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXAD8H48M3;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -572,6 +817,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+<<<<<<< HEAD
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -813,10 +1059,19 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
+<<<<<<< HEAD
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -825,28 +1080,183 @@
 			buildConfigurations = (
 				189F53242E30BF290045218D /* Debug */,
 				189F53252E30BF290045218D /* Release */,
+=======
+		180685652DA3BE1E006153C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YXAD8H48M3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kioshi.GoalTracker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		180685662DA3BE1E006153C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YXAD8H48M3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kioshi.GoalTracker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		180685682DA3BE1E006153C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YXAD8H48M3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kioshi.GoalTrackerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GoalTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GoalTracker";
+			};
+			name = Debug;
+		};
+		180685692DA3BE1E006153C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YXAD8H48M3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kioshi.GoalTrackerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GoalTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GoalTracker";
+			};
+			name = Release;
+		};
+		1806856B2DA3BE1E006153C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YXAD8H48M3;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kioshi.GoalTrackerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GoalTracker;
+			};
+			name = Debug;
+		};
+		1806856C2DA3BE1E006153C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YXAD8H48M3;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kioshi.GoalTrackerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GoalTracker;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1806853E2DA3BE19006153C9 /* Build configuration list for PBXProject "GoalTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				180685622DA3BE1E006153C9 /* Debug */,
+				180685632DA3BE1E006153C9 /* Release */,
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+<<<<<<< HEAD
 		189F53262E30BF290045218D /* Build configuration list for PBXNativeTarget "GoalTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				189F53272E30BF290045218D /* Debug */,
 				189F53282E30BF290045218D /* Release */,
+=======
+		180685642DA3BE1E006153C9 /* Build configuration list for PBXNativeTarget "GoalTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				180685652DA3BE1E006153C9 /* Debug */,
+				180685662DA3BE1E006153C9 /* Release */,
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+<<<<<<< HEAD
 		189F53292E30BF290045218D /* Build configuration list for PBXNativeTarget "GoalTrackerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				189F532A2E30BF290045218D /* Debug */,
 				189F532B2E30BF290045218D /* Release */,
+=======
+		180685672DA3BE1E006153C9 /* Build configuration list for PBXNativeTarget "GoalTrackerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				180685682DA3BE1E006153C9 /* Debug */,
+				180685692DA3BE1E006153C9 /* Release */,
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+<<<<<<< HEAD
 		189F532C2E30BF290045218D /* Build configuration list for PBXNativeTarget "GoalTrackerUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -861,11 +1271,22 @@
 			buildConfigurations = (
 				189F53EF2E31D2EC0045218D /* Debug */,
 				189F53F02E31D2EC0045218D /* Release */,
+=======
+		1806856A2DA3BE1E006153C9 /* Build configuration list for PBXNativeTarget "GoalTrackerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1806856B2DA3BE1E006153C9 /* Debug */,
+				1806856C2DA3BE1E006153C9 /* Release */,
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
+<<<<<<< HEAD
 	rootObject = 189F52FC2E30BF240045218D /* Project object */;
+=======
+	rootObject = 1806853B2DA3BE19006153C9 /* Project object */;
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 }

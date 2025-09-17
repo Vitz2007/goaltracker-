@@ -5,8 +5,29 @@
 //  Created by AJ on 2025/04/14.
 //
 
+<<<<<<< HEAD
 import Foundation
 
+=======
+// In Goal.swift
+
+import Foundation
+
+// Structure to hold data for one in our chart
+struct DayActivity: Identifiable {
+    let id = UUID()
+    let date: Date
+    let checkInCount: Int
+}
+
+// Enum to show different states of Momentum Halo
+enum HaloState {
+    case none
+    case active
+    case earned
+}
+
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 struct CheckInRecord: Identifiable, Codable, Hashable {
     let id: UUID
     var date: Date
@@ -19,6 +40,11 @@ struct CheckInRecord: Identifiable, Codable, Hashable {
     }
 }
 
+<<<<<<< HEAD
+=======
+
+// Updated goal struct
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 struct Goal: Identifiable, Codable, Hashable {
     let id: UUID
     var title: String
@@ -28,12 +54,97 @@ struct Goal: Identifiable, Codable, Hashable {
     var completionPercentage: Double
     var checkIns: [CheckInRecord]
     var targetCheckIns: Int
+<<<<<<< HEAD
     var reminderIsEnabled: Bool
     var reminderDate: Date
     var cadence: GoalCadence
     var categoryID: UUID?
     var iconName: String?
     var isArchived: Bool
+=======
+    
+    var reminderIsEnabled: Bool
+    var reminderDate: Date
+    var cadence: GoalCadence = .daily
+    
+    var haloState: HaloState {
+            // First, let's calculate the streak number using our existing rules.
+            guard !checkIns.isEmpty else { return .none }
+            
+            let calendar = Calendar.current
+            let now = Date()
+        
+            let pastAndPresentCheckIns = checkIns.filter { $0.date <= now }
+            guard !pastAndPresentCheckIns.isEmpty else { return .none }
+        
+            let uniqueDates = Set(pastAndPresentCheckIns.map { calendar.startOfDay(for: $0.date) })
+            let sortedDates = uniqueDates.sorted(by: >)
+            
+            guard let mostRecentDate = sortedDates.first else { return .none }
+            
+            let daysSinceLastCheckIn = calendar.dateComponents([.day], from: mostRecentDate, to: calendar.startOfDay(for: now)).day ?? 0
+            
+            let allowedGap: Int
+            switch self.cadence {
+            case .daily: allowedGap = 1
+            case .everyTwoDays: allowedGap = 2
+            case .everyThreeDays: allowedGap = 3
+            case .weekly: allowedGap = 7
+            }
+            
+            if daysSinceLastCheckIn > allowedGap {
+                return .none // Streak is broken.
+            }
+            
+            var streakCount = 1
+            for i in 0..<(sortedDates.count - 1) {
+                let daysBetween = calendar.dateComponents([.day], from: sortedDates[i+1], to: sortedDates[i]).day ?? 0
+                if daysBetween <= allowedGap {
+                    streakCount += 1
+                } else {
+                    break
+                }
+            }
+            
+            // Now, determine the HaloState based on the streak count.
+            if streakCount == 1 && calendar.isDateInToday(mostRecentDate) {
+                // If the streak is 1 AND the check-in was today, it's a "comeback" or new streak.
+                return .earned
+            } else if streakCount >= 1 {
+                // If the streak is 1 (from yesterday) or more, it's active.
+                return .active
+            } else {
+                return .none
+            }
+        }
+    
+    // Computed property to generate data for bar chart with smarter start of week
+    var recentActivity: [DayActivity] {
+            let calendar = Calendar.current
+            var activity = [DayActivity]()
+            
+            // Find the starting day of the current week based on the user's locale.
+            guard let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())) else {
+                return [] // Return empty if can't find the start of the week
+            }
+    
+    // Looping through the last 7 days starting from 6 days ago until present day
+        for i in 0..<7 {
+                    if let date = calendar.date(byAdding: .day, value: i, to: startOfWeek) {
+                        let startOfDay = calendar.startOfDay(for: date)
+                        
+                        // 3. Count check-ins for that specific day.
+                        let count = self.checkIns.filter {
+                            calendar.isDate($0.date, inSameDayAs: startOfDay)
+                        }.count
+                        
+                        activity.append(DayActivity(date: startOfDay, checkInCount: count))
+                    }
+                }
+                return activity
+            }
+
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 
     init(id: UUID = UUID(),
          title: String,
@@ -45,10 +156,14 @@ struct Goal: Identifiable, Codable, Hashable {
          targetCheckIns: Int = 30,
          reminderIsEnabled: Bool = false,
          reminderDate: Date = Date(),
+<<<<<<< HEAD
          cadence: GoalCadence = .daily,
          categoryID: UUID? = nil,
          iconName: String? = nil,
          isArchived: Bool = false) {
+=======
+         cadence: GoalCadence = .daily) {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
         
         self.id = id
         self.title = title
@@ -61,8 +176,11 @@ struct Goal: Identifiable, Codable, Hashable {
         self.reminderIsEnabled = reminderIsEnabled
         self.reminderDate = reminderDate
         self.cadence = cadence
+<<<<<<< HEAD
         self.categoryID = categoryID
         self.iconName = iconName
         self.isArchived = isArchived
+=======
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
     }
 }

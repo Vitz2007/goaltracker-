@@ -27,17 +27,29 @@ struct AddCheckInNoteView: View {
 
                 Spacer()
             }
+<<<<<<< HEAD
             .navigationTitle("addNote.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("common.skip") {
+=======
+            .navigationTitle("Add a Note")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Skip") {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
                         onSave(nil) // Pass back nil for no note
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
+<<<<<<< HEAD
                     Button("common.save") {
+=======
+                    Button("Save") {
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
                         onSave(note.isEmpty ? nil : note) // Pass back the note, or nil if empty
                         dismiss()
                     }

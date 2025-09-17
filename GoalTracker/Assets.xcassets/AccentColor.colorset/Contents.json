@@ -1,10 +1,13 @@
 {
   "colors" : [
     {
+<<<<<<< HEAD
       "color" : {
         "platform" : "universal",
         "reference" : "systemBlueColor"
       },
+=======
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
       "idiom" : "universal"
     }
   ],

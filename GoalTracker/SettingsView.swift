@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+<<<<<<< HEAD
 struct SettingsView: View {
     @EnvironmentObject var settings: AppSettings
     @Environment(\.dismiss) var dismiss
@@ -111,3 +112,40 @@ struct SettingsView: View {
         }
     }
 }
+=======
+struct SettingsView: View{
+    // Access to settings object
+    @State private var appSettings = AppSettings.shared
+    
+    // For "Done" button
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Features")) {
+                    // Toggle to read and write value from out AppSettings
+                    Toggle("Enable Momentum Tracking", isOn: $appSettings.streaksEnabled)
+                }
+                
+                Section(header: Text("About")) {
+                    Text("Your App Name")
+                    Text("Version 1.0.0") // Can update later
+                }
+            }
+            .navigationTitle("Settings")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Done") {
+                            dismiss()
+                        }
+                    }
+                }
+        }
+    }
+}
+#Preview {
+    SettingsView()
+}
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484

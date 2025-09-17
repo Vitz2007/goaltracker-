@@ -16,7 +16,11 @@ struct DonutChartView: View {
     var body: some View {
         Chart {
             SectorMark(
+<<<<<<< HEAD
                 angle: .value(LocalizedStringKey("chart.label.completed"), completionPercentage * 360),
+=======
+                angle: .value("Completed", completionPercentage * 360),
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
                 innerRadius: .ratio(0.618),
                 angularInset: 1.5
             )
@@ -24,7 +28,11 @@ struct DonutChartView: View {
             .cornerRadius(5)
 
             SectorMark(
+<<<<<<< HEAD
                 angle: .value(LocalizedStringKey("chart.label.remaining"), (1.0 - completionPercentage) * 360),
+=======
+                angle: .value("Remaining", (1.0 - completionPercentage) * 360),
+>>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
                 innerRadius: .ratio(0.618),
                 angularInset: 1.5
             )
