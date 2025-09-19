@@ -6,7 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-
 /* Begin PBXBuildFile section */
 		189F53ED2E31D2EC0045218D /* GoalTrackerWidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 189F53D72E31D2E50045218D /* GoalTrackerWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		189F54092E31DA570045218D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 189F53DB2E31D2E50045218D /* SwiftUI.framework */; };
@@ -102,9 +101,11 @@
 		182F73722E6FF212000D25F2 /* Exceptions for "GoalTracker" folder in "GoalTrackerWidgetsExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Assets.xcassets,
 				CheckInIntent.swift,
 				DataManager.swift,
 				Goal.swift,
+				HaloState.swift,
 				SortAndFilterOptions.swift,
 			);
 			target = 189F53D62E31D2E50045218D /* GoalTrackerWidgetsExtension */;
@@ -122,19 +123,15 @@
 			sourceTree = "<group>";
 		};
 		189F53152E30BF290045218D /* GoalTrackerTests */ = {
-
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = GoalTrackerTests;
 			sourceTree = "<group>";
 		};
-
 		189F531F2E30BF290045218D /* GoalTrackerUITests */ = {
-
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = GoalTrackerUITests;
 			sourceTree = "<group>";
 		};
-
 		189F53DD2E31D2E50045218D /* GoalTrackerWidgets */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -147,32 +144,26 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		189F53012E30BF250045218D /* Frameworks */ = {
-
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-
 		189F530F2E30BF290045218D /* Frameworks */ = {
-
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-
 		189F53192E30BF290045218D /* Frameworks */ = {
-
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-
 		189F53D42E31D2E50045218D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -206,12 +197,10 @@
 				189F53122E30BF290045218D /* GoalTrackerTests.xctest */,
 				189F531C2E30BF290045218D /* GoalTrackerUITests.xctest */,
 				189F53D72E31D2E50045218D /* GoalTrackerWidgetsExtension.appex */,
-
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-
 		189F53D82E31D2E50045218D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -232,23 +221,19 @@
 				189F53012E30BF250045218D /* Frameworks */,
 				189F53022E30BF250045218D /* Resources */,
 				189F53F22E31D2EC0045218D /* Embed Foundation Extensions */,
-
 			);
 			buildRules = (
 			);
 			dependencies = (
-
 				189F53EC2E31D2EC0045218D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				189F53062E30BF250045218D /* GoalTracker */,
-
 			);
 			name = GoalTracker;
 			packageProductDependencies = (
 			);
 			productName = GoalTracker;
-
 			productReference = 189F53042E30BF250045218D /* GoalTracker.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -259,23 +244,19 @@
 				189F530E2E30BF290045218D /* Sources */,
 				189F530F2E30BF290045218D /* Frameworks */,
 				189F53102E30BF290045218D /* Resources */,
-
 			);
 			buildRules = (
 			);
 			dependencies = (
-
 				189F53142E30BF290045218D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				189F53152E30BF290045218D /* GoalTrackerTests */,
-
 			);
 			name = GoalTrackerTests;
 			packageProductDependencies = (
 			);
 			productName = GoalTrackerTests;
-
 			productReference = 189F53122E30BF290045218D /* GoalTrackerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -286,23 +267,19 @@
 				189F53182E30BF290045218D /* Sources */,
 				189F53192E30BF290045218D /* Frameworks */,
 				189F531A2E30BF290045218D /* Resources */,
-
 			);
 			buildRules = (
 			);
 			dependencies = (
-
 				189F531E2E30BF290045218D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				189F531F2E30BF290045218D /* GoalTrackerUITests */,
-
 			);
 			name = GoalTrackerUITests;
 			packageProductDependencies = (
 			);
 			productName = GoalTrackerUITests;
-
 			productReference = 189F531C2E30BF290045218D /* GoalTrackerUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -356,13 +333,11 @@
 				};
 			};
 			buildConfigurationList = 189F52FF2E30BF240045218D /* Build configuration list for PBXProject "GoalTracker" */;
-
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
-
 				"en-GB",
 				fr,
 				de,
@@ -381,13 +356,11 @@
 				189F53112E30BF290045218D /* GoalTrackerTests */,
 				189F531B2E30BF290045218D /* GoalTrackerUITests */,
 				189F53D62E31D2E50045218D /* GoalTrackerWidgetsExtension */,
-
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-
 		189F53022E30BF250045218D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -397,54 +370,44 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		189F53102E30BF290045218D /* Resources */ = {
-
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-
 		189F531A2E30BF290045218D /* Resources */ = {
-
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-
 		189F53D52E31D2E50045218D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				18CECAB22E60D1C2004A6B23 /* Localizable.strings in Resources */,
-
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-
 		189F53002E30BF250045218D /* Sources */ = {
-
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-
 		189F530E2E30BF290045218D /* Sources */ = {
-
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-
 		189F53182E30BF290045218D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -453,7 +416,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		189F53D32E31D2E50045218D /* Sources */ = {
-
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -463,7 +425,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-
 		189F53142E30BF290045218D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 189F53032E30BF250045218D /* GoalTracker */;
@@ -500,14 +461,11 @@
 
 /* Begin XCBuildConfiguration section */
 		189F53242E30BF290045218D /* Debug */ = {
-
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -537,9 +495,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-
 				DEAD_CODE_STRIPPING = YES;
-
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXAD8H48M3;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -559,30 +515,22 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-
-
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-
 		189F53252E30BF290045218D /* Release */ = {
-
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -612,9 +560,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-
 				DEAD_CODE_STRIPPING = YES;
-
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXAD8H48M3;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -628,7 +574,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -870,12 +815,10 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -884,34 +827,28 @@
 			buildConfigurations = (
 				189F53242E30BF290045218D /* Debug */,
 				189F53252E30BF290045218D /* Release */,
-
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-
 		189F53262E30BF290045218D /* Build configuration list for PBXNativeTarget "GoalTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				189F53272E30BF290045218D /* Debug */,
 				189F53282E30BF290045218D /* Release */,
-
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-
 		189F53292E30BF290045218D /* Build configuration list for PBXNativeTarget "GoalTrackerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				189F532A2E30BF290045218D /* Debug */,
 				189F532B2E30BF290045218D /* Release */,
-
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-
 		189F532C2E30BF290045218D /* Build configuration list for PBXNativeTarget "GoalTrackerUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -926,14 +863,11 @@
 			buildConfigurations = (
 				189F53EF2E31D2EC0045218D /* Debug */,
 				189F53F02E31D2EC0045218D /* Release */,
-
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-
 	rootObject = 189F52FC2E30BF240045218D /* Project object */;
-
 }

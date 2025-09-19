@@ -5,9 +5,6 @@
 //  Created by AJ on 2025/06/23.
 //
 
-// In AppSettings.swift
-<<<<<<< HEAD
-
 import SwiftUI
 
 // A simple struct to hold the data for a color choice
@@ -17,33 +14,30 @@ struct ColorChoice: Identifiable {
     let color: Color
 }
 
-// A class to manage the app's settings, like the accent color.
+// A class to manage the app's settings, like the accent color and streaks.
 class AppSettings: ObservableObject {
     // Shared instance for easy access across the app
     static let shared = AppSettings()
     
+    // --- Theme Color Feature ---
     let colorOptions: [ColorChoice] = [
-        ColorChoice(id: "default", name: "color.defaultBlue", color: Color("AccentColor")), // Use the asset catalog color
+        ColorChoice(id: "default", name: "color.defaultBlue", color: .blue), // Use the asset catalog color
         ColorChoice(id: "green", name: "color.green", color: .green),
         ColorChoice(id: "red", name: "color.red", color: .red),
         ColorChoice(id: "purple", name: "color.purple", color: .purple),
         ColorChoice(id: "orange", name: "color.orange", color: .orange)
     ]
     
-    // This will store the ID of the selected color.
     @Published var selectedColorId: String {
         didSet {
             UserDefaults.standard.set(selectedColorId, forKey: "accentColorId")
         }
     }
     
-    // A helper to easily get the full Color object.
     var currentAccentColor: Color {
         (colorOptions.first(where: { $0.id == selectedColorId }) ?? colorOptions.first)!.color
     }
 
-    // ✅ ADD THIS FUNCTION
-    // This function takes a color name (like "green") and returns the actual Color object.
     func themeColor(for colorName: String) -> Color {
         switch colorName {
         case "green":
@@ -58,31 +52,24 @@ class AppSettings: ObservableObject {
         }
     }
 
-    // When the class is initialized, load the saved color ID.
-    private init() {
-        self.selectedColorId = UserDefaults.standard.string(forKey: "accentColorId") ?? "default"
-=======
-import SwiftUI
-
-// Adding ObservableObject lets our views automatically update when a setting changes
-@Observable
-class AppSettings {
-    // Giving it a value of true and key for "streaksEnabled"
-    var streaksEnabled: Bool = UserDefaults.standard.bool(forKey: "streaksEnabled") {
+    // --- Streak Toggle Feature (Merged and fixed) ---
+    @Published var streaksEnabled: Bool {
         didSet {
-            UserDefaults.standard.set(streaksEnabled, forKey: "streakEnabled")
+            // Fixed typo: was "streakEnabled"
+            UserDefaults.standard.set(streaksEnabled, forKey: "streaksEnabled")
         }
     }
-    
-    // Create a single, shared instance for whole app to use
-    static let shared = AppSettings()
-    
-    // Make initializer private so no one else can create another instance
+
+    // When the class is initialized, load all saved settings.
     private init() {
-        // Fix for potential issue when default value isn't set on first launch
+        // Load selected color ID, defaulting to "default"
+        self.selectedColorId = UserDefaults.standard.string(forKey: "accentColorId") ?? "default"
+        
+        // Load streaksEnabled setting, defaulting to true if not set
         if UserDefaults.standard.object(forKey: "streaksEnabled") == nil {
-            
+            self.streaksEnabled = true // Set an initial default
+        } else {
+            self.streaksEnabled = UserDefaults.standard.bool(forKey: "streaksEnabled")
         }
->>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
     }
 }

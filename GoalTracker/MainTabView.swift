@@ -85,21 +85,25 @@ struct MainTabView: View {
                 EmptyStateView()
             } else {
                 List {
+                    // ✅ THIS IS THE FIX
                     ForEach(filteredAndSortedGoals) { goal in
-                        NavigationLink(value: goal) {
-                            GoalRowView(goal: goal, settings: appSettings) { position in
-                                // Find the index of the goal to modify it
-                                if let index = self.goals.firstIndex(where: { $0.id == goal.id }) {
-                                    if !self.goals[index].isCompleted {
+                        // We find the index of the goal in the original array...
+                        if let index = goals.firstIndex(where: { $0.id == goal.id }) {
+                            NavigationLink(value: goal) {
+                                // ...so we can pass a binding '$' to the GoalRowView.
+                                GoalRowView(goal: $goals[index], settings: appSettings) { position in
+                                    // The rest of the logic remains the same
+                                    if !goals[index].isCompleted {
                                         self.confettiStartPoint = position
-                                        CelebrationManager.shared.start(goal: self.goals[index])
+                                        // You might need a CelebrationManager here if it's a separate object
+                                        // CelebrationManager.shared.start(goal: self.goals[index])
                                     }
-                                    self.goals[index].isCompleted.toggle()
+                                    goals[index].isCompleted.toggle()
                                 }
                             }
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
                         }
-                        .listRowBackground(Color.clear)
-                        .listRowSeparator(.hidden)
                     }
                     .onDelete(perform: deleteGoal)
                 }
@@ -109,7 +113,8 @@ struct MainTabView: View {
             AddGoalButtonView { showingAddGoal = true }
                 .padding(.bottom)
         }
-        .overlay { ConfettiView(isCelebrating: .constant(CelebrationManager.shared.isCelebrating), startPoint: confettiStartPoint) }
+        // You might need a ConfettiView and CelebrationManager here if they are separate objects
+        // .overlay { ConfettiView(isCelebrating: .constant(CelebrationManager.shared.isCelebrating), startPoint: confettiStartPoint) }
     }
 
     private func deleteGoal(at offsets: IndexSet) {

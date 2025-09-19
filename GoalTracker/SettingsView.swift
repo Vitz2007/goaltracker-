@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-<<<<<<< HEAD
 struct SettingsView: View {
     @EnvironmentObject var settings: AppSettings
     @Environment(\.dismiss) var dismiss
@@ -52,7 +51,6 @@ struct SettingsView: View {
                 }
 
                 Section(header: Text("settings.section.appearance")) {
-                    // Restored the previous UI for color selection
                     Picker(selection: $settings.selectedColorId) {
                         ForEach(settings.colorOptions) { option in
                             HStack {
@@ -61,10 +59,10 @@ struct SettingsView: View {
                                 Circle().fill(option.color).frame(width: 20, height: 20)
                             }.tag(option.id)
                         }
-                    } label: { // Added a label here and wrapped in LocalizedStringKey
+                    } label: {
                         Text("settings.theme")
                     }
-                    .pickerStyle(.navigationLink) // Ensuring it uses the navigation link style
+                    .pickerStyle(.navigationLink)
                 }
                 
                 Section {
@@ -72,7 +70,7 @@ struct SettingsView: View {
                         LanguageSelectionView()
                     } label: {
                         HStack {
-                            Text("settings.language") // Wrapped in LocalizedStringKey
+                            Text("settings.language")
                             Spacer()
                             Text(LocalizedStringKey(selectedLanguageNameKey))
                                 .foregroundColor(.secondary)
@@ -112,40 +110,8 @@ struct SettingsView: View {
         }
     }
 }
-=======
-struct SettingsView: View{
-    // Access to settings object
-    @State private var appSettings = AppSettings.shared
-    
-    // For "Done" button
-    @Environment(\.dismiss) var dismiss
-    
-    var body: some View {
-        NavigationView {
-            Form {
-                Section(header: Text("Features")) {
-                    // Toggle to read and write value from out AppSettings
-                    Toggle("Enable Momentum Tracking", isOn: $appSettings.streaksEnabled)
-                }
-                
-                Section(header: Text("About")) {
-                    Text("Your App Name")
-                    Text("Version 1.0.0") // Can update later
-                }
-            }
-            .navigationTitle("Settings")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Done") {
-                            dismiss()
-                        }
-                    }
-                }
-        }
-    }
-}
+
 #Preview {
     SettingsView()
+        .environmentObject(AppSettings.shared)
 }
->>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484

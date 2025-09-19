@@ -5,24 +5,15 @@
 //  Created by AJ on 2025/05/19.
 //
 
-// In BottomActionBarView.swift
-<<<<<<< HEAD
-
-=======
->>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
 import SwiftUI
 
 struct ActionBottomBarView: View {
     @Binding var goal: Goal
-<<<<<<< HEAD
     
-=======
->>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
     // Add new closures for clarity
     var onEditButtonTap: () -> Void
     var onFinishButtonTap: () -> Void
     var onDeleteButton: () -> Void // New one for the delete button
-    
 
     // Animation states
     @Binding var editButtonTapped: Bool
@@ -31,31 +22,22 @@ struct ActionBottomBarView: View {
     @Binding var finishButtonScale: CGFloat
     @Binding var deleteButtonTapped: Bool
 
-
     let bottomBarBackgroundColor: Color
 
     var body: some View {
         HStack {
             EditActionButtonView(isTapped: $editButtonTapped) {
-<<<<<<< HEAD
                 // 'action' for EditActionButtonView
-=======
-                // The 'action' for EditActionButtonView
->>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
                 print("Edit button tapped inside ActionBottomBarView for \(goal.title)")
                 self.editButtonTapped.toggle() // For the bounce animation
-                self.onEditButtonTap()         // << Calling the new closure
+                self.onEditButtonTap()         // Calling the new closure
             }
 
             Spacer()
 
             ProgressActionButtonView(isTapped: $progressButtonTapped) {
                 print("Progress tapped for \(goal.title)")
-<<<<<<< HEAD
                 // Action shows the progress sheet
-=======
-                // This action shows the progress sheet
->>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
                 self.progressButtonTapped.toggle() // For animation
                 self.showingProgressSheet = true
             }
@@ -68,19 +50,15 @@ struct ActionBottomBarView: View {
             ) {
                 print("Finish button tapped (animation part) for \(goal.title)")
                 // Existing finish button animation and action logic
-                 withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
-                     finishButtonScale = 1.2 // Scale up
-                 }
-                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                     withAnimation(.spring()) {
-                         finishButtonScale = 1.0 // Scale back
-                     }
-                 }
-<<<<<<< HEAD
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
+                    finishButtonScale = 1.2 // Scale up
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    withAnimation(.spring()) {
+                        finishButtonScale = 1.0 // Scale back
+                    }
+                }
                 // Calling of new closure that will implement actual function
-=======
-                // Call the new closure that will implement actual function
->>>>>>> a5299dab53fdf2a51098c77d51abdc51565d4484
                 self.onFinishButtonTap() // Calls new closure
             }
 
