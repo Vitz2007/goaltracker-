@@ -37,40 +37,34 @@ struct GoalDetailView: View {
 
     // MARK: - Body
     var body: some View {
-        ZStack {
-            List {
+        // The ScrollView is now the main view. It is transparent by default.
+        ScrollView {
+            VStack(spacing: 16) {
                 goalInfoCard
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
-                    .padding(.bottom)
-
                 if appSettings.streaksEnabled {
                     streaksAndChartSection
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                        .padding(.bottom)
                 }
-
                 checkInButton
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
                 
-                // Spacer to prevent content from hiding behind the slider
-                Color.clear.frame(height: 100).listRowSeparator(.hidden)
+                // Spacer to ensure content can scroll up from behind the slider.
+                Color.clear.frame(height: 100)
             }
-            .listStyle(.plain)
-            
-            undoPopup
+            .padding()
         }
-        .navigationTitle("goalDetail.title")
-        .navigationBarTitleDisplayMode(.inline)
+        // The ActionSliderView is an overlay on the ScrollView.
+        // When content scrolls, it will pass behind the slider, creating the glass effect.
         .overlay(alignment: .bottom) {
-            // Using your ActionSliderView
             ActionSliderView(
                 onAction: { action in handle(action) },
                 isCompleted: goal.isCompleted
             )
         }
+        .overlay {
+            undoPopup
+        }
+        .background(Color(.systemGroupedBackground)) // This is the permanent background for the screen.
+        .navigationTitle("goalDetail.title")
+        .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingEditSheet) { EditGoalView(goal: $goal) }
         .sheet(isPresented: $showingAddCheckInNoteSheet) {
             AddCheckInNoteView { noteText in
@@ -81,9 +75,13 @@ struct GoalDetailView: View {
             }
         }
         .alert("goalDetail.alert.delete.title", isPresented: $showingDeleteAlert) {
-            Button("common.delete", role: .destructive) { onDelete(goal.id) }
-            Button("common.cancel", role: .cancel) {}
-        } message: { Text("goalDetail.alert.delete.message") }
+            Button(role: .destructive, action: { onDelete(goal.id) }) {
+                Text("common.delete")
+            }
+            Button("common.cancel", role: .cancel) { }
+        } message: {
+            Text("goalDetail.alert.delete.message")
+        }
     }
     
     // MARK: - UI Components
@@ -210,9 +208,7 @@ struct GoalDetailView: View {
     }
 }
 
-
 // MARK: - Action Slider and Dependencies
-// Using YOUR code, placed directly in this file to guarantee it is found.
 
 enum GoalAction: CaseIterable, Equatable {
     case edit, finish, delete
@@ -222,7 +218,6 @@ struct ActionSliderView: View {
     var onAction: (GoalAction) -> Void
     var isCompleted: Bool
     
-    // This will now track the selection, not a pixel offset
     @State private var selection: GoalAction = .finish
     @State private var isDragging = false
     
@@ -233,16 +228,34 @@ struct ActionSliderView: View {
             ZStack(alignment: .leading) {
                 // Layer 1: The main glass background
                 Capsule()
-                    .fill(.regularMaterial)
+                    .fill(.ultraThinMaterial) // More translucent background
+                    .shadow(color: .black.opacity(0.005), radius: 0.01, y: 9)
 
-                // Layer 2: The sliding selector pill
+                // Layer 2: The sliding selector pill with glass reflection
                 Capsule()
-                    .fill(.regularMaterial)
+                    .fill(.regularMaterial) // The base of the pill is neutral frosted glass
                     .frame(width: segmentWidth)
-                    .overlay(Capsule().stroke(color(for: selection).opacity(isDragging ? 1.0 : 0.5), lineWidth: 2))
+                    .overlay(
+                        // We now layer two effects on top of the glass pill:
+                        ZStack {
+                            // 1. The glossy white highlight for the "sheen"
+                            Capsule()
+                                .fill(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [.white.opacity(0.5), .white.opacity(0.0)]),
+                                        startPoint: .top,
+                                        endPoint: .bottom
+                                    )
+                                )
+                                .padding(2) // Inset the highlight slightly
+
+                            // 2. The colored border to show the current selection
+                            Capsule()
+                                .stroke(color(for: selection).opacity(isDragging ? 1.0 : 0.7), lineWidth: 2.5)
+                        }
+                    )
                     .offset(x: offset(for: selection, in: geometry.size))
                     .animation(.spring(response: 0.4, dampingFraction: 0.7), value: selection)
-
                 // Layer 3: The icons are on top
                 HStack(spacing: 0) {
                     ForEach(GoalAction.allCases, id: \.self) { action in
@@ -256,12 +269,10 @@ struct ActionSliderView: View {
                     .onChanged { value in
                         guard !isCompleted else { return }
                         isDragging = true
-                        // As you drag, update the selection based on finger position
                         self.selection = action(for: value.location.x, in: geometry.size)
                     }
                     .onEnded { value in
                         isDragging = false
-                        // Finalize the selection and perform the action
                         let finalAction = action(for: value.location.x, in: geometry.size)
                         handleSelection(action: finalAction)
                     }
@@ -280,7 +291,6 @@ struct ActionSliderView: View {
         }
         .foregroundStyle(selection == action && !isDragging ? color(for: action) : .secondary)
         .opacity(isCompleted && (action == .edit || action == .delete) ? 0.4 : 1.0)
-        // Add a tap gesture for individual button presses
         .onTapGesture {
             handleSelection(action: action)
         }
@@ -296,7 +306,6 @@ struct ActionSliderView: View {
         self.selection = action
         onAction(action)
         
-        // After a moment, animate the visual selection back to the middle
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             withAnimation(.spring()) {
                 self.selection = .finish
@@ -305,8 +314,6 @@ struct ActionSliderView: View {
     }
     
     // --- Helper Functions ---
-    
-    // Calculates the offset for the pill based on the selected enum case
     private func offset(for selection: GoalAction, in size: CGSize) -> CGFloat {
         let segmentWidth = size.width / CGFloat(GoalAction.allCases.count)
         switch selection {
@@ -316,7 +323,6 @@ struct ActionSliderView: View {
         }
     }
     
-    // Determines which enum case is selected based on the tap/drag location
     private func action(for xPosition: CGFloat, in size: CGSize) -> GoalAction {
         let segmentWidth = size.width / CGFloat(GoalAction.allCases.count)
         let index = max(0, min(2, Int(xPosition / segmentWidth)))
@@ -326,12 +332,33 @@ struct ActionSliderView: View {
     private func color(for action: GoalAction) -> Color {
         switch action { case .edit: return .blue; case .finish: return .green; case .delete: return .red }
     }
+    
     private func iconName(for action: GoalAction) -> String {
         if action == .finish && isCompleted { return "arrow.uturn.backward" }
         switch action { case .edit: return "pencil"; case .finish: return "flag.checkered"; case .delete: return "trash" }
     }
+    
     private func title(for action: GoalAction) -> LocalizedStringKey {
         if action == .finish && isCompleted { return "goalDetail.button.reopen" }
         switch action { case .edit: return "common.edit"; case .finish: return "goalDetail.button.finish"; case .delete: return "common.delete" }
     }
+}
+
+// MARK: - Preview
+#Preview {
+    struct PreviewWrapper: View {
+        @State private var sampleGoal = Goal(title: "Preview Goal")
+        
+        var body: some View {
+            NavigationView {
+                GoalDetailView(
+                    goal: $sampleGoal,
+                    onDelete: { _ in print("Delete triggered in preview") }
+                )
+                .environmentObject(AppSettings.shared)
+            }
+        }
+    }
+    
+    return PreviewWrapper()
 }
