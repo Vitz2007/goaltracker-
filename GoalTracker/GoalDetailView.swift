@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+// Moved to the top level to prevent any scope errors.
+enum GoalAction: CaseIterable, Equatable {
+    case edit, finish, delete
+}
+
 struct GoalDetailView: View {
     @Binding var goal: Goal
     var onDelete: (UUID) -> Void
@@ -37,34 +42,32 @@ struct GoalDetailView: View {
 
     // MARK: - Body
     var body: some View {
-        // The ScrollView is now the main view. It is transparent by default.
-        ScrollView {
-            VStack(spacing: 16) {
-                goalInfoCard
-                if appSettings.streaksEnabled {
-                    streaksAndChartSection
+        ZStack {
+            Color(.systemGroupedBackground).ignoresSafeArea()
+            
+            ScrollView {
+                LazyVStack(spacing: 16) {
+                    goalInfoCard.padding(.horizontal)
+                    if appSettings.streaksEnabled {
+                        streaksAndChartSection.padding(.horizontal)
+                    }
+                    checkInButton.padding(.horizontal)
+                    Color.clear.frame(height: 100)
                 }
-                checkInButton
-                
-                // Spacer to ensure content can scroll up from behind the slider.
-                Color.clear.frame(height: 100)
+                .padding(.top)
             }
-            .padding()
+            .ignoresSafeArea(.container, edges: .bottom)
+            
+            undoPopup
         }
-        // The ActionSliderView is an overlay on the ScrollView.
-        // When content scrolls, it will pass behind the slider, creating the glass effect.
+        .navigationTitle("goalDetail.title")
+        .navigationBarTitleDisplayMode(.inline)
         .overlay(alignment: .bottom) {
             ActionSliderView(
                 onAction: { action in handle(action) },
                 isCompleted: goal.isCompleted
             )
         }
-        .overlay {
-            undoPopup
-        }
-        .background(Color(.systemGroupedBackground)) // This is the permanent background for the screen.
-        .navigationTitle("goalDetail.title")
-        .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingEditSheet) { EditGoalView(goal: $goal) }
         .sheet(isPresented: $showingAddCheckInNoteSheet) {
             AddCheckInNoteView { noteText in
@@ -209,13 +212,12 @@ struct GoalDetailView: View {
 }
 
 // MARK: - Action Slider and Dependencies
-enum GoalAction: CaseIterable, Equatable {
-    case edit, finish, delete
-}
 
 struct ActionSliderView: View {
     var onAction: (GoalAction) -> Void
     var isCompleted: Bool
+    
+    @Environment(\.colorScheme) var colorScheme
     
     @State private var selection: GoalAction = .finish
     @State private var isDragging = false
@@ -225,28 +227,33 @@ struct ActionSliderView: View {
             let segmentWidth = geometry.size.width / CGFloat(GoalAction.allCases.count)
             
             ZStack(alignment: .leading) {
-                // Layer 1: The main glass background
                 Capsule()
                     .fill(.regularMaterial)
                     .shadow(color: .black.opacity(0.15), radius: 5, y: 3)
 
-                // The sliding pill is now an opaque, glossy gradient.
                 Capsule()
                     .fill(
-                        RadialGradient(
-                            gradient: Gradient(colors: [Color.white, Color(.systemGray5)]),
-                            center: .topLeading,
-                            startRadius: 1,
-                            endRadius: 80
-                        )
+                        colorScheme == .light
+                        // Light mode pill appearance control
+                        ? AnyShapeStyle(RadialGradient(gradient: Gradient(colors: [Color.white, Color(.systemGray5)]), center: .topLeading, startRadius: 1, endRadius: 80))
+                        // Dark mode pill appearance control
+                        : AnyShapeStyle(RadialGradient(gradient: Gradient(colors: [Color(.systemGray2), Color(.systemGray6)]), center: .topLeading, startRadius: 1, endRadius: 90))
                     )
-                    .overlay(Capsule().stroke(Color(.systemGray4), lineWidth: 0.5))
-                    .shadow(color: .black.opacity(0.1), radius: 3, y: 3)
+                    .overlay(
+                        colorScheme == .light
+                        ? AnyView(Capsule().stroke(Color(.systemGray4), lineWidth: 0.5))
+                        : AnyView(Capsule().stroke(Color(.systemGray3), lineWidth: 1))
+                    )
+                    .shadow(
+                        color: colorScheme == .light ? .black.opacity(0.1) : .black.opacity(0.4),
+                        radius: colorScheme == .light ? 3 : 5,
+                        x: 0,
+                        y: colorScheme == .light ? 3 : 7
+                    )
                     .frame(width: segmentWidth)
                     .offset(x: offset(for: selection, in: geometry.size))
                     .animation(.spring(response: 0.4, dampingFraction: 0.7), value: selection)
 
-                // Layer 3: The icons are on top
                 HStack(spacing: 0) {
                     ForEach(GoalAction.allCases, id: \.self) { action in
                         actionIcon(for: action)
@@ -279,12 +286,9 @@ struct ActionSliderView: View {
             Text(title(for: action))
                 .font(.caption)
         }
-        // The selected icon is now colored to stand out against the light pill
         .foregroundStyle(selection == action && !isDragging ? color(for: action) : .secondary)
         .opacity(isCompleted && (action == .edit || action == .delete) ? 0.4 : 1.0)
-        .onTapGesture {
-            handleSelection(action: action)
-        }
+        .onTapGesture { handleSelection(action: action) }
     }
     
     private func handleSelection(action: GoalAction) {
@@ -295,13 +299,10 @@ struct ActionSliderView: View {
         self.selection = action
         onAction(action)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            withAnimation(.spring()) {
-                self.selection = .finish
-            }
+            withAnimation(.spring()) { self.selection = .finish }
         }
     }
     
-    // --- Helper Functions ---
     private func offset(for selection: GoalAction, in size: CGSize) -> CGFloat {
         let segmentWidth = size.width / CGFloat(GoalAction.allCases.count)
         switch selection {
