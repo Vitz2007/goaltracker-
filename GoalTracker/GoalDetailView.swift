@@ -209,7 +209,6 @@ struct GoalDetailView: View {
 }
 
 // MARK: - Action Slider and Dependencies
-
 enum GoalAction: CaseIterable, Equatable {
     case edit, finish, delete
 }
@@ -228,34 +227,25 @@ struct ActionSliderView: View {
             ZStack(alignment: .leading) {
                 // Layer 1: The main glass background
                 Capsule()
-                    .fill(.ultraThinMaterial) // More translucent background
-                    .shadow(color: .black.opacity(0.005), radius: 0.01, y: 9)
+                    .fill(.regularMaterial)
+                    .shadow(color: .black.opacity(0.15), radius: 5, y: 3)
 
-                // Layer 2: The sliding selector pill with glass reflection
+                // The sliding pill is now an opaque, glossy gradient.
                 Capsule()
-                    .fill(.regularMaterial) // The base of the pill is neutral frosted glass
-                    .frame(width: segmentWidth)
-                    .overlay(
-                        // We now layer two effects on top of the glass pill:
-                        ZStack {
-                            // 1. The glossy white highlight for the "sheen"
-                            Capsule()
-                                .fill(
-                                    LinearGradient(
-                                        gradient: Gradient(colors: [.white.opacity(0.5), .white.opacity(0.0)]),
-                                        startPoint: .top,
-                                        endPoint: .bottom
-                                    )
-                                )
-                                .padding(2) // Inset the highlight slightly
-
-                            // 2. The colored border to show the current selection
-                            Capsule()
-                                .stroke(color(for: selection).opacity(isDragging ? 1.0 : 0.7), lineWidth: 2.5)
-                        }
+                    .fill(
+                        RadialGradient(
+                            gradient: Gradient(colors: [Color.white, Color(.systemGray5)]),
+                            center: .topLeading,
+                            startRadius: 1,
+                            endRadius: 80
+                        )
                     )
+                    .overlay(Capsule().stroke(Color(.systemGray4), lineWidth: 0.5))
+                    .shadow(color: .black.opacity(0.1), radius: 3, y: 3)
+                    .frame(width: segmentWidth)
                     .offset(x: offset(for: selection, in: geometry.size))
                     .animation(.spring(response: 0.4, dampingFraction: 0.7), value: selection)
+
                 // Layer 3: The icons are on top
                 HStack(spacing: 0) {
                     ForEach(GoalAction.allCases, id: \.self) { action in
@@ -289,6 +279,7 @@ struct ActionSliderView: View {
             Text(title(for: action))
                 .font(.caption)
         }
+        // The selected icon is now colored to stand out against the light pill
         .foregroundStyle(selection == action && !isDragging ? color(for: action) : .secondary)
         .opacity(isCompleted && (action == .edit || action == .delete) ? 0.4 : 1.0)
         .onTapGesture {
@@ -298,14 +289,11 @@ struct ActionSliderView: View {
     
     private func handleSelection(action: GoalAction) {
         if isCompleted && (action == .edit || action == .delete) { return }
-        
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.prepare()
         generator.impactOccurred()
-        
         self.selection = action
         onAction(action)
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             withAnimation(.spring()) {
                 self.selection = .finish
